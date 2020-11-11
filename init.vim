@@ -26,7 +26,7 @@ call plug#begin("~/.vim/plugged")
     " File Explorer with Icons
     Plug 'preservim/nerdtree'
     Plug 'ryanoasis/vim-devicons'
-    
+
     " File Search
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'

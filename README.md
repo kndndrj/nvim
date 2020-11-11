@@ -8,6 +8,13 @@
 - [FZF](https://github.com/junegunn/fzf.vim) file search
 - Live preview for Latex ([Vimtex](https://github.com/lervag/vimtex))
 
+## Requirements
+Before using install the following packages:
+- node.js
+- npm
+- clang
+- [bear](https://github.com/rizsotto/Bear) (optional)
+
 ## How to use
 Put the files in ```.config/nvim/``` and run:
 ```bash
