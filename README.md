@@ -9,7 +9,7 @@
 - Live preview for Latex ([Vimtex](https://github.com/lervag/vimtex))
 
 ## How to use
-Put the files in ```.config/nvim/``` and run:
+Put the files in ```~/.config/nvim/``` and run:
 ```bash
 nvim +PlugInstall
 ```

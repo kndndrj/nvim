@@ -28,7 +28,8 @@ call plug#begin("~/.vim/plugged")
     Plug 'ryanoasis/vim-devicons'
     
     " File Search
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+    Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+    "{ 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
     
     " Latex Live Preview
@@ -58,7 +59,13 @@ set hidden
 " Pressing the tab key in insert mode results in 4 space characters
 set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
 
-set clipboard=unnamed
+" open new split panes to right and below
+set splitright
+set splitbelow
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
 
 "#############################################
 "## Visual Settings                         ##
@@ -86,7 +93,10 @@ highlight ColorColumn ctermbg=darkgray
 "#############################################
 "## COC Settings & Key Bindings             ##
 "#############################################
-"
+
+" Command ':Prettier' formats current buffer
+command! -nargs=0 Prettier :CocCommand prettier.formatFile
+
 " Use tab for trigger completion with characters ahead and navigate.
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
