@@ -157,6 +157,16 @@ nnoremap <A-p> <ESC>"+p
 vnoremap <A-y> "+y
 vnoremap <A-d> "+d
 
+noremap <A-1> 1gt
+noremap <A-1> 2gt
+noremap <A-1> 3gt
+noremap <A-1> 4gt
+noremap <A-1> 5gt
+noremap <A-1> 6gt
+noremap <A-1> 7gt
+noremap <A-1> 8gt
+noremap <A-1> 9gt
+
 "#############################################
 "## Vimtex Settings                         ##
 "#############################################
