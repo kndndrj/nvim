@@ -26,7 +26,7 @@ call plug#begin("~/.vim/plugged")
     " File Explorer with Icons
     Plug 'preservim/nerdtree'
     Plug 'ryanoasis/vim-devicons'
-    
+
     " File Search
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     "{ 'dir': '~/.fzf', 'do': './install --all' }
@@ -109,6 +109,12 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -160,6 +166,16 @@ inoremap <A-p> <ESC>"+pa
 nnoremap <A-p> <ESC>"+p
 vnoremap <A-y> "+y
 vnoremap <A-d> "+d
+
+noremap <A-1> 1gt
+noremap <A-1> 2gt
+noremap <A-1> 3gt
+noremap <A-1> 4gt
+noremap <A-1> 5gt
+noremap <A-1> 6gt
+noremap <A-1> 7gt
+noremap <A-1> 8gt
+noremap <A-1> 9gt
 
 "#############################################
 "## Vimtex Settings                         ##
