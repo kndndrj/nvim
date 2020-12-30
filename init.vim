@@ -17,7 +17,7 @@ call plug#begin("~/.vim/plugged")
 
     " Language Client
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    let g:coc_global_extensions =  ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-python', 'coc-eslint', 'coc-clangd', 'coc-sql', 'coc-tsserver', 'coc-vimtex']
+    let g:coc_global_extensions =  ['coc-emmet', 'coc-css', 'coc-html', 'coc-json', 'coc-prettier', 'coc-python', 'coc-eslint', 'coc-clangd', 'coc-sql', 'coc-tsserver', 'coc-vimtex', 'coc-go', 'coc-rls']
 
     " TypeScript Highlighting
     Plug 'leafgarland/typescript-vim'
@@ -29,9 +29,11 @@ call plug#begin("~/.vim/plugged")
 
     " File Search
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-    "{ 'dir': '~/.fzf', 'do': './install --all' }
     Plug 'junegunn/fzf.vim'
     
+    "Rust formatter
+    Plug 'rust-lang/rust.vim'
+
     " Latex Live Preview
     Plug 'lervag/vimtex'
 call plug#end()
@@ -109,7 +111,6 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-
 " Make <CR> auto-select the first completion item and notify coc.nvim to
 " format on enter, <cr> could be remapped by other vim plugin
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
@@ -129,10 +130,30 @@ let g:NERDTreeShowHidden = 1
 let g:NERDTreeMinimalUI = 1
 let g:NERDTreeIgnore = []
 let g:NERDTreeStatusline = ''
+let g:NERDTreeWinSize=40
+
+" Toggle NERDTree
+nnoremap <silent> <C-b> :NERDTreeToggle<CR>
+
+" Open the existing NERDTree on each new tab.
+autocmd BufWinEnter * silent NERDTreeMirror
+
 " Ignore NERDTree when quitting 
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-" Toggle
-nnoremap <silent> <C-b> :NERDTreeToggle<CR>
+
+" Start NERDTree and put the cursor back in the other window.
+autocmd VimEnter * NERDTree | wincmd p
+
+" Hide Lightline on NERDTree
+augroup filetype_nerdtree
+    au!
+    au FileType nerdtree call s:disable_lightline_on_nerdtree()
+    au WinEnter,BufWinEnter,TabEnter * call s:disable_lightline_on_nerdtree()
+augroup END
+fu s:disable_lightline_on_nerdtree() abort
+    let nerdtree_winnr = index(map(range(1, winnr('$')), {_,v -> getbufvar(winbufnr(v), '&ft')}), 'nerdtree') + 1
+    call timer_start(0, {-> nerdtree_winnr && setwinvar(nerdtree_winnr, '&stl', '%#Normal#')})
+endfu
 
 "#############################################
 "## FZF File Search Settings & Key Bindings ##
@@ -152,8 +173,9 @@ let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 "## Other Key Bindings                      ##
 "#############################################
 
-" Exit terminal by pressing esc
-tnoremap <Esc> <C-\><C-n>
+" Exit terminal by pressing esc, don't interfere with fzf
+au TermOpen * tnoremap <Esc> <c-\><c-n>
+au FileType fzf tunmap <Esc>
 
 " Use alt+hjkl to move between split/vsplit panels
 nnoremap <A-h> <C-w>h
@@ -161,21 +183,16 @@ nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 
-" Use alt+c/v/x to interact with system clipboard + paste in insert mode
-inoremap <A-p> <ESC>"+pa
-nnoremap <A-p> <ESC>"+p
-vnoremap <A-y> "+y
-vnoremap <A-d> "+d
-
+" alt+123... for tab switching
 noremap <A-1> 1gt
-noremap <A-1> 2gt
-noremap <A-1> 3gt
-noremap <A-1> 4gt
-noremap <A-1> 5gt
-noremap <A-1> 6gt
-noremap <A-1> 7gt
-noremap <A-1> 8gt
-noremap <A-1> 9gt
+noremap <A-2> 2gt
+noremap <A-3> 3gt
+noremap <A-4> 4gt
+noremap <A-5> 5gt
+noremap <A-6> 6gt
+noremap <A-7> 7gt
+noremap <A-8> 8gt
+noremap <A-9> 9gt
 
 "#############################################
 "## Vimtex Settings                         ##

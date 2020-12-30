@@ -1,8 +1,5 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": [
-    "css",
-    "markdown"
-  ],
+  "coc.preferences.formatOnSaveFiletypes": ["css", "markdown"],
   "eslint.filetypes": [
     "javascript",
     "typescript",
@@ -10,5 +7,15 @@
     "javascriptreact",
     "typescript.tsx"
   ],
-  "diagnostic.virtualText": true
+  "diagnostic.virtualText": true,
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "usePlaceholders": true
+      }
+    }
+  }
 }
