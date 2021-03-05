@@ -14,8 +14,12 @@ call plug#begin("~/.vim/plugged")
     Plug 'rakr/vim-one', { 'as': 'one' }
     Plug 'overcache/NeoSolarized'
 
-    " Status line theme
+    " Status line theme and scrollbar
     Plug 'itchyny/lightline.vim'
+    Plug 'ojroques/vim-scrollstatus'
+
+    " Indent line indicator (see README.md for json)
+    Plug 'Yggdroot/indentLine'
 
     " Tab names
     Plug 'gcmt/taboo.vim'
@@ -29,7 +33,7 @@ call plug#begin("~/.vim/plugged")
     " TypeScript Highlighting
     Plug 'leafgarland/typescript-vim'
     Plug 'peitalin/vim-jsx-typescript'
-    
+
     " File Explorer with Icons
     Plug 'preservim/nerdtree'
     Plug 'ryanoasis/vim-devicons'
@@ -40,7 +44,7 @@ call plug#begin("~/.vim/plugged")
     " File Search
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
-    
+
     "Rust formatter
     Plug 'rust-lang/rust.vim'
 
@@ -83,6 +87,11 @@ set updatetime=300
 "## Visual Settings                         ##
 "#############################################
 
+let g:taboo_tab_format = " %f%m │"
+
+" Indent line indicator
+let g:indentLine_char = '│'
+
 " Enable themes
 if (has("termguicolors"))
     set termguicolors
@@ -92,18 +101,26 @@ endif
 syntax enable
 colorscheme one
 
-" Statusline theme
+" Statusline settings
 set noshowmode
 let g:lightline = {
-      \ 'colorscheme': 'one',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead'
-      \ },
-      \ }
+    \ 'colorscheme': 'one',
+    \ 'active': {
+    \   'left': [ ['mode', 'paste'], ['gitbranch', 'readonly', 'filename', 'modified'] ],
+    \   'right': [ ['lineinfo'], ['scroll'], ['fileformat', 'fileencoding', 'filetype'] ],
+    \ },
+    \ 'inactive': {
+    \   'left': [ ['gitbranch', 'readonly', 'filename', 'modified'] ],
+    \   'right': [ ['fileformat', 'fileencoding', 'filetype'] ],
+    \ },
+    \ 'component_function': {
+    \   'gitbranch': 'FugitiveHead',
+    \   'scroll': 'ScrollStatus',
+    \ },
+    \ }
+
+let g:scrollstatus_symbol_track = ' '
+let g:scrollstatus_symbol_bar = '='
 
 " Highlight column 100 to easily maintain line length
 set colorcolumn=100
@@ -135,9 +152,9 @@ command! -nargs=0 Prettier :CocCommand prettier.formatFile
 
 " Use tab for trigger completion with characters ahead and navigate.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
@@ -166,6 +183,8 @@ let g:NERDTreeMinimalUI = 1
 let g:NERDTreeIgnore = []
 let g:NERDTreeStatusline = ''
 let g:NERDTreeWinSize= 40
+let g:NERDTreeDirArrowExpandable = '🠖'
+let g:NERDTreeDirArrowCollapsible = '🠗'
 
 " Toggle NERDTree
 nnoremap <silent> <C-b> :NERDTreeToggle<CR>
@@ -197,10 +216,10 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
 
 nnoremap <C-p> :FZF<CR>
 let g:fzf_action = {
-\ 'ctrl-t': 'tab split',
-\ 'ctrl-s': 'split',
-\ 'ctrl-v': 'vsplit'
-\}
+    \ 'ctrl-t': 'tab split',
+    \ 'ctrl-s': 'split',
+    \ 'ctrl-v': 'vsplit'
+    \}
 
 " requires silversearcher-ag
 " used to ignore gitignore files

@@ -21,12 +21,17 @@ set background=light
 
 " Different statusline theme
 let g:lightline = {
-      \ 'colorscheme': 'solarized',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified' ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead'
-      \ },
-      \ }
+            \ 'colorscheme': 'solarized',
+            \ 'active': {
+            \   'left': [ ['mode', 'paste'], ['gitbranch', 'readonly', 'filename', 'modified'] ],
+            \   'right': [ ['lineinfo'], ['scroll'], ['fileformat', 'fileencoding', 'filetype'] ],
+            \ },
+            \ 'inactive': {
+            \   'left': [ ['gitbranch', 'readonly', 'filename', 'modified'] ],
+            \   'right': [ ['fileformat', 'fileencoding', 'filetype'] ],
+            \ },
+            \ 'component_function': {
+            \   'gitbranch': 'FugitiveHead',
+            \   'scroll': 'ScrollStatus',
+            \ },
+            \ }
