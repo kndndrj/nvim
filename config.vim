@@ -18,8 +18,10 @@ call plug#begin("~/.vim/plugged")
     Plug 'itchyny/lightline.vim'
     Plug 'ojroques/vim-scrollstatus'
 
-    " Indent line indicator (see README.md for json)
+    " Indent line indicator (see README.md for json),
+    " with a script to detect indent to adjust ts, sw...
     Plug 'Yggdroot/indentLine'
+    Plug 'ciaranm/detectindent'
 
     " Tab names
     Plug 'gcmt/taboo.vim'
@@ -68,7 +70,7 @@ set pyxversion=3
 
 " Give more space for displaying messages.
 set cmdheight=2
-
+ 
 " TextEdit might fail if hidden is not set.
 set hidden
 
@@ -91,6 +93,9 @@ let g:taboo_tab_format = " %f%m │"
 
 " Indent line indicator
 let g:indentLine_char = '│'
+
+" Detect indent level when entering a buffer window
+autocmd BufWinEnter * :DetectIndent
 
 " Enable themes
 if (has("termguicolors"))
@@ -119,6 +124,7 @@ let g:lightline = {
     \ },
     \ }
 
+" scrollbar symbols
 let g:scrollstatus_symbol_track = ' '
 let g:scrollstatus_symbol_bar = '='
 
@@ -243,7 +249,7 @@ let $FZF_DEFAULT_COMMAND = 'ag -g ""'
 au TermOpen * tnoremap <Esc> <c-\><c-n>
 au FileType fzf tunmap <Esc>
 
-" Use alt+hjkl to move between split/vsplit panels
+" Use alt+hjkl to move between panels
 nnoremap <A-h> <C-w>h
 nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
@@ -270,3 +276,11 @@ let g:tex_flavor = 'latex'
 
 " PDF viewer
 let g:vimtex_view_method = 'zathura'
+
+" Ignore annoying warnings
+let g:vimtex_quickfix_ignore_filters = [
+    \ 'Underfull \\hbox (badness [0-9]*) in ',
+    \ 'Overfull \\hbox ([0-9]*.[0-9]*pt too wide) in ',
+    \ 'Package hyperref Warning: Token not allowed in a PDF string',
+    \ 'Package typearea Warning: Bad type area settings!',
+    \ ]
