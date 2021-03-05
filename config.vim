@@ -158,8 +158,8 @@ inoremap <silent><expr> <TAB>
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 " Make <CR> auto-select the first completion item and notify coc.nvim to
@@ -192,8 +192,18 @@ nnoremap <silent> <C-b> :NERDTreeToggle<CR>
 " Open the existing NERDTree on each new tab.
 autocmd BufWinEnter * silent NERDTreeMirror
 
-" Ignore NERDTree when quitting 
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" Close all open buffers on entering a window if the only
+" buffer that's left is the NERDTree buffer
+autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
+function! s:CloseIfOnlyNerdTreeLeft()
+    if exists("t:NERDTreeBufName")
+        if bufwinnr(t:NERDTreeBufName) != -1
+            if winnr("$") == 1
+                q
+            endif
+        endif
+    endif
+endfunction
 
 " Hide Lightline on NERDTree
 augroup filetype_nerdtree
