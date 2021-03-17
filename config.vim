@@ -58,6 +58,9 @@ call plug#end()
 "## Basic Settings                          ##
 "#############################################
 
+" Set leader key to space
+let mapleader = " "
+
 " Set relative numbers and a normal number on the current line
 set number
 set relativenumber
@@ -140,6 +143,7 @@ highlight ColorColumn ctermbg=darkgray
 let g:coc_global_extensions =  [
     \ 'coc-emmet',
     \ 'coc-css',
+    \ 'coc-yank',
     \ 'coc-html',
     \ 'coc-json',
     \ 'coc-prettier',
@@ -179,6 +183,9 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+" Coc-yank list binding
+nnoremap <silent> <Leader>n  :<C-u>CocList -A --normal yank<cr>
+
 "#############################################
 "## NERDTree Settings & Key Bindings        ##
 "#############################################
@@ -217,10 +224,10 @@ augroup filetype_nerdtree
     au FileType nerdtree call s:disable_lightline_on_nerdtree()
     au WinEnter,BufWinEnter,TabEnter * call s:disable_lightline_on_nerdtree()
 augroup END
-fu s:disable_lightline_on_nerdtree() abort
+function s:disable_lightline_on_nerdtree() abort
     let nerdtree_winnr = index(map(range(1, winnr('$')), {_,v -> getbufvar(winbufnr(v), '&ft')}), 'nerdtree') + 1
     call timer_start(0, {-> nerdtree_winnr && setwinvar(nerdtree_winnr, '&stl', '%#Normal#')})
-endfu
+endfunction
 
 " If another buffer tries to replace NERDTree, put it in the other window, and bring back NERDTree.
 autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_tree_\d\+' && winnr('$') > 1 |
@@ -255,17 +262,26 @@ nnoremap <A-j> <C-w>j
 nnoremap <A-k> <C-w>k
 nnoremap <A-l> <C-w>l
 
-" alt+123... for tab switching
-noremap <A-1> 1gt
-noremap <A-2> 2gt
-noremap <A-3> 3gt
-noremap <A-4> 4gt
-noremap <A-5> 5gt
-noremap <A-6> 6gt
-noremap <A-7> 7gt
-noremap <A-8> 8gt
-noremap <A-9> 9gt
-noremap <A-0> 10gt
+" Copying:
+" Primary
+noremap <Leader>Y "*y
+noremap <Leader>P "*p
+" Clipboard
+noremap <Leader>y "+y
+noremap <Leader>p "+p
+noremap <Leader>yy "+yy
+
+" alt + top keys for tab switching
+noremap <A-q> 1gt
+noremap <A-w> 2gt
+noremap <A-e> 3gt
+noremap <A-r> 4gt
+noremap <A-t> 5gt
+noremap <A-z> 6gt
+noremap <A-u> 7gt
+noremap <A-i> 8gt
+noremap <A-o> 9gt
+noremap <A-p> 10gt
 
 "#############################################
 "## Vimtex Settings                         ##
