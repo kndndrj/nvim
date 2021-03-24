@@ -47,7 +47,7 @@ call plug#begin("~/.vim/plugged")
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
     Plug 'junegunn/fzf.vim'
 
-    "Rust formatter
+    " Rust formatter
     Plug 'rust-lang/rust.vim'
 
     " Latex Live Preview
@@ -154,7 +154,8 @@ let g:coc_global_extensions =  [
     \ 'coc-tsserver',
     \ 'coc-vimtex',
     \ 'coc-go',
-    \ 'coc-rls'
+    \ 'coc-rls',
+    \ 'coc-lua'
     \ ]
 
 " Command ':Prettier' formats current buffer
