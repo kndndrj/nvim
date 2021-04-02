@@ -201,7 +201,7 @@ let g:NERDTreeDirArrowExpandable = '🠖'
 let g:NERDTreeDirArrowCollapsible = '🠗'
 
 " Toggle NERDTree
-nnoremap <silent> <C-b> :NERDTreeToggle<CR>
+nnoremap <silent> <A-b> :NERDTreeToggle<CR>
 
 " Open the existing NERDTree on each new tab.
 autocmd BufWinEnter * silent NERDTreeMirror
