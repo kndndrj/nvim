@@ -12,6 +12,7 @@
 
 ## Requirements
 
+Requires [NeoVim 0.5+](https://aur.archlinux.org/packages/neovim-git/)
 Before using install the following packages:
 
 - node.js
