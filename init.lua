@@ -116,3 +116,4 @@ cmd "syntax on"
 cmd "colorscheme one"
 
 cmd "autocmd BufWinEnter * :DetectIndent"
+cmd "autocmd BufWritePost plugins.lua PackerCompile"
