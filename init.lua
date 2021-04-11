@@ -1,7 +1,7 @@
 require "plugins"
 require "telescope_config"
 require "indentline"
-require "utils"
+require "lsp_settings"
 
 -- Macros
 local cmd = vim.cmd
@@ -11,9 +11,9 @@ local o = vim.o
 local wo = vim.wo
 local bo = vim.bo
 
---------------------
--- Key Bindings: ---
---------------------
+-----------------------
+-- Key Bindings: ------
+-----------------------
 
 -- Binding options
 options = { noremap = true }
@@ -60,9 +60,17 @@ map("n", "<Leader>fb", [[<Cmd>lua require('telescope.builtin').buffers()<CR>]], 
 map("n", "<Leader>fh", [[<Cmd>lua require('telescope.builtin').help_tags()<CR>]], options)
 map("n", "<Leader>fo", [[<Cmd>lua require('telescope.builtin').oldfiles()<CR>]], options)
 
---------------------
--- Basic Config: ---
---------------------
+-- Autocomplete
+map("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
+map("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
+map("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+map("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
+-- Autopairs
+map("i", "<CR>", "v:lua.completions()", {expr = true})
+
+-----------------------
+-- Basic Config: ------
+-----------------------
 
 o.hidden = true
 o.ignorecase = true
@@ -98,6 +106,9 @@ o.smarttab = true
 
 -- Highlight column 100 to easily maintain line length
 wo.colorcolumn='80'
+
+-- Autocomplete menu
+o.completeopt = "menuone,noselect"
 
 -- enable syntax and set the colorscheme
 cmd "syntax enable"

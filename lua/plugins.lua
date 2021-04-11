@@ -1,8 +1,6 @@
---------------------
--- Plugins: --------
---------------------
-
--- using { } when using a different branch of the plugin or loading the plugin with certain commands
+-----------------------
+-- Plugins: -----------
+-----------------------
 return require("packer").startup(
     function()
         use 'wbthomason/packer.nvim'
@@ -17,5 +15,12 @@ return require("packer").startup(
         use 'nvim-lua/plenary.nvim'
         use 'nvim-telescope/telescope.nvim'
         use 'nvim-telescope/telescope-fzy-native.nvim'
+        -- LSP settings
+        use 'neovim/nvim-lspconfig'
+        use 'hrsh7th/nvim-compe'
+        use 'onsails/lspkind-nvim'
+        use 'windwp/nvim-autopairs'
+        -- Snippet manager
+        use 'hrsh7th/vim-vsnip'
     end
 )
