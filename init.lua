@@ -2,6 +2,8 @@ require "plugins"
 require "telescope_config"
 require "indentline"
 require "lsp_settings"
+require "lspconfig"
+require "statuslines_settings"
 
 -- Macros
 local cmd = vim.cmd
@@ -16,15 +18,13 @@ local bo = vim.bo
 -----------------------
 
 -- Binding options
-options = { noremap = true }
+options = { noremap=true, silent=true }
 
 -- Map leader to space
 vim.g.mapleader = ' '
 
 -- Basic
 map('n', '<leader><esc>', ':nohlsearch<cr>', options)
-map('n', '<leader>n', ':bnext<cr>', options)
-map('n', '<leader>N', ':bprev<cr>', options)
 
 -- Use alt+hjkl to move between panels
 map('n', '<A-h>', '<C-w>h', options)
@@ -41,17 +41,9 @@ map('n', '<Leader>y', '"+y  ', options)
 map('n', '<Leader>p', '"+p  ', options)
 map('n', '<Leader>yy', '"+yy', options)
 
--- Alt + top keys for tab switching
-map('n', '<A-q>', '1gt ', options)
-map('n', '<A-w>', '2gt ', options)
-map('n', '<A-e>', '3gt ', options)
-map('n', '<A-r>', '4gt ', options)
-map('n', '<A-t>', '5gt ', options)
-map('n', '<A-z>', '6gt ', options)
-map('n', '<A-u>', '7gt ', options)
-map('n', '<A-i>', '8gt ', options)
-map('n', '<A-o>', '9gt ', options)
-map('n', '<A-p>', '10gt', options)
+-- Bufferline
+map('n', '<leader>n', ':BufferLineCycleNext<CR>', options)
+map('n', '<leader>N', ':BufferLineCyclePrev<CR>', options)
 
 -- Telescope
 map("n", "<Leader>ff", [[<Cmd>lua require('telescope.builtin').find_files()<CR>]], options)
@@ -67,6 +59,29 @@ map("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 map("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
 -- Autopairs
 map("i", "<CR>", "v:lua.completions()", {expr = true})
+
+-- Language server
+-- references
+map('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', options)
+map('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', options)
+map('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', options)
+map('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', options)
+map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', options)
+map('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', options)
+-- workspace
+map('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', options)
+map('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', options)
+map('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', options)
+map('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', options)
+map('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', options)
+-- diagnostics
+map('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', options)
+map('n', 'dN', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', options)
+map('n', 'dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', options)
+map('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', options)
+-- formatting
+map("n", "<leader>h", "<cmd>lua vim.lsp.buf.formatting()<CR>", options)
+map("v", "<leader>h", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", options)
 
 -----------------------
 -- Basic Config: ------
@@ -84,15 +99,17 @@ o.termguicolors = true
 
 -- Display relative line numbers
 wo.number = true
-wo.relativenumber = true
 o.numberwidth = 2
 
 -- Enable mouse
 o.mouse = 'a'
 
--- Rows below the statusline and cursorline
-o.cmdheight = 2
+-- Rows below the statusline
+o.cmdheight = 1
+-- Cursorline
 wo.cursorline = true
+-- Don't display mode
+o.showmode = false
 
 -- Shorter updatetime
 o.updatetime = 250
@@ -115,5 +132,6 @@ cmd "syntax enable"
 cmd "syntax on"
 cmd "colorscheme one"
 
+-- Autocommands
 cmd "autocmd BufWinEnter * :DetectIndent"
 cmd "autocmd BufWritePost plugins.lua PackerCompile"

@@ -119,3 +119,7 @@ require'lspconfig'.jsonls.setup {
       }
     }
 }
+
+-- bash-language-server
+require'lspconfig'.bashls.setup{}
+
