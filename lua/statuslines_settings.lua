@@ -6,11 +6,29 @@ require'bufferline'.setup{}
 -----------------------
 -- Galaxy line: -------
 -----------------------
-local gl = require('galaxyline')
-local colors = require('galaxyline.theme').default
-local condition = require('galaxyline.condition')
+local gl = require'galaxyline'
+local condition = require'galaxyline.condition'
 local gls = gl.section
 gl.short_line_list = {'NvimTree','vista','dbui','packer'}
+local colors = {
+    bg = '#292D38',
+    yellow = '#DCDCAA',
+    dark_yellow = '#D7BA7D',
+    cyan = '#4EC9B0',
+    green = '#608B4E',
+    light_green = '#B5CEA8',
+    string_orange = '#CE9178',
+    orange = '#FF8800',
+    purple = '#C586C0',
+    magenta = '#D16D9E',
+    grey = '#858585',
+    blue = '#569CD6',
+    vivid_blue = '#4FC1FF',
+    light_blue = '#9CDCFE',
+    red = '#D16969',
+    error_red = '#F44747',
+    info_yellow = '#FFCC66'
+}
 
 gls.left[1] = {
   ViMode = {
@@ -51,7 +69,7 @@ gls.left[3] = {
 gls.left[4] = {
   FileSize = {
     provider = 'FileSize',
-    condition = condition.buffer_not_empty,
+    condition = condition.hide_in_width,
     highlight = {colors.fg,colors.bg}
   }
 }
@@ -59,6 +77,7 @@ gls.left[4] = {
 gls.left[5] = {
   DiagnosticError = {
     provider = 'DiagnosticError',
+    condition = condition.hide_in_width,
     icon = '  ',
     highlight = {colors.red,colors.bg}
   }
@@ -67,6 +86,7 @@ gls.left[5] = {
 gls.left[6] = {
   DiagnosticWarn = {
     provider = 'DiagnosticWarn',
+    condition = condition.hide_in_width,
     icon = '  ',
     highlight = {colors.yellow,colors.bg},
   }
@@ -75,6 +95,7 @@ gls.left[6] = {
 gls.left[7] = {
   DiagnosticHint = {
     provider = 'DiagnosticHint',
+    condition = condition.hide_in_width,
     icon = '  ',
     highlight = {colors.cyan,colors.bg},
   }
@@ -83,6 +104,7 @@ gls.left[7] = {
 gls.left[8] = {
   DiagnosticInfo = {
     provider = 'DiagnosticInfo',
+    condition = condition.hide_in_width,
     icon = '  ',
     highlight = {colors.blue,colors.bg}
   }
@@ -91,13 +113,7 @@ gls.left[8] = {
 gls.mid[1] = {
   ShowLspClient = {
     provider = 'GetLspClient',
-    condition = function ()
-      local tbl = {['dashboard'] = true,['']=true}
-      if tbl[vim.bo.filetype] then
-        return false
-      end
-      return true
-    end,
+    condition = condition.hide_in_width,
     icon = '  ',
     highlight = {colors.cyan,colors.bg,'bold'}
   }
@@ -136,7 +152,7 @@ gls.right[3] = {
 gls.right[4] = {
   GitBranch = {
     provider = 'GitBranch',
-    condition = condition.check_git_workspace,
+    condition = condition.hide_in_width,
     highlight = {colors.violet,colors.bg,'bold'},
   }
 }
@@ -146,6 +162,8 @@ gls.right[5] = {
     provider = 'DiffAdd',
     condition = condition.hide_in_width,
     icon = '  ',
+    separator = ' |',
+    separator_highlight = {'NONE',colors.bg},
     highlight = {colors.green,colors.bg},
   }
 }
@@ -178,6 +196,7 @@ gls.right[8] = {
 gls.right[9] = {
   PerCent = {
     provider = 'LinePercent',
+    condition = condition.hide_in_width,
     separator = ' ',
     separator_highlight = {'NONE',colors.bg},
     highlight = {colors.fg,colors.bg,'bold'},

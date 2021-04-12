@@ -137,4 +137,4 @@ cmd "autocmd BufWinEnter * :DetectIndent"
 cmd "autocmd BufWritePost plugins.lua PackerCompile"
 
 -- Git signs setup
-require('gitsigns').setup()
+require'gitsigns'.setup()
