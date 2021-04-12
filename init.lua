@@ -135,3 +135,6 @@ cmd "colorscheme one"
 -- Autocommands
 cmd "autocmd BufWinEnter * :DetectIndent"
 cmd "autocmd BufWritePost plugins.lua PackerCompile"
+
+-- Git signs setup
+require('gitsigns').setup()

@@ -125,7 +125,7 @@ gls.right[2] = {
 
 gls.right[3] = {
   GitIcon = {
-    provider = function() return '  ' end,
+    provider = function() return ' ' end,
     condition = condition.check_git_workspace,
     separator = ' ',
     separator_highlight = {'NONE',colors.bg},
@@ -187,7 +187,7 @@ gls.right[9] = {
 gls.right[10] = {
   ScrollBar = {
     provider = 'ScrollBar',
-    highlight = {colors.yellow,colors.purple},
+    highlight = {colors.yellow,colors.bg},
   }
 }
 

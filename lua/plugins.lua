@@ -10,9 +10,10 @@ return require("packer").startup(
     -- Themes
     use {'rakr/vim-one', as = 'one'}
     use 'overcache/NeoSolarized'
-    -- Telescope
+    -- Lua dependencies
     use 'nvim-lua/popup.nvim'
     use 'nvim-lua/plenary.nvim'
+    -- Telescope
     use 'nvim-telescope/telescope.nvim'
     use 'nvim-telescope/telescope-fzy-native.nvim'
     -- LSP settings
@@ -27,5 +28,7 @@ return require("packer").startup(
     -- Statuslines
     use 'akinsho/nvim-bufferline.lua'
     use 'glepnir/galaxyline.nvim'
+    -- Misc
+    use 'lewis6991/gitsigns.nvim'
   end
 )
