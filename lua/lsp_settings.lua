@@ -42,12 +42,12 @@ local t = function(str)
 end
 
 local check_back_space = function()
-    local col = vim.fn.col('.') - 1
-    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-        return true
-    else
-        return false
-    end
+  local col = vim.fn.col('.') - 1
+  if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
+    return true
+  else
+    return false
+  end
 end
 
 -- Use (s-)tab to:
@@ -80,13 +80,13 @@ end
 require'nvim-autopairs'.setup()
 
 function _G.completions()
-    local npairs = require'nvim-autopairs'
-    if vim.fn.pumvisible() == 1 then
-        if vim.fn.complete_info()['selected'] ~= -1 then
-            return vim.fn['compe#confirm']('<CR>')
-        end
+  local npairs = require'nvim-autopairs'
+  if vim.fn.pumvisible() == 1 then
+    if vim.fn.complete_info()['selected'] ~= -1 then
+      return vim.fn['compe#confirm']('<CR>')
     end
-    return npairs.check_break_line_char()
+  end
+  return npairs.check_break_line_char()
 end
 
 -------------------------
@@ -111,13 +111,13 @@ require'lspconfig'.html.setup {
 
 -- vscode-json-languageserver
 require'lspconfig'.jsonls.setup {
-    commands = {
-      Format = {
-        function()
-          vim.lsp.buf.range_formatting({},{0,0},{vim.fn.line('$'),0})
-        end
-      }
+  commands = {
+    Format = {
+      function()
+        vim.lsp.buf.range_formatting({},{0,0},{vim.fn.line('$'),0})
+      end
     }
+  }
 }
 
 -- bash-language-server

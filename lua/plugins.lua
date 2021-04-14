@@ -16,6 +16,8 @@ return require'packer'.startup(
     -- Telescope
     use 'nvim-telescope/telescope.nvim'
     use 'nvim-telescope/telescope-fzy-native.nvim'
+    -- TreeSitter
+    use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
     -- LSP settings
     use 'neovim/nvim-lspconfig'
     use 'hrsh7th/nvim-compe'

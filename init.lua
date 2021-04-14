@@ -4,6 +4,7 @@ require 'indentline_settings'
 require 'lsp_settings'
 require 'statuslines_settings'
 require 'vimtex_settings'
+require 'treesitter_settings'
 
 -- Macros
 local cmd = vim.cmd
