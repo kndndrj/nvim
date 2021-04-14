@@ -1,11 +1,11 @@
------------------------
--- Bufferline: --------
------------------------
+-------------------------
+-- Bufferline: ----------
+-------------------------
 require'bufferline'.setup{}
 
------------------------
--- Galaxy line: -------
------------------------
+-------------------------
+-- Galaxyline: ----------
+-------------------------
 local gl = require'galaxyline'
 local condition = require'galaxyline.condition'
 local gls = gl.section
@@ -44,7 +44,7 @@ gls.left[1] = {
                           ['!']  = colors.red,t = colors.red}
       vim.api.nvim_command('hi GalaxyViMode guifg='..mode_color[vim.fn.mode()])
       local alias = {n = 'NORMAL',i = 'INSERT',c= 'COMMAND',v= 'VISUAL',V= 'VISUAL LINE', [''] = 'VISUAL BLOCK'}
-      return "█ "..alias[vim.fn.mode()].." "
+      return '█ '..alias[vim.fn.mode()]..' '
     end,
     highlight = {colors.red,colors.bg,'bold'},
   },

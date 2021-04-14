@@ -1,11 +1,11 @@
------------------------
--- Plugins: -----------
------------------------
-return require("packer").startup(
+-------------------------
+-- Plugins: -------------
+-------------------------
+return require'packer'.startup(
   function()
     use 'wbthomason/packer.nvim'
     -- Indent lines
-    use {"lukas-reineke/indent-blankline.nvim", branch = "lua"}
+    use {'lukas-reineke/indent-blankline.nvim', branch = 'lua'}
     use 'ciaranm/detectindent'
     -- Themes
     use {'rakr/vim-one', as = 'one'}
@@ -28,6 +28,8 @@ return require("packer").startup(
     -- Statuslines
     use 'akinsho/nvim-bufferline.lua'
     use 'glepnir/galaxyline.nvim'
+    -- LaTeX
+    use 'lervag/vimtex'
     -- Misc
     use 'lewis6991/gitsigns.nvim'
   end
