@@ -1,19 +1,19 @@
 require 'config'
 
-vim.cmd 'colorscheme one'
+vim.cmd 'colorscheme NeoSolarized'
 
 _G.statuslinecolors = {
   bg = '#292D38',
   fg = '#bbc2cf',
-  yellow = '#DCDCAA',
+  yellow = '#657b83',
   cyan = '#4EC9B0',
   darkblue = '#081633',
-  green = '#608B4E',
-  orange = '#FF8800',
-  violet = '#C586C0',
+  green = '#586e75',
+  orange = '#cb4b16',
+  violet = '#6c71c4',
   magenta = '#D16D9E',
-  blue = '#569CD6',
-  red = '#D16969',
+  blue = '#839496',
+  red = '#dc322f',
 }
 
 require 'statuslines_settings'
