@@ -30,6 +30,8 @@ return require'packer'.startup(
     -- Statuslines
     use 'akinsho/nvim-bufferline.lua'
     use 'glepnir/galaxyline.nvim'
+    use 'dstein64/nvim-scrollview'
+    use 'karb94/neoscroll.nvim'
     -- LaTeX
     use 'lervag/vimtex'
     -- Misc

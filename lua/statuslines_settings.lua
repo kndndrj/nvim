@@ -1,7 +1,13 @@
 -------------------------
 -- Bufferline: ----------
 -------------------------
-require'bufferline'.setup{}
+require'bufferline'.setup{
+  options = {
+    separator_style = "slant",
+    show_close_icon = false,
+    show_buffer_close_icons = false
+  }
+}
 
 -------------------------
 -- Galaxyline: ----------
@@ -16,16 +22,37 @@ gls.left[1] = {
   ViMode = {
     provider = function()
       -- auto change color according the vim mode
-      local mode_color = {n = colors.red, i = colors.green,v=colors.blue,
-                          [''] = colors.blue,V=colors.blue,
-                          c = colors.magenta,no = colors.red,s = colors.orange,
-                          S=colors.orange,[''] = colors.orange,
-                          ic = colors.yellow,R = colors.violet,Rv = colors.violet,
-                          cv = colors.red,ce=colors.red, r = colors.cyan,
-                          rm = colors.cyan, ['r?'] = colors.cyan,
-                          ['!']  = colors.red,t = colors.red}
+      local mode_color = {
+        n = colors.red,
+        i = colors.green,
+        v=colors.blue,
+        [''] = colors.blue,
+        V=colors.blue,
+        c = colors.magenta,
+        no = colors.red,
+        s = colors.orange,
+        S=colors.orange,
+        [''] = colors.orange,
+        ic = colors.yellow,
+        R = colors.violet,
+        Rv = colors.violet,
+        cv = colors.red,
+        ce=colors.red,
+        r = colors.cyan,
+        rm = colors.cyan,
+        ['r?'] = colors.cyan,
+        ['!']  = colors.red,
+        t = colors.red
+      }
       vim.api.nvim_command('hi GalaxyViMode guifg='..mode_color[vim.fn.mode()])
-      local alias = {n = 'NORMAL',i = 'INSERT',c= 'COMMAND',v= 'VISUAL',V= 'VISUAL LINE', [''] = 'VISUAL BLOCK'}
+      local alias = {
+        n = 'NORMAL',
+        i = 'INSERT',
+        c= 'COMMAND',
+        v= 'VISUAL',
+        V= 'VISUAL LINE',
+        [''] = 'VISUAL BLOCK'
+      }
       return '█ '..alias[vim.fn.mode()]..' '
     end,
     highlight = {colors.red,colors.bg,'bold'},
@@ -173,23 +200,6 @@ gls.right[8] = {
     separator_highlight = {'NONE',colors.bg},
     highlight = {colors.fg,colors.bg},
   },
-}
-
-gls.right[9] = {
-  PerCent = {
-    provider = 'LinePercent',
-    condition = condition.hide_in_width,
-    separator = ' ',
-    separator_highlight = {'NONE',colors.bg},
-    highlight = {colors.fg,colors.bg,'bold'},
-  }
-}
-
-gls.right[10] = {
-  ScrollBar = {
-    provider = 'ScrollBar',
-    highlight = {colors.yellow,colors.bg},
-  }
 }
 
 gls.short_line_left[1] = {

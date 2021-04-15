@@ -75,6 +75,12 @@ cmd 'autocmd BufWritePost plugins.lua PackerCompile'
 -- Git signs setup
 require'gitsigns'.setup()
 
+-- Smooth scrolling
+require('neoscroll').setup({
+  mappings = {'<C-u>', '<C-d>', '<C-b>',
+              '<C-f>', 'zt', 'zz', 'zb'},
+})
+
 -----------------------
 -- Key Bindings: ------
 -----------------------
@@ -85,8 +91,13 @@ map_options = { noremap=true, silent=true }
 -- Map leader to space
 g.mapleader = ' '
 
--- Basic
-map('n', '<leader><esc>', ':nohlsearch<cr>', map_options)
+-- <Leader>Escape key functions
+map('n', '<leader><esc>', ':cclose<CR> :nohlsearch<CR>', map_options)
+
+-- Cycle quickfix lists
+map('n', '<leader>j', ':cnext<CR>', map_options)
+map('n', '<leader>k', ':cprev<CR>', map_options)
+map('n', '<leader>o', ':copen<CR>', map_options)
 
 -- Use alt+hjkl to move between panels
 map('n', '<A-h>', '<C-w>h', map_options)
@@ -122,7 +133,7 @@ map('s', '<Tab>',   'v:lua.tab_complete()',   { expr = true })
 map('i', '<S-Tab>', 'v:lua.s_tab_complete()', { expr = true })
 map('s', '<S-Tab>', 'v:lua.s_tab_complete()', { expr = true })
 -- Autopairs
-map('i', '<CR>', 'v:lua.completions()', { expr = true, silent = true })
+map('i', '<CR>', 'v:lua.completions()', { expr=true, silent=true })
 
 -- Language server
 -- references
