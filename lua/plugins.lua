@@ -9,7 +9,7 @@ return require'packer'.startup(
     use 'ciaranm/detectindent'
     -- Themes
     use {'rakr/vim-one', as = 'one'}
-    use 'overcache/NeoSolarized'
+    use 'lifepillar/vim-solarized8'
     -- Lua dependencies
     use 'nvim-lua/popup.nvim'
     use 'nvim-lua/plenary.nvim'
