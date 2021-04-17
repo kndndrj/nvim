@@ -1,6 +1,6 @@
--- Source the main config
-require 'config'
-
+-------------------------
+-- Init default: ----
+-------------------------
 -- Set the colorscheme
 vim.cmd 'colorscheme one'
 
@@ -18,3 +18,7 @@ _G.statuslinecolors = {
   red =     '#D16969',
 }
 require 'statuslines_settings'
+
+-- Source the main config
+require 'config'
+

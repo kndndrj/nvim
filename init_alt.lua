@@ -1,6 +1,6 @@
--- Source the main config
-require 'config'
-
+-------------------------
+-- Init alternative: ----
+-------------------------
 -- Set the colorscheme
 vim.o.background = 'light'
 vim.cmd 'colorscheme solarized8_flat'
@@ -18,5 +18,8 @@ _G.statuslinecolors = {
   blue =    '#268BD2',
   red =     '#DC322F',
 }
-
 require 'statuslines_settings'
+
+-- Source the main config
+require 'config'
+
