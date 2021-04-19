@@ -71,6 +71,7 @@ cmd ':command! Q q'
 -- Autocommands
 cmd 'autocmd BufWinEnter * :DetectIndent'
 cmd 'autocmd BufWritePost plugins.lua PackerCompile'
+cmd 'autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}'
 
 -- Git signs setup
 require'gitsigns'.setup()
