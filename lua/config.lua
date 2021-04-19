@@ -107,12 +107,12 @@ map('n', '<A-l>', '<C-w>l', map_options)
 
 -- Copying:
 -- Primary
-map('n', '<Leader>Y', '"*y', map_options)
+map('', '<Leader>Y', '"*y', map_options)
 map('n', '<Leader>P', '"*p', map_options)
 -- Clipboard
-map('n', '<Leader>y', '"+y  ', map_options)
-map('n', '<Leader>p', '"+p  ', map_options)
-map('n', '<Leader>yy', '"+yy', map_options)
+map('', '<Leader>y', '"+y', map_options)
+map('n', '<Leader>p', '"+p', map_options)
+map('', '<Leader>yy', '"+yy', map_options)
 
 -- Bufferline
 map('n', '<leader>n', ':BufferLineCycleNext<CR>', map_options)
