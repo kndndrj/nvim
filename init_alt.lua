@@ -7,7 +7,7 @@ vim.cmd 'colorscheme solarized8_flat'
 
 -- Set the statusline colorscheme
 _G.statuslinecolors = {
-  bg =      '#EEE8D5',
+  bg =      '#FDF6E3',
   fg =      '#073642',
   yellow =  '#B58900',
   cyan =    '#2AA198',

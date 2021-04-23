@@ -18,7 +18,6 @@ local bo = vim.bo
 -----------------------
 
 o.hidden = true
-o.ignorecase = true
 
 -- Split defaults
 o.splitbelow = true
