@@ -56,10 +56,6 @@ wo.colorcolumn = '80'
 -- Autocomplete menu
 o.completeopt = 'menuone,noselect'
 
--- enable syntax and set the colorscheme
-cmd 'syntax enable'
-cmd 'syntax on'
-
 -- any combination of 'wq' works
 cmd ':command! WQ wq'
 cmd ':command! Wq wq'

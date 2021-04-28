@@ -1,8 +1,11 @@
 -------------------------
 -- Init default: ----
 -------------------------
--- Set the colorscheme
+-- Enable syntax and set the colorscheme
+vim.o.background = 'dark'
 vim.cmd 'colorscheme one'
+vim.cmd 'syntax enable'
+vim.cmd 'syntax on'
 
 -- Set the statusline colorscheme
 _G.statuslinecolors = {
@@ -21,4 +24,3 @@ require 'statuslines_settings'
 
 -- Source the main config
 require 'config'
-

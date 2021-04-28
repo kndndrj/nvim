@@ -1,9 +1,11 @@
 -------------------------
 -- Init alternative: ----
 -------------------------
--- Set the colorscheme
+-- Enable syntax and set the colorscheme
 vim.o.background = 'light'
 vim.cmd 'colorscheme solarized8_flat'
+vim.cmd 'syntax enable'
+vim.cmd 'syntax on'
 
 -- Set the statusline colorscheme
 _G.statuslinecolors = {
@@ -22,4 +24,3 @@ require 'statuslines_settings'
 
 -- Source the main config
 require 'config'
-
