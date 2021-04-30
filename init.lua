@@ -9,7 +9,7 @@ vim.cmd 'syntax on'
 
 -- Set the statusline colorscheme
 _G.statuslinecolors = {
-  bg =      '#292D38',
+  bg =      '#2c323c',
   fg =      '#bbc2cf',
   yellow =  '#DCDCAA',
   cyan =    '#4EC9B0',
