@@ -95,11 +95,25 @@ map('n', '<leader>j', ':cnext<CR>', map_options)
 map('n', '<leader>k', ':cprev<CR>', map_options)
 map('n', '<leader>o', ':copen<CR>', map_options)
 
--- Use alt+hjkl to move between panels
-map('n', '<A-h>', '<C-w>h', map_options)
-map('n', '<A-j>', '<C-w>j', map_options)
-map('n', '<A-k>', '<C-w>k', map_options)
-map('n', '<A-l>', '<C-w>l', map_options)
+-- Use alt+hjkl to move between windows
+map('n', '<A-h>', ':wincmd h<CR>', map_options)
+map('n', '<A-j>', ':wincmd j<CR>', map_options)
+map('n', '<A-k>', ':wincmd k<CR>', map_options)
+map('n', '<A-l>', ':wincmd l<CR>', map_options)
+
+-- Use alt+zuio to resize windows
+map('n', '<A-z>', ':vertical resize -2<CR>', map_options)
+map('n', '<A-u>', ':resize -2<CR>', map_options)
+map('n', '<A-i>', ':resize +2<CR>', map_options)
+map('n', '<A-o>', ':vertical resize +2<CR>', map_options)
+
+-- Use alt+shift+jk to move lines up and down
+map('n', '<A-J>', ':m .+1<CR>==', map_options)
+map('n', '<A-K>', ':m .-2<CR>==', map_options)
+map('i', '<A-J>', '<Esc>:m .+1<CR>==gi', map_options)
+map('i', '<A-K>', '<Esc>:m .-2<CR>==gi', map_options)
+map('v', '<A-J>', ':m \'>+1<CR>gv=gv', map_options)
+map('v', '<A-K>', ':m \'<-2<CR>gv=gv', map_options)
 
 -- Copying:
 -- Primary
@@ -151,5 +165,5 @@ map('n', 'dN', '<Cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', map_options)
 map('n', 'dn', '<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>', map_options)
 map('n', '<leader>q', '<Cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', map_options)
 -- formatting
-map('n', '<leader>h', '<Cmd>lua vim.lsp.buf.formatting()<CR>', map_options)
-map('v', '<leader>h', '<Cmd>lua vim.lsp.buf.range_formatting()<CR>', map_options)
+map('n', '<leader>bf', '<Cmd>lua vim.lsp.buf.formatting()<CR>', map_options)
+map('v', '<leader>bf', '<Cmd>lua vim.lsp.buf.range_formatting()<CR>', map_options)
