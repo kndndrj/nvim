@@ -67,6 +67,7 @@ cmd ':command! Q q'
 cmd 'autocmd BufWinEnter * :DetectIndent'
 cmd 'autocmd BufWritePost plugins.lua PackerCompile'
 cmd 'autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}'
+cmd 'autocmd BufNewFile,BufRead *.groff set filetype=groff'
 
 -- Git signs setup
 require'gitsigns'.setup()
