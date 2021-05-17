@@ -33,7 +33,10 @@ return require'packer'.startup(
     use 'karb94/neoscroll.nvim'
     -- LaTeX
     use 'lervag/vimtex'
-    -- Misc
+    -- Git
+    use 'tpope/vim-fugitive'
     use 'lewis6991/gitsigns.nvim'
+    -- Debugging
+    use 'puremourning/vimspector'
   end
 )
