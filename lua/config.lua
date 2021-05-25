@@ -111,11 +111,19 @@ map('n', '<A-j>', '<C-w>j', map_options)
 map('n', '<A-k>', '<C-w>k', map_options)
 map('n', '<A-l>', '<C-w>l', map_options)
 
--- Use alt+zuio to resize windows
+-- Use alt+zuio to resize windows in any mode
 map('n', '<A-z>', ':vertical resize -2<CR>', map_options)
 map('n', '<A-u>', ':resize -2<CR>', map_options)
 map('n', '<A-i>', ':resize +2<CR>', map_options)
 map('n', '<A-o>', ':vertical resize +2<CR>', map_options)
+map('i', '<A-z>', '<C-\\><C-N>:vertical resize -2<CR>i', map_options)
+map('i', '<A-u>', '<C-\\><C-N>:resize -2<CR>i', map_options)
+map('i', '<A-i>', '<C-\\><C-N>:resize +2<CR>i', map_options)
+map('i', '<A-o>', '<C-\\><C-N>:vertical resize +2<CR>i', map_options)
+map('t', '<A-z>', '<C-\\><C-N>:vertical resize -2<CR>i', map_options)
+map('t', '<A-u>', '<C-\\><C-N>:resize -2<CR>i', map_options)
+map('t', '<A-i>', '<C-\\><C-N>:resize +2<CR>i', map_options)
+map('t', '<A-o>', '<C-\\><C-N>:vertical resize +2<CR>i', map_options)
 
 -- Use alt+shift+jk to move lines up and down
 map('n', '<A-J>', ':m .+1<CR>==', map_options)
