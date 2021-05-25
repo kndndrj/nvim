@@ -30,10 +30,6 @@ require'compe'.setup {
   };
 }
 
---Enable (broadcasting) snippet capability for completion
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-
 -------------------------
 -- Tab completion: ------
 -------------------------
@@ -92,6 +88,11 @@ end
 -------------------------
 -- Language servers: ----
 -------------------------
+
+--Enable (broadcasting) snippet capability for completion
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 -- clang
 require'lspconfig'.clangd.setup{}
 
@@ -118,6 +119,14 @@ require'lspconfig'.jsonls.setup {
       end
     }
   }
+}
+
+-- denols (js, ts, jsx etc.)
+require'lspconfig'.denols.setup{}
+
+-- vscode-css-languageserver-bin
+require'lspconfig'.cssls.setup {
+  capabilities = capabilities
 }
 
 -- bash-language-server

@@ -68,6 +68,7 @@ cmd 'autocmd BufWinEnter * :DetectIndent'
 cmd 'autocmd BufWritePost plugins.lua PackerCompile'
 cmd 'autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}'
 cmd 'autocmd BufNewFile,BufRead *.groff set filetype=groff'
+cmd 'autocmd BufWinEnter,WinEnter term://* startinsert'
 
 -- Git signs setup
 require'gitsigns'.setup()
@@ -96,11 +97,19 @@ map('n', '<leader>j', ':cnext<CR>', map_options)
 map('n', '<leader>k', ':cprev<CR>', map_options)
 map('n', '<leader>o', ':copen<CR>', map_options)
 
--- Use alt+hjkl to move between windows
-map('n', '<A-h>', ':wincmd h<CR>', map_options)
-map('n', '<A-j>', ':wincmd j<CR>', map_options)
-map('n', '<A-k>', ':wincmd k<CR>', map_options)
-map('n', '<A-l>', ':wincmd l<CR>', map_options)
+-- Use alt+hjkl to move between windows in any mode
+map('t', '<A-h>', '<C-\\><C-N><C-w>h', map_options)
+map('t', '<A-j>', '<C-\\><C-N><C-w>j', map_options)
+map('t', '<A-k>', '<C-\\><C-N><C-w>k', map_options)
+map('t', '<A-l>', '<C-\\><C-N><C-w>l', map_options)
+map('i', '<A-h>', '<C-\\><C-N><C-w>h', map_options)
+map('i', '<A-j>', '<C-\\><C-N><C-w>j', map_options)
+map('i', '<A-k>', '<C-\\><C-N><C-w>k', map_options)
+map('i', '<A-l>', '<C-\\><C-N><C-w>l', map_options)
+map('n', '<A-h>', '<C-w>h', map_options)
+map('n', '<A-j>', '<C-w>j', map_options)
+map('n', '<A-k>', '<C-w>k', map_options)
+map('n', '<A-l>', '<C-w>l', map_options)
 
 -- Use alt+zuio to resize windows
 map('n', '<A-z>', ':vertical resize -2<CR>', map_options)
@@ -115,6 +124,10 @@ map('i', '<A-J>', '<Esc>:m .+1<CR>==gi', map_options)
 map('i', '<A-K>', '<Esc>:m .-2<CR>==gi', map_options)
 map('v', '<A-J>', ':m \'>+1<CR>gv=gv', map_options)
 map('v', '<A-K>', ':m \'<-2<CR>gv=gv', map_options)
+
+-- Terminal
+map('t', '<Esc>', '<C-\\><C-n>', map_options)
+map("n", '<A-s>', '<Cmd> split term://zsh | resize 10 | setlocal nobuflisted <CR>', map_options)
 
 -- Copying:
 -- Primary

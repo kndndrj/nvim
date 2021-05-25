@@ -51,7 +51,8 @@ gls.left[1] = {
         c= 'COMMAND',
         v= 'VISUAL',
         V= 'VISUAL LINE',
-        [''] = 'VISUAL BLOCK'
+        [''] = 'VISUAL BLOCK',
+        ['t'] = 'TERMINAL'
       }
       return '█ '..alias[vim.fn.mode()]..' '
     end,
