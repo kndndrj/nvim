@@ -89,7 +89,7 @@ map_options = { noremap=true, silent=true }
 -- Map leader to space
 g.mapleader = ' '
 
--- <Leader>Escape key functions
+-- <leader>Escape key functions
 map('n', '<leader><esc>', ':cclose<CR> :nohlsearch<CR>', map_options)
 
 -- Cycle quickfix lists
@@ -113,8 +113,8 @@ map('n', '<A-l>', '<C-w>l', map_options)
 
 -- Use alt+zuio to resize windows
 map('n', '<A-z>', ':vertical resize -2<CR>', map_options)
-map('n', '<A-u>', ':resize -2<CR>', map_options)
-map('n', '<A-i>', ':resize +2<CR>', map_options)
+map('n', '<A-u>', ':resize +2<CR>', map_options)
+map('n', '<A-i>', ':resize -2<CR>', map_options)
 map('n', '<A-o>', ':vertical resize +2<CR>', map_options)
 
 -- Use alt+shift+jk to move lines up and down
@@ -131,23 +131,23 @@ map("n", '<A-s>', '<Cmd> split term://zsh | resize 10 | setlocal nobuflisted <CR
 
 -- Copying:
 -- Primary
-map('', '<Leader>Y', '"*y', map_options)
-map('n', '<Leader>P', '"*p', map_options)
+map('', '<leader>Y', '"*y', map_options)
+map('n', '<leader>P', '"*p', map_options)
 -- Clipboard
-map('', '<Leader>y', '"+y', map_options)
-map('n', '<Leader>p', '"+p', map_options)
-map('', '<Leader>yy', '"+yy', map_options)
+map('', '<leader>y', '"+y', map_options)
+map('n', '<leader>p', '"+p', map_options)
+map('', '<leader>yy', '"+yy', map_options)
 
 -- Bufferline
 map('n', '<leader>n', ':BufferLineCycleNext<CR>', map_options)
 map('n', '<leader>N', ':BufferLineCyclePrev<CR>', map_options)
 
 -- Telescope
-map('n', '<Leader>ff', '<Cmd>lua require("telescope.builtin").find_files()<CR>', map_options)
-map('n', '<Leader>fg', '<Cmd>lua require("telescope.builtin").live_grep()<CR>',  map_options)
-map('n', '<Leader>fb', '<Cmd>lua require("telescope.builtin").buffers()<CR>',    map_options)
-map('n', '<Leader>fh', '<Cmd>lua require("telescope.builtin").help_tags()<CR>',  map_options)
-map('n', '<Leader>fo', '<Cmd>lua require("telescope.builtin").oldfiles()<CR>',   map_options)
+map('n', '<leader>ff', '<Cmd>lua require("telescope.builtin").find_files()<CR>', map_options)
+map('n', '<leader>fg', '<Cmd>lua require("telescope.builtin").live_grep()<CR>',  map_options)
+map('n', '<leader>fb', '<Cmd>lua require("telescope.builtin").buffers()<CR>',    map_options)
+map('n', '<leader>fh', '<Cmd>lua require("telescope.builtin").help_tags()<CR>',  map_options)
+map('n', '<leader>fo', '<Cmd>lua require("telescope.builtin").oldfiles()<CR>',   map_options)
 
 -- Autocomplete
 map('i', '<CR>',  vim.fn['compe#confirm']('<CR>'), map_options)

@@ -134,3 +134,6 @@ require'lspconfig'.bashls.setup{}
 
 -- texlab
 require'lspconfig'.texlab.setup{}
+
+-- python-language-server
+require'lspconfig'.pyls.setup{}
