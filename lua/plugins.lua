@@ -24,6 +24,7 @@ return require'packer'.startup(
     use 'windwp/nvim-autopairs'
     -- Snippet manager
     use 'hrsh7th/vim-vsnip'
+    use 'hrsh7th/vim-vsnip-integ'
     -- Icons
     use 'kyazdani42/nvim-web-devicons'
     -- Statuslines
