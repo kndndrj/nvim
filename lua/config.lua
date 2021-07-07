@@ -50,7 +50,7 @@ bo.shiftwidth = 4
 bo.softtabstop = 0
 o.smarttab = true
 
--- Highlight column 100 to easily maintain line length
+-- Highlight column 80 to easily maintain line length
 wo.colorcolumn = '80'
 
 -- Autocomplete menu

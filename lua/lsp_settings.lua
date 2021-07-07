@@ -121,6 +121,7 @@ require'lspconfig'.html.setup {
 
 -- vscode-json-languageserver
 require'lspconfig'.jsonls.setup {
+  cmd = { 'vscode-json-languageserver', '--stdio' },
   commands = {
     Format = {
       function()
@@ -135,7 +136,8 @@ require'lspconfig'.denols.setup{}
 
 -- vscode-css-languageserver-bin
 require'lspconfig'.cssls.setup {
-  capabilities = capabilities
+  capabilities = capabilities,
+  cmd = { 'css-languageserver', '--stdio' }
 }
 
 -- bash-language-server
