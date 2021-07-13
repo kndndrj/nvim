@@ -5,7 +5,7 @@ return require'packer'.startup(
   function()
     use 'wbthomason/packer.nvim'
     -- Indent lines
-    use {'lukas-reineke/indent-blankline.nvim', branch = 'lua'}
+    use 'lukas-reineke/indent-blankline.nvim'
     use 'ciaranm/detectindent'
     -- Themes
     use {'rakr/vim-one', as = 'one'}
