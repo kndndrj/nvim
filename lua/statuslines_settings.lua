@@ -3,9 +3,13 @@
 -------------------------
 require'bufferline'.setup{
   options = {
-    separator_style = "slant",
-    show_close_icon = false,
-    show_buffer_close_icons = false
+    separator_style = 'thick',
+    diagnostics = 'nvim_lsp',
+    custom_filter = function(buf_number)
+      if vim.fn.bufname(buf_number) ~= '[dap-repl]' then
+        return true
+      end
+    end,
   }
 }
 
@@ -15,46 +19,64 @@ require'bufferline'.setup{
 local gl = require'galaxyline'
 local condition = require'galaxyline.condition'
 local gls = gl.section
-gl.short_line_list = {'NvimTree','vista','dbui','packer'}
+gl.short_line_list = {
+  'NvimTree',
+  'vista',
+  'dbui',
+  'packer',
+  'dap-repl',
+  'dapui_scopes',
+  'dapui_breakpoints',
+  'dapui_stacks',
+  'dapui_watches',
+}
+
 local colors = _G.statuslinecolors
 
 gls.left[1] = {
   ViMode = {
     provider = function()
+      local vi_mode = vim.fn.mode()
       -- auto change color according the vim mode
       local mode_color = {
         n = colors.red,
         i = colors.green,
-        v=colors.blue,
+        v = colors.blue,
         [''] = colors.blue,
-        V=colors.blue,
+        V = colors.blue,
         c = colors.magenta,
         no = colors.red,
         s = colors.orange,
-        S=colors.orange,
+        S = colors.orange,
         [''] = colors.orange,
         ic = colors.yellow,
         R = colors.violet,
         Rv = colors.violet,
         cv = colors.red,
-        ce=colors.red,
+        ce = colors.red,
         r = colors.cyan,
         rm = colors.cyan,
         ['r?'] = colors.cyan,
         ['!']  = colors.red,
-        t = colors.red
+        t = colors.red,
       }
-      vim.api.nvim_command('hi GalaxyViMode guifg='..mode_color[vim.fn.mode()])
+      vim.api.nvim_command('hi GalaxyViMode guifg='..mode_color[vi_mode])
       local alias = {
         n = 'NORMAL',
         i = 'INSERT',
-        c= 'COMMAND',
-        v= 'VISUAL',
-        V= 'VISUAL LINE',
+        v = 'VISUAL',
         [''] = 'VISUAL BLOCK',
-        ['t'] = 'TERMINAL'
+        V = 'VISUAL LINE',
+        c = 'COMMAND',
+        s = 'SELECT',
+        S = 'SELECT LINE',
+        R = 'REPLACE',
+        t = 'TERMINAL',
       }
-      return '█ '..alias[vim.fn.mode()]..' '
+      if alias[vi_mode] ~= nil then
+        return '█ '..alias[vi_mode]..' '
+      end
+      return '█ '..vi_mode..' '
     end,
     highlight = {colors.red,colors.bg,'bold'},
   },
@@ -120,14 +142,18 @@ gls.left[8] = {
   }
 }
 
+
+
 gls.mid[1] = {
   ShowLspClient = {
     provider = 'GetLspClient',
     condition = condition.hide_in_width,
-    icon = '  ',
+    icon = '   ',
     highlight = {colors.cyan,colors.bg,'bold'}
   }
 }
+
+
 
 gls.right[1] = {
   FileEncode = {
@@ -177,6 +203,7 @@ gls.right[5] = {
     highlight = {colors.green,colors.bg},
   }
 }
+
 gls.right[6] = {
   DiffModified = {
     provider = 'DiffModified',
@@ -185,6 +212,7 @@ gls.right[6] = {
     highlight = {colors.orange,colors.bg},
   }
 }
+
 gls.right[7] = {
   DiffRemove = {
     provider = 'DiffRemove',

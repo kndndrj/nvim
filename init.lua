@@ -1,11 +1,13 @@
 -------------------------
 -- Init default: ----
 -------------------------
--- Enable syntax and set the colorscheme
-vim.o.background = 'dark'
-vim.cmd 'colorscheme one'
+-- Set the colorscheme
 vim.cmd 'syntax enable'
 vim.cmd 'syntax on'
+require'onedark'.setup {
+  function_style = "italic",
+  sidebars = {"qf", "vista_kind", "terminal", "packer"},
+}
 
 -- Set the statusline colorscheme
 _G.statuslinecolors = {

@@ -4,8 +4,6 @@
 -- Enable syntax and set the colorscheme
 vim.o.background = 'light'
 vim.cmd 'colorscheme one'
-vim.cmd 'syntax enable'
-vim.cmd 'syntax on'
 
 -- Set the statusline colorscheme
 _G.statuslinecolors = {
