@@ -12,7 +12,6 @@ local g = vim.g
 local map = vim.api.nvim_set_keymap
 local o = vim.o
 local wo = vim.wo
-local bo = vim.bo
 
 -----------------------
 -- Basic Config: ------
@@ -27,7 +26,7 @@ o.splitright = true
 -- Enable colors
 o.termguicolors = true
 
--- Display relative line numbers
+-- Display line numbers
 wo.number = true
 o.numberwidth = 2
 
@@ -45,17 +44,15 @@ o.showmode = false
 o.updatetime = 250
 
 -- Tab (key) settings
-bo.tabstop = 4
-bo.expandtab = true
-bo.shiftwidth = 4
-bo.softtabstop = 0
+o.tabstop = 4
+o.expandtab = true
+o.shiftwidth = 4
+o.softtabstop = 4
 o.smarttab = true
 
 -- Highlight a column to easily maintain line length
 wo.colorcolumn = '100'
-
--- Autocomplete menu
-o.completeopt = 'menuone,noselect'
+o.textwidth = 99
 
 -- any combination of 'wq' works
 cmd ':command! WQ wq'
@@ -66,7 +63,6 @@ cmd ':command! Q q'
 
 -- Autocommands
 cmd 'autocmd BufWinEnter * :DetectIndent'
-cmd 'autocmd BufWritePost plugins.lua PackerCompile'
 cmd 'autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}'
 cmd 'autocmd BufNewFile,BufRead *.groff set filetype=groff'
 cmd 'autocmd BufWinEnter,WinEnter term://* startinsert'
@@ -76,10 +72,14 @@ require'gitsigns'.setup {
   keymaps = {},
 }
 
--- Smooth scrolling
-require'neoscroll'.setup {
-  mappings = {'<C-u>', '<C-d>', '<C-b>',
-              '<C-f>', 'zt', 'zz', 'zb'},
+-- Scroll bar
+g.scrollview_excluded_filetypes = {
+  'NvimTree',
+  'dap-repl',
+  'dapui_scopes',
+  'dapui_breakpoints',
+  'dapui_stacks',
+  'dapui_watches',
 }
 
 -----------------------
@@ -99,6 +99,17 @@ map('n', '<leader><esc>', ':cclose<CR> :nohlsearch<CR>', map_options)
 map('n', '<leader>j', ':cnext<CR>', map_options)
 map('n', '<leader>k', ':cprev<CR>', map_options)
 map('n', '<leader>o', ':copen<CR>', map_options)
+
+-- Fixes for the US layout
+map('n', 'š', '[', map_options)
+map('n', 'đ', ']', map_options)
+map('n', 'Š', '{', map_options)
+map('n', 'Đ', '}', map_options)
+
+-- Clever remaps
+map('n', 'Y', 'y$', map_options)
+map('n', 'n', 'nzzzv', map_options)
+map('n', 'N', 'Nzzzv', map_options)
 
 -- Use alt+hjkl to move between windows in any mode
 map('t', '<A-h>', '<C-\\><C-N><C-w>h', map_options)
@@ -140,18 +151,11 @@ map('v', '<A-K>', ':m \'<-2<CR>gv=gv', map_options)
 map('t', '<Esc>', '<C-\\><C-n>', map_options)
 map('n', '<A-s>', '<Cmd> split term://zsh | resize 10 | setlocal nobuflisted <CR>', map_options)
 
--- Copying:
--- primary
-map('', '<leader>Y', '"*y', map_options)
-map('n', '<leader>P', '"*p', map_options)
--- clipboard
+-- Clipboard
 map('', '<leader>y', '"+y', map_options)
-map('n', '<leader>p', '"+p', map_options)
-map('', '<leader>yy', '"+yy', map_options)
-
--- Bufferline
-map('n', '<leader>n', ':BufferLineCycleNext<CR>', map_options)
-map('n', '<leader>N', ':BufferLineCyclePrev<CR>', map_options)
+map('', '<leader>p', '"+p', map_options)
+map('n', '<leader>yy', '"+yy', map_options)
+map('n', '<leader>Y', '"+y$', map_options)
 
 -- Gitsigns
 map('n', '<leader>hs', '<Cmd>lua require"gitsigns".stage_hunk()<CR>', map_options)
@@ -166,27 +170,26 @@ map('n', '<leader>hS', '<Cmd>lua require"gitsigns".stage_buffer()<CR>', map_opti
 map('n', '<leader>hU', '<Cmd>lua require"gitsigns".reset_buffer_index()<CR>', map_options)
 map('n', '<leader>hi', '<Cmd>lua require"gitsigns.actions".select_hunk()<CR>', map_options)
 
+-- Vim Fugitive
+map('n', '<leader>vd', ':diffget //2<CR>', map_options)
+map('n', '<leader>vj', ':diffget //3<CR>', map_options)
+
 -- Telescope
 map('n', '<leader>ff', '<Cmd>lua require"telescope.builtin".find_files()<CR>', map_options)
 map('n', '<leader>fg', '<Cmd>lua require"telescope.builtin".live_grep()<CR>',  map_options)
 map('n', '<leader>fb', '<Cmd>lua require"telescope.builtin".buffers()<CR>',    map_options)
 map('n', '<leader>fh', '<Cmd>lua require"telescope.builtin".help_tags()<CR>',  map_options)
 map('n', '<leader>fo', '<Cmd>lua require"telescope.builtin".oldfiles()<CR>',   map_options)
+map('n', '<leader>fk', '<Cmd>lua require"telescope.builtin".file_browser()<CR>',   map_options)
 
 -- Nvim tree
 map('n', '<leader>fj', ':NvimTreeToggle<CR>', map_options)
 
--- Autocomplete
-map('i', '<CR>',    'compe#confirm("<CR>")',     {expr = true})
-map('i', '<C-Space>', 'compe#complete()',        {expr = true})
-map('i', '<Tab>',   'v:lua.tab_complete()',      {expr = true})
-map('s', '<Tab>',   'v:lua.tab_complete()',      {expr = true})
-map('i', '<S-Tab>', 'v:lua.s_tab_complete()',    {expr = true})
-map('s', '<S-Tab>', 'v:lua.s_tab_complete()',    {expr = true})
-map('i', '<A-m>',   '<Cmd>lua require"luasnip".jump(1)<CR>', map_options)
-map('s', '<A-m>',   '<Cmd>lua require"luasnip".jump(1)<CR>', map_options)
-map('i', '<A-,>',   '<Cmd>lua require"luasnip".jump(-1)<CR>', map_options)
-map('s', '<A-,>',   '<Cmd>lua require"luasnip".jump(-1)<CR>', map_options)
+-- Snippets
+map('i', '<C-d>', '<Cmd>lua require"luasnip".jump(-1)<CR>', map_options)
+map('s', '<C-d>', '<Cmd>lua require"luasnip".jump(-1)<CR>', map_options)
+map('i', '<C-f>', '<Cmd>lua require"luasnip".jump(1)<CR>', map_options)
+map('s', '<C-f>', '<Cmd>lua require"luasnip".jump(1)<CR>', map_options)
 
 -- Language server
 -- references
@@ -197,7 +200,6 @@ map('n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', map_options)
 map('n', 'gt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', map_options)
 -- formatting
 map('n', '<leader>tt', '<Cmd>lua vim.lsp.buf.formatting()<CR>', map_options)
-map('v', '<leader>tt', '<Cmd>lua vim.lsp.buf.range_formatting()<CR>', map_options)
 -- LSP Saga
 -- lsp provider
 map('n', 'gh', '<Cmd>lua require"lspsaga.provider".lsp_finder()<CR>', map_options)
@@ -225,6 +227,7 @@ map('n', '<leader>B', '<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakp
 map('n', '<leader>lp', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', map_options)
 map('n', '<leader>dr', '<Cmd>lua require"dap".repl.open()<CR>', map_options)
 map('n', '<leader>dl', '<Cmd>lua require"dap".run_last()<CR>', map_options)
+map('n', '<leader>dt', '<Cmd>lua Add_test_to_configurations()<CR>', map_options)
 -- dap-ui
 map('n', '<F2>', '<Cmd>lua require"dapui".toggle()<CR>', map_options)
 map('v', '<leader>ee', '<Cmd>lua require("dapui").eval()<CR>', map_options)

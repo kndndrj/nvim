@@ -23,9 +23,15 @@ return require'packer'.startup(
     -- LSP settings
     use 'neovim/nvim-lspconfig'
     use 'rinx/lspsaga.nvim'
-    use 'hrsh7th/nvim-compe'
     use 'onsails/lspkind-nvim'
+    -- Autocompletion
     use 'windwp/nvim-autopairs'
+    use 'hrsh7th/nvim-cmp'
+    use 'hrsh7th/cmp-nvim-lsp'
+    use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/cmp-path'
+    use 'hrsh7th/cmp-nvim-lua'
+    use 'saadparwaiz1/cmp_luasnip'
     -- Debugging
     use 'mfussenegger/nvim-dap'
     use 'rcarriga/nvim-dap-ui'
@@ -37,10 +43,8 @@ return require'packer'.startup(
     -- Icons
     use 'kyazdani42/nvim-web-devicons'
     -- Statuslines
-    use 'akinsho/nvim-bufferline.lua'
     use 'glepnir/galaxyline.nvim'
     use 'dstein64/nvim-scrollview'
-    use 'karb94/neoscroll.nvim'
     -- LaTeX
     use 'lervag/vimtex'
     -- Git

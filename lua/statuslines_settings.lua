@@ -1,19 +1,4 @@
 -------------------------
--- Bufferline: ----------
--------------------------
-require'bufferline'.setup{
-  options = {
-    separator_style = 'thick',
-    diagnostics = 'nvim_lsp',
-    custom_filter = function(buf_number)
-      if vim.fn.bufname(buf_number) ~= '[dap-repl]' then
-        return true
-      end
-    end,
-  }
-}
-
--------------------------
 -- Galaxyline: ----------
 -------------------------
 local gl = require'galaxyline'
@@ -44,14 +29,14 @@ gls.left[1] = {
         v = colors.blue,
         [''] = colors.blue,
         V = colors.blue,
-        c = colors.magenta,
+        c = colors.yellow2,
         no = colors.red,
         s = colors.orange,
         S = colors.orange,
         [''] = colors.orange,
         ic = colors.yellow,
-        R = colors.violet,
-        Rv = colors.violet,
+        R = colors.purple,
+        Rv = colors.purple,
         cv = colors.red,
         ce = colors.red,
         r = colors.cyan,
@@ -78,7 +63,7 @@ gls.left[1] = {
       end
       return '█ '..vi_mode..' '
     end,
-    highlight = {colors.red,colors.bg,'bold'},
+    highlight = {colors.red,colors.bg2,'bold'},
   },
 }
 
@@ -86,7 +71,7 @@ gls.left[2] ={
   FileIcon = {
     provider = 'FileIcon',
     condition = condition.buffer_not_empty,
-    highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color,colors.bg},
+    highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color,colors.bg2},
   },
 }
 
@@ -94,7 +79,7 @@ gls.left[3] = {
   FileName = {
     provider = 'FileName',
     condition = condition.buffer_not_empty,
-    highlight = {colors.magenta,colors.bg,'bold'}
+    highlight = {colors.yellow2,colors.bg2,'bold'}
   }
 }
 
@@ -102,7 +87,7 @@ gls.left[4] = {
   FileSize = {
     provider = 'FileSize',
     condition = condition.hide_in_width,
-    highlight = {colors.fg,colors.bg}
+    highlight = {colors.fg,colors.bg2}
   }
 }
 
@@ -111,7 +96,7 @@ gls.left[5] = {
     provider = 'DiagnosticError',
     condition = condition.hide_in_width,
     icon = '  ',
-    highlight = {colors.red,colors.bg}
+    highlight = {colors.red,colors.bg2}
   }
 }
 
@@ -120,7 +105,7 @@ gls.left[6] = {
     provider = 'DiagnosticWarn',
     condition = condition.hide_in_width,
     icon = '  ',
-    highlight = {colors.yellow,colors.bg},
+    highlight = {colors.yellow,colors.bg2},
   }
 }
 
@@ -129,7 +114,7 @@ gls.left[7] = {
     provider = 'DiagnosticHint',
     condition = condition.hide_in_width,
     icon = '  ',
-    highlight = {colors.cyan,colors.bg},
+    highlight = {colors.cyan,colors.bg2},
   }
 }
 
@@ -138,7 +123,7 @@ gls.left[8] = {
     provider = 'DiagnosticInfo',
     condition = condition.hide_in_width,
     icon = '  ',
-    highlight = {colors.blue,colors.bg}
+    highlight = {colors.blue,colors.bg2}
   }
 }
 
@@ -149,7 +134,24 @@ gls.mid[1] = {
     provider = 'GetLspClient',
     condition = condition.hide_in_width,
     icon = '   ',
-    highlight = {colors.cyan,colors.bg,'bold'}
+    highlight = {colors.cyan,colors.bg2,'bold'}
+  }
+}
+
+gls.mid[2] = {
+  Debug = {
+    provider = function ()
+      local debug_status = require'dap'.status()
+      if debug_status ~= '' then
+        return debug_status
+      end
+      return 'No Active DAP'
+    end,
+    condition = condition.hide_in_width,
+    separator = ' |',
+    separator_highlight = {'NONE',colors.bg2},
+    icon = '   ',
+    highlight = {colors.orange,colors.bg2,'bold'}
   }
 }
 
@@ -160,8 +162,8 @@ gls.right[1] = {
     provider = 'FileEncode',
     condition = condition.hide_in_width,
     separator = ' ',
-    separator_highlight = {'NONE',colors.bg},
-    highlight = {colors.green,colors.bg,'bold'}
+    separator_highlight = {'NONE',colors.bg2},
+    highlight = {colors.green,colors.bg2,'bold'}
   }
 }
 
@@ -170,8 +172,8 @@ gls.right[2] = {
     provider = 'FileFormat',
     condition = condition.hide_in_width,
     separator = ' ',
-    separator_highlight = {'NONE',colors.bg},
-    highlight = {colors.green,colors.bg,'bold'}
+    separator_highlight = {'NONE',colors.bg2},
+    highlight = {colors.green,colors.bg2,'bold'}
   }
 }
 
@@ -180,8 +182,8 @@ gls.right[3] = {
     provider = function() return ' ' end,
     condition = condition.check_git_workspace,
     separator = ' ',
-    separator_highlight = {'NONE',colors.bg},
-    highlight = {colors.orange,colors.bg,'bold'},
+    separator_highlight = {'NONE',colors.bg2},
+    highlight = {colors.orange,colors.bg2,'bold'},
   }
 }
 
@@ -189,7 +191,7 @@ gls.right[4] = {
   GitBranch = {
     provider = 'GitBranch',
     condition = condition.hide_in_width,
-    highlight = {colors.violet,colors.bg,'bold'},
+    highlight = {colors.purple,colors.bg2,'bold'},
   }
 }
 
@@ -199,8 +201,8 @@ gls.right[5] = {
     condition = condition.hide_in_width,
     icon = '  ',
     separator = ' |',
-    separator_highlight = {'NONE',colors.bg},
-    highlight = {colors.green,colors.bg},
+    separator_highlight = {'NONE',colors.bg2},
+    highlight = {colors.green,colors.bg2},
   }
 }
 
@@ -209,7 +211,7 @@ gls.right[6] = {
     provider = 'DiffModified',
     condition = condition.hide_in_width,
     icon = ' 柳',
-    highlight = {colors.orange,colors.bg},
+    highlight = {colors.orange,colors.bg2},
   }
 }
 
@@ -218,7 +220,7 @@ gls.right[7] = {
     provider = 'DiffRemove',
     condition = condition.hide_in_width,
     icon = '  ',
-    highlight = {colors.red,colors.bg},
+    highlight = {colors.red,colors.bg2},
   }
 }
 
@@ -226,8 +228,8 @@ gls.right[8] = {
   LineInfo = {
     provider = 'LineColumn',
     separator = ' ',
-    separator_highlight = {'NONE',colors.bg},
-    highlight = {colors.fg,colors.bg},
+    separator_highlight = {'NONE',colors.bg2},
+    highlight = {colors.fg,colors.bg2},
   },
 }
 
@@ -235,8 +237,8 @@ gls.short_line_left[1] = {
   BufferType = {
     provider = 'FileTypeName',
     separator = ' ',
-    separator_highlight = {'NONE',colors.bg},
-    highlight = {colors.blue,colors.bg,'bold'}
+    separator_highlight = {'NONE',colors.bg2},
+    highlight = {colors.blue,colors.bg2,'bold'}
   }
 }
 
@@ -244,13 +246,13 @@ gls.short_line_left[2] = {
   SFileName = {
     provider =  'SFileName',
     condition = condition.buffer_not_empty,
-    highlight = {colors.fg,colors.bg,'bold'}
+    highlight = {colors.fg,colors.bg2,'bold'}
   }
 }
 
 gls.short_line_right[1] = {
   BufferIcon = {
     provider= 'BufferIcon',
-    highlight = {colors.fg,colors.bg}
+    highlight = {colors.fg,colors.bg2}
   }
 }
