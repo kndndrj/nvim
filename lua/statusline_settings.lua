@@ -16,7 +16,8 @@ gl.short_line_list = {
   'dapui_watches',
 }
 
-local colors = _G.statuslinecolors
+-- Get the colors from the colorscheme
+local colors = require'onedark.colors'.setup()
 
 gls.left[1] = {
   ViMode = {

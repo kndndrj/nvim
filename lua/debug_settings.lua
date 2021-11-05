@@ -1,10 +1,9 @@
 -------------------------
 -- Debugger settings: ---
 -------------------------
-require'dap'
 
 -- enable virtual text
-vim.g.dap_virtual_text = true
+require'nvim-dap-virtual-text'.setup()
 
 -- Set up the UI
 require'dapui'.setup {
@@ -222,5 +221,6 @@ end
 -------------------------
 -- Other settings: ------
 -------------------------
--- Load project-specific configurations from .vscode/launch.json
-require('dap.ext.vscode').load_launchjs()
+-- Load project-specific configurations aka. from .vscode/launch.json
+require'projector.config_utils'.load_dap_configurations()
+require'projector.config_utils'.load_project_configurations(vim.fn.getcwd() .. '/.vscode/projector.json')

@@ -2,6 +2,12 @@
 -- LSP settings: --------
 -------------------------
 
+-- Icon customization
+vim.fn.sign_define('LspDiagnosticsSignError',       {text='', texthl='LspDiagnosticsSignError', linehl='', numhl=''})
+vim.fn.sign_define('LspDiagnosticsSignWarning',     {text='', texthl='LspDiagnosticsSignWarning', linehl='', numhl=''})
+vim.fn.sign_define('LspDiagnosticsSignInformation', {text='', texthl='LspDiagnosticsSignInformation', linehl='', numhl=''})
+vim.fn.sign_define('LspDiagnosticsSignHint',        {text='', texthl='LspDiagnosticsSignHint', linehl='', numhl=''})
+
 -- nvim-cmp setup
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -24,7 +30,7 @@ cmp.setup {
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
-    ['<C-l>'] = cmp.mapping.confirm {
+    ['<CR>'] = cmp.mapping.confirm {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
@@ -66,58 +72,6 @@ require'luasnip.loaders.from_vscode'.load()
 -------------------------
 require'nvim-autopairs'.setup {
   check_ts = true
-}
-
-require'nvim-autopairs.completion.cmp'.setup {
-  map_cr = true,
-  map_complete = true,
-  auto_select = false,
-  insert = false,
-  map_char = {
-    all = '(',
-    tex = '{'
-  }
-}
-
--------------------------
--- LSP Saga: ------------
--------------------------
-require'lspsaga'.init_lsp_saga {
-use_saga_diagnostic_sign = true,
-error_sign = '',
-warn_sign = '',
-hint_sign = '',
-infor_sign = '',
-dianostic_header_icon = '   ',
-code_action_icon = ' ',
-code_action_prompt = {
-  enable = true,
-  sign = false,
-  sign_priority = 20,
-  virtual_text = false,
-},
-finder_definition_icon = '  ',
-finder_reference_icon = '  ',
-max_preview_lines = 10,
-finder_action_keys = {
-  open = 'o',
-  vsplit = 'v',
-  split = 's',
-  quit = '<ESC>',
-  scroll_down = '<C-f>',
-  scroll_up = '<C-d>',
-},
-code_action_keys = {
-  quit = '<ESC>',
-  exec = '<CR>',
-},
-rename_action_keys = {
-  quit = '<ESC>',
-  exec = '<CR>',
-},
-definition_preview_icon = '  ',
-border_style = 'round',
-rename_prompt_prefix = '➤',
 }
 
 -------------------------

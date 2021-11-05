@@ -18,11 +18,12 @@ return require'packer'.startup(
     use 'nvim-telescope/telescope-fzy-native.nvim'
     -- File tree
     use 'kyazdani42/nvim-tree.lua'
+    -- Harpoon
+    use 'ThePrimeagen/harpoon'
     -- TreeSitter
     use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
     -- LSP settings
     use 'neovim/nvim-lspconfig'
-    use 'rinx/lspsaga.nvim'
     use 'onsails/lspkind-nvim'
     -- Autocompletion
     use 'windwp/nvim-autopairs'
@@ -36,6 +37,7 @@ return require'packer'.startup(
     use 'mfussenegger/nvim-dap'
     use 'rcarriga/nvim-dap-ui'
     use 'theHamsta/nvim-dap-virtual-text'
+    use 'kndndrj/nvim-dap-projector'
     use 'mfussenegger/nvim-dap-python'
     -- Snippet manager
     use 'L3MON4D3/LuaSnip'
