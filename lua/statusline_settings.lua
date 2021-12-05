@@ -1,259 +1,117 @@
 -------------------------
--- Galaxyline: ----------
+-- Lualine: -------------
 -------------------------
-local gl = require'galaxyline'
-local condition = require'galaxyline.condition'
-local gls = gl.section
-gl.short_line_list = {
-  'NvimTree',
-  'vista',
-  'dbui',
-  'packer',
-  'dap-repl',
-  'dapui_scopes',
-  'dapui_breakpoints',
-  'dapui_stacks',
-  'dapui_watches',
-}
+-- Custom functions
+local function debug()
+  local debug_status = require'dap'.status()
+  if debug_status ~= '' then
+    return debug_status
+  end
+  return ''
+end
 
--- Get the colors from the colorscheme
-local colors = require'onedark.colors'.setup()
+local function lsp()
+  local buf_ft = vim.api.nvim_buf_get_option(0,'filetype')
+  local clients = vim.lsp.get_active_clients()
+  if next(clients) == nil then
+    return ''
+  end
 
-gls.left[1] = {
-  ViMode = {
-    provider = function()
-      local vi_mode = vim.fn.mode()
-      -- auto change color according the vim mode
-      local mode_color = {
-        n = colors.red,
-        i = colors.green,
-        v = colors.blue,
-        [''] = colors.blue,
-        V = colors.blue,
-        c = colors.yellow2,
-        no = colors.red,
-        s = colors.orange,
-        S = colors.orange,
-        [''] = colors.orange,
-        ic = colors.yellow,
-        R = colors.purple,
-        Rv = colors.purple,
-        cv = colors.red,
-        ce = colors.red,
-        r = colors.cyan,
-        rm = colors.cyan,
-        ['r?'] = colors.cyan,
-        ['!']  = colors.red,
-        t = colors.red,
-      }
-      vim.api.nvim_command('hi GalaxyViMode guifg='..mode_color[vi_mode])
-      local alias = {
-        n = 'NORMAL',
-        i = 'INSERT',
-        v = 'VISUAL',
-        [''] = 'VISUAL BLOCK',
-        V = 'VISUAL LINE',
-        c = 'COMMAND',
-        s = 'SELECT',
-        S = 'SELECT LINE',
-        R = 'REPLACE',
-        t = 'TERMINAL',
-      }
-      if alias[vi_mode] ~= nil then
-        return '█ '..alias[vi_mode]..' '
-      end
-      return '█ '..vi_mode..' '
-    end,
-    highlight = {colors.red,colors.bg2,'bold'},
+  for _,client in ipairs(clients) do
+    local filetypes = client.config.filetypes
+    if filetypes and vim.fn.index(filetypes,buf_ft) ~= -1 then
+      return client.name
+    end
+  end
+  return ''
+end
+
+require('lualine').setup {
+  options = {
+    theme = 'everforest',
+    component_separators = '|',
+    section_separators = { left = '', right = '' },
+    disabled_filetypes = {
+      'NvimTree',
+      'vista',
+      'dbui',
+      'packer',
+      'dap-repl',
+      'dapui_scopes',
+      'dapui_breakpoints',
+      'dapui_stacks',
+      'dapui_watches',
+    },
   },
-}
+  sections = {
+    lualine_a = {
+      {
+        'mode',
+        separator = { left = '' },
+        right_padding = 2
+      },
+    },
+    lualine_b = {
+      'filename'
+    },
+    lualine_c = {
+      debug,
+      lsp,
+      {
+        'diagnostics',
+        diagnostics_color = {
+          error = { fg = '#e67e80' },
+          warn = { fg = '#dbbc7f' },
+          info = { fg = '#7fbbb3' },
+          hint = { fg = '#a7c080' },
+        },
+        symbols = {
+          error =' ',
+          warn = ' ',
+          info = ' ',
+          hint = ' ',
+        },
+      },
+    },
 
-gls.left[2] ={
-  FileIcon = {
-    provider = 'FileIcon',
-    condition = condition.buffer_not_empty,
-    highlight = {require('galaxyline.provider_fileinfo').get_file_icon_color,colors.bg2},
+    lualine_x = {
+      'filetype',
+      'filesize',
+      'encoding',
+      'fileformat',
+    },
+    lualine_y = {
+      'branch',
+      {
+        'diff',
+        diff_color = {
+          added = { fg = '#a7c080' },
+          modified = { fg = '#7fbbb3' },
+          removed = { fg = '#e67e80' },
+        },
+        symbols = {
+          added = ' ',
+          modified = 'ﰣ ',
+          removed = ' ',
+        },
+      },
+    },
+    lualine_z = {
+      {
+        'location',
+        separator = { right = '' },
+        left_padding = 2
+      },
+    },
   },
-}
-
-gls.left[3] = {
-  FileName = {
-    provider = 'FileName',
-    condition = condition.buffer_not_empty,
-    highlight = {colors.yellow2,colors.bg2,'bold'}
-  }
-}
-
-gls.left[4] = {
-  FileSize = {
-    provider = 'FileSize',
-    condition = condition.hide_in_width,
-    highlight = {colors.fg,colors.bg2}
-  }
-}
-
-gls.left[5] = {
-  DiagnosticError = {
-    provider = 'DiagnosticError',
-    condition = condition.hide_in_width,
-    icon = '  ',
-    highlight = {colors.red,colors.bg2}
-  }
-}
-
-gls.left[6] = {
-  DiagnosticWarn = {
-    provider = 'DiagnosticWarn',
-    condition = condition.hide_in_width,
-    icon = '  ',
-    highlight = {colors.yellow,colors.bg2},
-  }
-}
-
-gls.left[7] = {
-  DiagnosticHint = {
-    provider = 'DiagnosticHint',
-    condition = condition.hide_in_width,
-    icon = '  ',
-    highlight = {colors.cyan,colors.bg2},
-  }
-}
-
-gls.left[8] = {
-  DiagnosticInfo = {
-    provider = 'DiagnosticInfo',
-    condition = condition.hide_in_width,
-    icon = '  ',
-    highlight = {colors.blue,colors.bg2}
-  }
-}
-
-
-
-gls.mid[1] = {
-  ShowLspClient = {
-    provider = 'GetLspClient',
-    condition = condition.hide_in_width,
-    icon = '   ',
-    highlight = {colors.cyan,colors.bg2,'bold'}
-  }
-}
-
-gls.mid[2] = {
-  Debug = {
-    provider = function ()
-      local debug_status = require'dap'.status()
-      if debug_status ~= '' then
-        return debug_status
-      end
-      return 'No Active DAP'
-    end,
-    condition = condition.hide_in_width,
-    separator = ' |',
-    separator_highlight = {'NONE',colors.bg2},
-    icon = '   ',
-    highlight = {colors.orange,colors.bg2,'bold'}
-  }
-}
-
-
-
-gls.right[1] = {
-  FileEncode = {
-    provider = 'FileEncode',
-    condition = condition.hide_in_width,
-    separator = ' ',
-    separator_highlight = {'NONE',colors.bg2},
-    highlight = {colors.green,colors.bg2,'bold'}
-  }
-}
-
-gls.right[2] = {
-  FileFormat = {
-    provider = 'FileFormat',
-    condition = condition.hide_in_width,
-    separator = ' ',
-    separator_highlight = {'NONE',colors.bg2},
-    highlight = {colors.green,colors.bg2,'bold'}
-  }
-}
-
-gls.right[3] = {
-  GitIcon = {
-    provider = function() return ' ' end,
-    condition = condition.check_git_workspace,
-    separator = ' ',
-    separator_highlight = {'NONE',colors.bg2},
-    highlight = {colors.orange,colors.bg2,'bold'},
-  }
-}
-
-gls.right[4] = {
-  GitBranch = {
-    provider = 'GitBranch',
-    condition = condition.hide_in_width,
-    highlight = {colors.purple,colors.bg2,'bold'},
-  }
-}
-
-gls.right[5] = {
-  DiffAdd = {
-    provider = 'DiffAdd',
-    condition = condition.hide_in_width,
-    icon = '  ',
-    separator = ' |',
-    separator_highlight = {'NONE',colors.bg2},
-    highlight = {colors.green,colors.bg2},
-  }
-}
-
-gls.right[6] = {
-  DiffModified = {
-    provider = 'DiffModified',
-    condition = condition.hide_in_width,
-    icon = ' 柳',
-    highlight = {colors.orange,colors.bg2},
-  }
-}
-
-gls.right[7] = {
-  DiffRemove = {
-    provider = 'DiffRemove',
-    condition = condition.hide_in_width,
-    icon = '  ',
-    highlight = {colors.red,colors.bg2},
-  }
-}
-
-gls.right[8] = {
-  LineInfo = {
-    provider = 'LineColumn',
-    separator = ' ',
-    separator_highlight = {'NONE',colors.bg2},
-    highlight = {colors.fg,colors.bg2},
+  inactive_sections = {
+    lualine_a = { 'filename' },
+    lualine_b = {},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = { 'location' },
   },
-}
-
-gls.short_line_left[1] = {
-  BufferType = {
-    provider = 'FileTypeName',
-    separator = ' ',
-    separator_highlight = {'NONE',colors.bg2},
-    highlight = {colors.blue,colors.bg2,'bold'}
-  }
-}
-
-gls.short_line_left[2] = {
-  SFileName = {
-    provider =  'SFileName',
-    condition = condition.buffer_not_empty,
-    highlight = {colors.fg,colors.bg2,'bold'}
-  }
-}
-
-gls.short_line_right[1] = {
-  BufferIcon = {
-    provider= 'BufferIcon',
-    highlight = {colors.fg,colors.bg2}
-  }
+  tabline = {},
+  extensions = {},
 }

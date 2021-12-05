@@ -3,16 +3,10 @@
 -------------------------
 
 -- Icon customization
-vim.fn.sign_define('LspDiagnosticsSignError',       {text='', texthl='LspDiagnosticsSignError', linehl='', numhl=''})
-vim.fn.sign_define('LspDiagnosticsSignWarning',     {text='', texthl='LspDiagnosticsSignWarning', linehl='', numhl=''})
-vim.fn.sign_define('LspDiagnosticsSignInformation', {text='', texthl='LspDiagnosticsSignInformation', linehl='', numhl=''})
-vim.fn.sign_define('LspDiagnosticsSignHint',        {text='', texthl='LspDiagnosticsSignHint', linehl='', numhl=''})
-
--- nvim-cmp setup
-local has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
-end
+vim.fn.sign_define('DiagnosticSignError',       {text='', texthl='DiagnosticSignError', linehl='', numhl=''})
+vim.fn.sign_define('DiagnosticSignWarn',        {text='', texthl='DiagnosticSignWarn', linehl='', numhl=''})
+vim.fn.sign_define('DiagnosticSignInfo',        {text='', texthl='DiagnosticSignInfo', linehl='', numhl=''})
+vim.fn.sign_define('DiagnosticSignHint',        {text='', texthl='DiagnosticSignHint', linehl='', numhl=''})
 
 local cmp = require'cmp'
 cmp.setup {
@@ -34,26 +28,6 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
-    --['<Tab>'] = cmp.mapping(function(fallback)
-    --  if cmp.visible() then
-    --    cmp.select_next_item()
-    --  elseif luasnip.jumpable(1) then
-    --    luasnip.jump(1)
-    --  elseif has_words_before() then
-    --    cmp.complete()
-    --  else
-    --    fallback()
-    --  end
-    --end, { 'i', 's' }),
-    --['<S-Tab>'] = cmp.mapping(function(fallback)
-    --  if cmp.visible() then
-    --    cmp.select_prev_item()
-    --  elseif luasnip.jumpable(-1) then
-    --    luasnip.jump(-1)
-    --  else
-    --    fallback()
-    --  end
-    --end, { 'i', 's' }),
   },
   sources = {
     { name = 'nvim_lua', max_item_count = 10},
@@ -78,15 +52,16 @@ require'nvim-autopairs'.setup {
 -- Language servers: ----
 -------------------------
 
--- List of language servers
+-- List of language servers with default config
 local servers = {
-  'clangd',
+  --'clangd',
   'gopls',
   'rust_analyzer',
-  'denols',
+  --'denols',
+  'tsserver',
   'bashls',
   'texlab',
-  'pylsp',
+  --'pylsp',
 }
 
 --Enable (broadcasting) snippet capability for completion
@@ -123,6 +98,20 @@ require'lspconfig'.sumneko_lua.setup{
       telemetry = {
         enable = false,
       },
+    },
+  },
+}
+require'lspconfig'.ccls.setup{
+  capabilities = capabilities,
+  init_options = {
+    compilationDatabaseDirectory = 'build',
+  },
+}
+require'lspconfig'.pylsp.setup{
+  capabilities = capabilities,
+  settings = {
+    pylsp = {
+      configurationSources = { 'pycodestyle', 'flake8' },
     },
   },
 }

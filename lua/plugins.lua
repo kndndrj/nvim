@@ -8,7 +8,7 @@ return require'packer'.startup(
     use 'lukas-reineke/indent-blankline.nvim'
     use 'ciaranm/detectindent'
     -- Themes
-    use {'rakr/vim-one', as = 'one'}
+    use 'sainnhe/everforest'
     use 'ful1e5/onedark.nvim'
     -- Lua dependencies
     use 'nvim-lua/popup.nvim'
@@ -45,7 +45,7 @@ return require'packer'.startup(
     -- Icons
     use 'kyazdani42/nvim-web-devicons'
     -- Statuslines
-    use 'glepnir/galaxyline.nvim'
+    use 'nvim-lualine/lualine.nvim'
     use 'dstein64/nvim-scrollview'
     -- LaTeX
     use 'lervag/vimtex'

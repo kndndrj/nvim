@@ -1,3 +1,22 @@
+-----------------------
+-- Init.lua -----------
+-----------------------
+-- Macros
+local cmd = vim.cmd
+local g = vim.g
+local map = vim.api.nvim_set_keymap
+local o = vim.o
+local wo = vim.wo
+
+-- Colorscheme
+vim.cmd 'syntax enable'
+vim.cmd 'syntax on'
+g.everforest_diagnostic_text_highlight = 1
+g.everforest_enable_italic = 1
+g.everforest_diagnostic_virtual_text = 'colored'
+vim.cmd 'colorscheme everforest'
+
+-- Source other configs
 require 'plugins'
 require 'statusline_settings'
 require 'file_navigation_settings'
@@ -6,23 +25,6 @@ require 'lsp_settings'
 require 'vimtex_settings'
 require 'treesitter_settings'
 require 'debug_settings'
-
--- Macros
-local cmd = vim.cmd
-local g = vim.g
-local map = vim.api.nvim_set_keymap
-local o = vim.o
-local wo = vim.wo
-
------------------------
--- Colorscheme --------
------------------------
-vim.cmd 'syntax enable'
-vim.cmd 'syntax on'
-require'onedark'.setup {
-  function_style = "italic",
-  sidebars = {"qf", "vista_kind", "terminal", "packer"},
-}
 
 -----------------------
 -- Basic Config: ------
@@ -62,7 +64,6 @@ o.smarttab = true
 
 -- Highlight a column to easily maintain line length
 wo.colorcolumn = '100'
-o.textwidth = 99
 
 -- any combination of 'wq' works
 cmd ':command! WQ wq'

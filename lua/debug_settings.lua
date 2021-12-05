@@ -31,6 +31,12 @@ vim.fn.sign_define('DapBreakpointRejected',  {text='', texthl='WarningMsg', l
 -- Python
 require'dap-python'.setup('/usr/bin/python')
 
+-- C/C++
+require'dap'.adapters.cppdbg = {
+  type = 'executable',
+  command =  os.getenv('HOME') .. '/Repos/dev/vscode-cpptools/extension/debugAdapters/bin/OpenDebugAD7',
+}
+
 -- Go
 require'dap'.adapters.go = {
   type = 'executable',
@@ -54,6 +60,16 @@ require'dap'.configurations.go = {
     showLog = false,
     program = '${file}',
     dlvToolPath = vim.fn.exepath('dlv'),
+  },
+}
+
+require'projector'.configurations.global.tasks.go = {
+  {
+    name = 'Generate',
+    command = 'go generate',
+    args = {
+      '${workspaceFolder}/tools.go',
+    },
   },
 }
 
