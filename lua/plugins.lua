@@ -46,11 +46,12 @@ return require'packer'.startup(
     use 'kyazdani42/nvim-web-devicons'
     -- Statuslines
     use 'nvim-lualine/lualine.nvim'
-    use 'dstein64/nvim-scrollview'
     -- LaTeX
     use 'lervag/vimtex'
     -- Git
     use 'tpope/vim-fugitive'
     use 'lewis6991/gitsigns.nvim'
+    -- tmux
+    use 'alexghergh/nvim-tmux-navigation'
   end
 )

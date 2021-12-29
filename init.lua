@@ -9,12 +9,16 @@ local o = vim.o
 local wo = vim.wo
 
 -- Colorscheme
-vim.cmd 'syntax enable'
-vim.cmd 'syntax on'
+cmd 'syntax enable'
+cmd 'syntax on'
 g.everforest_diagnostic_text_highlight = 1
 g.everforest_enable_italic = 1
 g.everforest_diagnostic_virtual_text = 'colored'
-vim.cmd 'colorscheme everforest'
+cmd 'colorscheme everforest'
+
+-- use tmux background
+cmd 'highlight Normal ctermbg=none guibg=none'
+cmd 'highlight EndOfBuffer ctermbg=none guibg=none'
 
 -- Source other configs
 require 'plugins'
@@ -55,6 +59,9 @@ o.showmode = false
 -- Shorter updatetime
 o.updatetime = 250
 
+-- Always show the signcolumn
+wo.signcolumn = 'yes'
+
 -- Tab (key) settings
 o.tabstop = 4
 o.expandtab = true
@@ -79,19 +86,14 @@ cmd 'autocmd BufNewFile,BufRead *.groff set filetype=groff'
 cmd 'autocmd BufNewFile,BufRead Jenkinsfile set filetype=groovy'
 cmd 'autocmd BufWinEnter,WinEnter term://* startinsert'
 
--- Git signs setup
+-- Gitsigns setup
 require'gitsigns'.setup {
   keymaps = {},
 }
 
--- Scroll bar
-g.scrollview_excluded_filetypes = {
-  'NvimTree',
-  'dap-repl',
-  'dapui_scopes',
-  'dapui_breakpoints',
-  'dapui_stacks',
-  'dapui_watches',
+-- tmux navigation
+require'nvim-tmux-navigation'.setup {
+    disable_when_zoomed = true
 }
 
 -----------------------
@@ -104,7 +106,7 @@ local map_options = { noremap=true, silent=true }
 g.mapleader = ' '
 
 -- <leader>Escape key functions
-map('n', '<leader><esc>', ':cclose<CR> :nohlsearch<CR>', map_options)
+map('n', '<leader><esc>', ':cclose<CR>', map_options)
 
 -- Cycle quickfix lists
 map('n', '<leader>j', ':cnext<CR>', map_options)
@@ -122,24 +124,23 @@ map('n', 'Š', '{', map_options)
 map('n', 'Đ', '}', map_options)
 
 -- Clever remaps
-map('n', 'Y', 'y$', map_options)
 map('n', 'n', 'nzzzv', map_options)
 map('n', 'N', 'Nzzzv', map_options)
 map('v', '//', 'y/\\V<C-R>=escape(@","/\")<CR><CR>', map_options)
 
--- Use alt+hjkl to move between windows in any mode
-map('t', '<A-h>', '<C-\\><C-N><C-w>h', map_options)
-map('t', '<A-j>', '<C-\\><C-N><C-w>j', map_options)
-map('t', '<A-k>', '<C-\\><C-N><C-w>k', map_options)
-map('t', '<A-l>', '<C-\\><C-N><C-w>l', map_options)
-map('i', '<A-h>', '<C-\\><C-N><C-w>h', map_options)
-map('i', '<A-j>', '<C-\\><C-N><C-w>j', map_options)
-map('i', '<A-k>', '<C-\\><C-N><C-w>k', map_options)
-map('i', '<A-l>', '<C-\\><C-N><C-w>l', map_options)
-map('n', '<A-h>', '<C-w>h', map_options)
-map('n', '<A-j>', '<C-w>j', map_options)
-map('n', '<A-k>', '<C-w>k', map_options)
-map('n', '<A-l>', '<C-w>l', map_options)
+-- Move between splits and tmux panes in any mode
+map('n', '<C-a>h', ':lua require"nvim-tmux-navigation".NvimTmuxNavigateLeft()<cr>', map_options)
+map('n', '<C-a>j', ':lua require"nvim-tmux-navigation".NvimTmuxNavigateDown()<cr>', map_options)
+map('n', '<C-a>k', ':lua require"nvim-tmux-navigation".NvimTmuxNavigateUp()<cr>', map_options)
+map('n', '<C-a>l', ':lua require"nvim-tmux-navigation".NvimTmuxNavigateRight()<cr>', map_options)
+map('t', '<C-a>h', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateLeft()<cr>', map_options)
+map('t', '<C-a>j', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateDown()<cr>', map_options)
+map('t', '<C-a>k', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateUp()<cr>', map_options)
+map('t', '<C-a>l', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateRight()<cr>', map_options)
+map('i', '<C-a>h', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateLeft()<cr>', map_options)
+map('i', '<C-a>j', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateDown()<cr>', map_options)
+map('i', '<C-a>k', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateUp()<cr>', map_options)
+map('i', '<C-a>l', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateRight()<cr>', map_options)
 
 -- Use alt+zuio to resize windows in any mode
 map('n', '<A-z>', ':vertical resize -2<CR>', map_options)
@@ -192,6 +193,8 @@ map('n', '<leader>hb', '<Cmd>lua require"gitsigns".blame_line(true)<CR>', map_op
 map('n', '<leader>hS', '<Cmd>lua require"gitsigns".stage_buffer()<CR>', map_options)
 map('n', '<leader>hU', '<Cmd>lua require"gitsigns".reset_buffer_index()<CR>', map_options)
 map('n', '<leader>hi', '<Cmd>lua require"gitsigns.actions".select_hunk()<CR>', map_options)
+map('n', '<leader>hn', '<Cmd>lua require"gitsigns".next_hunk()<CR>', map_options)
+map('n', '<leader>hN', '<Cmd>lua require"gitsigns".prev_hunk()<CR>', map_options)
 
 -- Vim Fugitive
 map('n', '<leader>vd', ':diffget //2<CR>', map_options)
@@ -223,8 +226,6 @@ map('n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', map_options)
 map('n', 'gt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', map_options)
 -- formatting
 map('n', '<leader>tt', '<Cmd>lua vim.lsp.buf.formatting()<CR>', map_options)
--- lsp provider
-map('n', 'gh', '<Cmd>lua require"lspsaga.provider".lsp_finder()<CR>', map_options)
 -- rename
 map('n', 'gn', '<Cmd>lua vim.lsp.buf.rename()<CR>', map_options)
 -- code action
@@ -233,9 +234,9 @@ map('n', 'ga', '<Cmd>lua vim.lsp.buf.code_action()<CR>', map_options)
 map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', map_options)
 map('n', '<C-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', map_options)
 -- diagnostic
-map('n', 'de', '<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', map_options)
-map('n', 'dN', '<Cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', map_options)
-map('n', 'dn', '<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>', map_options)
+map('n', 'de', '<Cmd>lua vim.diagnostic.open_float()<CR>', map_options)
+map('n', 'dN', '<Cmd>lua vim.diagnostic.goto_prev()<CR>', map_options)
+map('n', 'dn', '<Cmd>lua vim.diagnostic.goto_next()<CR>', map_options)
 
 -- Debugger
 -- core
