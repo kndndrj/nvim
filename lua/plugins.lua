@@ -53,5 +53,8 @@ return require'packer'.startup(
     use 'lewis6991/gitsigns.nvim'
     -- tmux
     use 'alexghergh/nvim-tmux-navigation'
+    -- database
+    use 'tpope/vim-dadbod'
+    use 'kristijanhusak/vim-dadbod-ui'
   end
 )

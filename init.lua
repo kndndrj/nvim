@@ -96,6 +96,9 @@ require'nvim-tmux-navigation'.setup {
     disable_when_zoomed = true
 }
 
+-- dadbod settings
+g.db_ui_use_nerd_fonts = 1
+
 -----------------------
 -- Key Bindings: ------
 -----------------------
@@ -237,6 +240,9 @@ map('n', '<C-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', map_options)
 map('n', 'de', '<Cmd>lua vim.diagnostic.open_float()<CR>', map_options)
 map('n', 'dN', '<Cmd>lua vim.diagnostic.goto_prev()<CR>', map_options)
 map('n', 'dn', '<Cmd>lua vim.diagnostic.goto_next()<CR>', map_options)
+
+-- Database (dadbod)
+map('n', 'čq', ':DBUIToggle<CR>', map_options)
 
 -- Debugger
 -- core
