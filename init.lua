@@ -99,6 +99,15 @@ require'nvim-tmux-navigation'.setup {
 -- dadbod settings
 g.db_ui_use_nerd_fonts = 1
 
+-- kommentary settings
+g.kommentary_create_default_mappings = false
+
+require('kommentary.config').configure_language('default', {
+  prefer_single_line_comments = true,
+  use_consistent_indentation = true,
+  ignore_whitespace = true,
+})
+
 -----------------------
 -- Key Bindings: ------
 -----------------------
@@ -202,6 +211,11 @@ map('n', '<leader>hN', '<Cmd>lua require"gitsigns".prev_hunk()<CR>', map_options
 -- Vim Fugitive
 map('n', '<leader>vd', ':diffget //2<CR>', map_options)
 map('n', '<leader>vj', ':diffget //3<CR>', map_options)
+
+-- kommentary
+map('n', '<leader>zz', '<Plug>kommentary_line_default',  {})
+map('n', '<leader>z', '<Plug>kommentary_motion_default', {})
+map('x', '<leader>z', '<Plug>kommentary_visual_default<C-c>', {})
 
 -- Telescope
 map('n', '<leader>ff', '<Cmd>lua require"telescope.builtin".find_files()<CR>', map_options)

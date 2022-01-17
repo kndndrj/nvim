@@ -9,7 +9,6 @@ return require'packer'.startup(
     use 'ciaranm/detectindent'
     -- Themes
     use 'sainnhe/everforest'
-    use 'ful1e5/onedark.nvim'
     -- Lua dependencies
     use 'nvim-lua/popup.nvim'
     use 'nvim-lua/plenary.nvim'
@@ -56,5 +55,7 @@ return require'packer'.startup(
     -- database
     use 'tpope/vim-dadbod'
     use 'kristijanhusak/vim-dadbod-ui'
+    -- comments
+    use 'b3nj5m1n/kommentary'
   end
 )

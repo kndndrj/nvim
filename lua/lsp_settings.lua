@@ -58,7 +58,6 @@ local servers = {
   'gopls',
   'rust_analyzer',
   --'denols',
-  'tsserver',
   'bashls',
   'texlab',
   --'pylsp',
@@ -130,4 +129,19 @@ require'lspconfig'.cssls.setup{
 require'lspconfig'.sqlls.setup{
   capabilities = capabilities,
   cmd = {'sql-language-server', 'up', '--method', 'stdio'};
+}
+require'lspconfig'.tsserver.setup{
+  capabilities = capabilities,
+  settings = {
+    codeActionsOnSave = {
+      source = {
+        organizeImports = true,
+      },
+    },
+    javascript = {
+      format = {
+        semicolons = 'insert',
+      },
+    }
+  },
 }
