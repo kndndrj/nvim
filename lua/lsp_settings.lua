@@ -8,6 +8,13 @@ vim.fn.sign_define('DiagnosticSignWarn',        {text='', texthl='DiagnosticS
 vim.fn.sign_define('DiagnosticSignInfo',        {text='', texthl='DiagnosticSignInfo', linehl='', numhl=''})
 vim.fn.sign_define('DiagnosticSignHint',        {text='', texthl='DiagnosticSignHint', linehl='', numhl=''})
 
+-- Sign priority
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        severity_sort = true
+    }
+)
+
 local cmp = require'cmp'
 cmp.setup {
   snippet = {
@@ -19,23 +26,25 @@ cmp.setup {
   formatting = {
     format = require'lspkind'.cmp_format(),
   },
-  mapping = {
+  mapping = cmp.mapping.preset.insert({
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm {
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Replace,
       select = false,
-    },
-  },
-  sources = {
+    }),
+    ['<C-n>'] = cmp.mapping.select_next_item(),
+    ['<C-p>'] = cmp.mapping.select_prev_item(),
+  }),
+  sources = cmp.config.sources({
     { name = 'nvim_lua', max_item_count = 10},
     { name = 'nvim_lsp' },
     { name = 'path' },
     { name = 'luasnip' },
     { name = 'buffer', keyword_length = 5 },
-  },
+  }),
 }
 
 -- Load external snippets (aka. from rafamadriz/friendly-snippets)
@@ -61,6 +70,7 @@ local servers = {
   'bashls',
   'texlab',
   --'pylsp',
+  'yamlls',
 }
 
 --Enable (broadcasting) snippet capability for completion

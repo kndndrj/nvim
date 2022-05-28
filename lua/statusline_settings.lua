@@ -5,7 +5,7 @@
 local function debug()
   local debug_status = require'dap'.status()
   if debug_status ~= '' then
-    return debug_status
+    return 'Debug: ' .. debug_status
   end
   return ''
 end
@@ -17,11 +17,19 @@ local function lsp()
     return ''
   end
 
-  for _,client in ipairs(clients) do
+  for _, client in ipairs(clients) do
     local filetypes = client.config.filetypes
-    if filetypes and vim.fn.index(filetypes,buf_ft) ~= -1 then
-      return client.name
+    if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+      return 'Lsp: ' .. client.name
     end
+  end
+  return ''
+end
+
+local function projector()
+  local projector_status = require'projector'.status()
+  if projector_status ~= '' then
+    return 'Tasks: ' .. projector_status
   end
   return ''
 end
@@ -57,6 +65,7 @@ require('lualine').setup {
     lualine_c = {
       debug,
       lsp,
+      projector,
       {
         'diagnostics',
         diagnostics_color = {

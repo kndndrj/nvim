@@ -225,9 +225,6 @@ map('n', '<leader>fh', '<Cmd>lua require"telescope.builtin".help_tags()<CR>',  m
 map('n', '<leader>fo', '<Cmd>lua require"telescope.builtin".oldfiles()<CR>',   map_options)
 map('n', '<leader>fk', '<Cmd>lua require"telescope.builtin".file_browser()<CR>',   map_options)
 
--- Nvim tree
-map('n', '<leader>fj', ':NvimTreeToggle<CR>', map_options)
-
 -- Snippets
 map('i', '<C-d>', '<Cmd>lua require"luasnip".jump(-1)<CR>', map_options)
 map('s', '<C-d>', '<Cmd>lua require"luasnip".jump(-1)<CR>', map_options)
