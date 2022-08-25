@@ -108,6 +108,9 @@ require('kommentary.config').configure_language('default', {
   ignore_whitespace = true,
 })
 
+-- colorizer settings
+require'colorizer'.setup()
+
 -----------------------
 -- Key Bindings: ------
 -----------------------
@@ -181,10 +184,20 @@ map('t', '<Esc>', '<C-\\><C-n>', map_options)
 map('n', '<A-s>', '<Cmd> split term://zsh | resize 10 | setlocal nobuflisted <CR>', map_options)
 
 -- Clipboard
+-- y
 map('', '<leader>y', '"+y', map_options)
-map('', '<leader>p', '"+p', map_options)
 map('n', '<leader>yy', '"+yy', map_options)
 map('n', '<leader>Y', '"+y$', map_options)
+map('n', '<leader>yi', '"+yi', map_options)
+map('n', '<leader>ya', '"+ya', map_options)
+-- d
+map('v', '<leader>d', '"+d', map_options)
+map('n', '<leader>dd', '"+dd', map_options)
+map('n', '<leader>D', '"+d$', map_options)
+map('n', '<leader>di', '"+di', map_options)
+map('n', '<leader>da', '"+da', map_options)
+-- p
+map('', '<leader>p', '"+p', map_options)
 
 -- Harpoon
 map('n', '<leader>a', '<Cmd>lua require"harpoon.mark".add_file()<CR>', map_options)

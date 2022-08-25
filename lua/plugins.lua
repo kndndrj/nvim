@@ -39,8 +39,9 @@ return require'packer'.startup(
     -- Snippet manager
     use 'L3MON4D3/LuaSnip'
     use 'rafamadriz/friendly-snippets'
-    -- Icons
+    -- Icons and color previews
     use 'kyazdani42/nvim-web-devicons'
+    use 'NvChad/nvim-colorizer.lua'
     -- Statuslines
     use 'nvim-lualine/lualine.nvim'
     -- LaTeX
