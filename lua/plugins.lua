@@ -8,6 +8,7 @@ return require'packer'.startup(
     use 'lukas-reineke/indent-blankline.nvim'
     use 'ciaranm/detectindent'
     -- Themes
+    use 'navarasu/onedark.nvim'
     use 'sainnhe/everforest'
     -- Lua dependencies
     use 'nvim-lua/popup.nvim'

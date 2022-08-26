@@ -9,14 +9,26 @@ local o = vim.o
 local wo = vim.wo
 
 -- Colorscheme
-cmd 'syntax enable'
-cmd 'syntax on'
-g.everforest_diagnostic_text_highlight = 1
-g.everforest_enable_italic = 1
-g.everforest_diagnostic_virtual_text = 'colored'
-cmd 'colorscheme everforest'
+o.termguicolors = true
 
--- use tmux background
+require('onedark').setup  {
+    code_style = {
+	  strings = "NONE",
+	  comments = "italic",
+	  keywords = "bold,italic",
+	  functions = "NONE",
+	  variables = "NONE",
+    },
+    diagnostics = {
+        darker = true,
+        undercurl = true,
+        background = true,
+    },
+}
+
+cmd 'colorscheme onedark'
+
+-- use tmux background (if not available from the theme)
 cmd 'highlight Normal ctermbg=none guibg=none'
 cmd 'highlight EndOfBuffer ctermbg=none guibg=none'
 
@@ -38,9 +50,6 @@ o.hidden = true
 -- Split defaults
 o.splitbelow = true
 o.splitright = true
-
--- Enable colors
-o.termguicolors = true
 
 -- Display line numbers
 wo.number = true
@@ -87,13 +96,13 @@ cmd 'autocmd BufNewFile,BufRead Jenkinsfile set filetype=groovy'
 cmd 'autocmd BufWinEnter,WinEnter term://* startinsert'
 
 -- Gitsigns setup
-require'gitsigns'.setup {
-  keymaps = {},
+require 'gitsigns'.setup {
+	keymaps = {},
 }
 
 -- tmux navigation
-require'nvim-tmux-navigation'.setup {
-    disable_when_zoomed = true
+require 'nvim-tmux-navigation'.setup {
+	disable_when_zoomed = true
 }
 
 -- dadbod settings
@@ -102,20 +111,31 @@ g.db_ui_use_nerd_fonts = 1
 -- kommentary settings
 g.kommentary_create_default_mappings = false
 
-require('kommentary.config').configure_language('default', {
-  prefer_single_line_comments = true,
-  use_consistent_indentation = true,
-  ignore_whitespace = true,
+require 'kommentary.config'.configure_language('default', {
+	prefer_single_line_comments = true,
+	use_consistent_indentation = true,
+	ignore_whitespace = true,
 })
 
 -- colorizer settings
-require'colorizer'.setup()
+require 'colorizer'.setup(nil, {
+	RGB      = true,
+	RRGGBB   = true,
+	names    = false,
+	RRGGBBAA = true,
+	rgb_fn   = true,
+	hsl_fn   = true,
+	css      = false,
+	css_fn   = false,
+	-- Available modes: foreground, background
+	mode     = 'background',
+})
 
 -----------------------
 -- Key Bindings: ------
 -----------------------
 -- Binding options
-local map_options = { noremap=true, silent=true }
+local map_options = { noremap = true, silent = true }
 
 -- Map leader to space
 g.mapleader = ' '
@@ -226,17 +246,17 @@ map('n', '<leader>vd', ':diffget //2<CR>', map_options)
 map('n', '<leader>vj', ':diffget //3<CR>', map_options)
 
 -- kommentary
-map('n', '<leader>zz', '<Plug>kommentary_line_default',  {})
+map('n', '<leader>zz', '<Plug>kommentary_line_default', {})
 map('n', '<leader>z', '<Plug>kommentary_motion_default', {})
 map('x', '<leader>z', '<Plug>kommentary_visual_default<C-c>', {})
 
 -- Telescope
 map('n', '<leader>ff', '<Cmd>lua require"telescope.builtin".find_files()<CR>', map_options)
-map('n', '<leader>fg', '<Cmd>lua require"telescope.builtin".live_grep()<CR>',  map_options)
-map('n', '<leader>fb', '<Cmd>lua require"telescope.builtin".buffers()<CR>',    map_options)
-map('n', '<leader>fh', '<Cmd>lua require"telescope.builtin".help_tags()<CR>',  map_options)
-map('n', '<leader>fo', '<Cmd>lua require"telescope.builtin".oldfiles()<CR>',   map_options)
-map('n', '<leader>fk', '<Cmd>lua require"telescope.builtin".file_browser()<CR>',   map_options)
+map('n', '<leader>fg', '<Cmd>lua require"telescope.builtin".live_grep()<CR>', map_options)
+map('n', '<leader>fb', '<Cmd>lua require"telescope.builtin".buffers()<CR>', map_options)
+map('n', '<leader>fh', '<Cmd>lua require"telescope.builtin".help_tags()<CR>', map_options)
+map('n', '<leader>fo', '<Cmd>lua require"telescope.builtin".oldfiles()<CR>', map_options)
+map('n', '<leader>fk', '<Cmd>lua require"telescope.builtin".file_browser()<CR>', map_options)
 
 -- Snippets
 map('i', '<C-d>', '<Cmd>lua require"luasnip".jump(-1)<CR>', map_options)
