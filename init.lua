@@ -8,39 +8,8 @@ local map = vim.api.nvim_set_keymap
 local o = vim.o
 local wo = vim.wo
 
--- Colorscheme
-o.termguicolors = true
-
-require('onedark').setup  {
-    code_style = {
-	  strings = "NONE",
-	  comments = "italic",
-	  keywords = "bold,italic",
-	  functions = "NONE",
-	  variables = "NONE",
-    },
-    diagnostics = {
-        darker = true,
-        undercurl = true,
-        background = true,
-    },
-}
-
-cmd 'colorscheme onedark'
-
--- use tmux background (if not available from the theme)
-cmd 'highlight Normal ctermbg=none guibg=none'
-cmd 'highlight EndOfBuffer ctermbg=none guibg=none'
-
 -- Source other configs
 require 'plugins'
-require 'statusline_settings'
-require 'file_navigation_settings'
-require 'indentline_settings'
-require 'lsp_settings'
-require 'vimtex_settings'
-require 'treesitter_settings'
-require 'debug_settings'
 
 -----------------------
 -- Basic Config: ------
@@ -89,47 +58,11 @@ cmd ':command! W w'
 cmd ':command! Q q'
 
 -- Autocommands
-cmd 'autocmd BufWinEnter * :DetectIndent'
 cmd 'autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}'
 cmd 'autocmd BufNewFile,BufRead *.groff set filetype=groff'
 cmd 'autocmd BufNewFile,BufRead Jenkinsfile set filetype=groovy'
 cmd 'autocmd BufWinEnter,WinEnter term://* startinsert'
 
--- Gitsigns setup
-require 'gitsigns'.setup {
-	keymaps = {},
-}
-
--- tmux navigation
-require 'nvim-tmux-navigation'.setup {
-	disable_when_zoomed = true
-}
-
--- dadbod settings
-g.db_ui_use_nerd_fonts = 1
-
--- kommentary settings
-g.kommentary_create_default_mappings = false
-
-require 'kommentary.config'.configure_language('default', {
-	prefer_single_line_comments = true,
-	use_consistent_indentation = true,
-	ignore_whitespace = true,
-})
-
--- colorizer settings
-require 'colorizer'.setup(nil, {
-	RGB      = true,
-	RRGGBB   = true,
-	names    = false,
-	RRGGBBAA = true,
-	rgb_fn   = true,
-	hsl_fn   = true,
-	css      = false,
-	css_fn   = false,
-	-- Available modes: foreground, background
-	mode     = 'background',
-})
 
 -----------------------
 -- Key Bindings: ------
@@ -163,19 +96,6 @@ map('n', 'n', 'nzzzv', map_options)
 map('n', 'N', 'Nzzzv', map_options)
 map('v', '//', 'y/\\V<C-R>=escape(@","/\")<CR><CR>', map_options)
 
--- Move between splits and tmux panes in any mode
-map('n', '<C-a>h', ':lua require"nvim-tmux-navigation".NvimTmuxNavigateLeft()<cr>', map_options)
-map('n', '<C-a>j', ':lua require"nvim-tmux-navigation".NvimTmuxNavigateDown()<cr>', map_options)
-map('n', '<C-a>k', ':lua require"nvim-tmux-navigation".NvimTmuxNavigateUp()<cr>', map_options)
-map('n', '<C-a>l', ':lua require"nvim-tmux-navigation".NvimTmuxNavigateRight()<cr>', map_options)
-map('t', '<C-a>h', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateLeft()<cr>', map_options)
-map('t', '<C-a>j', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateDown()<cr>', map_options)
-map('t', '<C-a>k', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateUp()<cr>', map_options)
-map('t', '<C-a>l', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateRight()<cr>', map_options)
-map('i', '<C-a>h', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateLeft()<cr>', map_options)
-map('i', '<C-a>j', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateDown()<cr>', map_options)
-map('i', '<C-a>k', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateUp()<cr>', map_options)
-map('i', '<C-a>l', '<C-\\><C-N>:lua require"nvim-tmux-navigation".NvimTmuxNavigateRight()<cr>', map_options)
 
 -- Use alt+zuio to resize windows in any mode
 map('n', '<A-z>', ':vertical resize -2<CR>', map_options)
@@ -219,91 +139,3 @@ map('n', '<leader>da', '"+da', map_options)
 -- p
 map('', '<leader>p', '"+p', map_options)
 
--- Harpoon
-map('n', '<leader>a', '<Cmd>lua require"harpoon.mark".add_file()<CR>', map_options)
-map('n', '<leader>c', '<Cmd>lua require"harpoon.ui".toggle_quick_menu()<CR>', map_options)
-map('n', '<leader>q', '<Cmd>lua require"harpoon.ui".nav_file(1)<CR>', map_options)
-map('n', '<leader>w', '<Cmd>lua require"harpoon.ui".nav_file(2)<CR>', map_options)
-map('n', '<leader>e', '<Cmd>lua require"harpoon.ui".nav_file(3)<CR>', map_options)
-
--- Gitsigns
-map('n', '<leader>hs', '<Cmd>lua require"gitsigns".stage_hunk()<CR>', map_options)
-map('v', '<leader>hs', '<Cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>', map_options)
-map('n', '<leader>hu', '<Cmd>lua require"gitsigns".undo_stage_hunk()<CR>', map_options)
-map('n', '<leader>hr', '<Cmd>lua require"gitsigns".reset_hunk()<CR>', map_options)
-map('v', '<leader>hr', '<Cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>', map_options)
-map('n', '<leader>hR', '<Cmd>lua require"gitsigns".reset_buffer()<CR>', map_options)
-map('n', '<leader>hp', '<Cmd>lua require"gitsigns".preview_hunk()<CR>', map_options)
-map('n', '<leader>hb', '<Cmd>lua require"gitsigns".blame_line(true)<CR>', map_options)
-map('n', '<leader>hS', '<Cmd>lua require"gitsigns".stage_buffer()<CR>', map_options)
-map('n', '<leader>hU', '<Cmd>lua require"gitsigns".reset_buffer_index()<CR>', map_options)
-map('n', '<leader>hi', '<Cmd>lua require"gitsigns.actions".select_hunk()<CR>', map_options)
-map('n', '<leader>hn', '<Cmd>lua require"gitsigns".next_hunk()<CR>', map_options)
-map('n', '<leader>hN', '<Cmd>lua require"gitsigns".prev_hunk()<CR>', map_options)
-
--- Vim Fugitive
-map('n', '<leader>vd', ':diffget //2<CR>', map_options)
-map('n', '<leader>vj', ':diffget //3<CR>', map_options)
-
--- kommentary
-map('n', '<leader>zz', '<Plug>kommentary_line_default', {})
-map('n', '<leader>z', '<Plug>kommentary_motion_default', {})
-map('x', '<leader>z', '<Plug>kommentary_visual_default<C-c>', {})
-
--- Telescope
-map('n', '<leader>ff', '<Cmd>lua require"telescope.builtin".find_files()<CR>', map_options)
-map('n', '<leader>fg', '<Cmd>lua require"telescope.builtin".live_grep()<CR>', map_options)
-map('n', '<leader>fb', '<Cmd>lua require"telescope.builtin".buffers()<CR>', map_options)
-map('n', '<leader>fh', '<Cmd>lua require"telescope.builtin".help_tags()<CR>', map_options)
-map('n', '<leader>fo', '<Cmd>lua require"telescope.builtin".oldfiles()<CR>', map_options)
-map('n', '<leader>fk', '<Cmd>lua require"telescope.builtin".file_browser()<CR>', map_options)
-
--- Snippets
-map('i', '<C-d>', '<Cmd>lua require"luasnip".jump(-1)<CR>', map_options)
-map('s', '<C-d>', '<Cmd>lua require"luasnip".jump(-1)<CR>', map_options)
-map('i', '<C-f>', '<Cmd>lua require"luasnip".jump(1)<CR>', map_options)
-map('s', '<C-f>', '<Cmd>lua require"luasnip".jump(1)<CR>', map_options)
-
--- Language server
--- references
-map('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', map_options)
-map('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', map_options)
-map('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', map_options)
-map('n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', map_options)
-map('n', 'gt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', map_options)
--- formatting
-map('n', '<leader>tt', '<Cmd>lua vim.lsp.buf.formatting()<CR>', map_options)
--- rename
-map('n', 'gn', '<Cmd>lua vim.lsp.buf.rename()<CR>', map_options)
--- code action
-map('n', 'ga', '<Cmd>lua vim.lsp.buf.code_action()<CR>', map_options)
--- hover
-map('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', map_options)
-map('n', '<C-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', map_options)
--- diagnostic
-map('n', 'de', '<Cmd>lua vim.diagnostic.open_float()<CR>', map_options)
-map('n', 'dN', '<Cmd>lua vim.diagnostic.goto_prev()<CR>', map_options)
-map('n', 'dn', '<Cmd>lua vim.diagnostic.goto_next()<CR>', map_options)
-
--- Database (dadbod)
-map('n', 'čq', ':DBUIToggle<CR>', map_options)
-
--- Debugger
--- core
-map('n', 'čr', '<Cmd>lua require"projector".continue("all")<CR>', map_options)
-map('n', 'čt', '<Cmd>lua require"projector".toggle_output()<CR>', map_options)
-map('n', 'čn', '<Cmd>lua require"dap".step_over()<CR>', map_options)
-map('n', 'či', '<Cmd>lua require"dap".step_into()<CR>', map_options)
-map('n', 'čo', '<Cmd>lua require"dap".step_out()<CR>', map_options)
-map('n', 'čb', '<Cmd>lua require"dap".toggle_breakpoint()<CR>', map_options)
-map('n', 'čB', '<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>', map_options)
-map('n', 'čl', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', map_options)
-map('n', 'čd', '<Cmd>lua require"dap".run_last()<CR>', map_options)
-map('n', 'čg', '<Cmd>lua Add_test_to_configurations()<CR>', map_options)
--- dap-ui
-map('n', 'ču', '<Cmd>lua require"dapui".toggle()<CR>', map_options)
-map('v', 'če', '<Cmd>lua require("dapui").eval()<CR>', map_options)
--- dap-python
-map('n', 'čdn', '<Cmd>lua require("dap-python").test_method()<CR>', map_options)
-map('n', 'čdf', '<Cmd>lua require("dap-python").test_class()<CR>', map_options)
-map('v', 'čds', '<ESC><Cmd>lua require("dap-python").debug_selection()<CR>', map_options)

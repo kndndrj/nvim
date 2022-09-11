@@ -1,7 +1,12 @@
 -------------------------
 -- Indent Line: ---------
 -------------------------
-require'indent_blankline'.setup {
+
+local M = {}
+
+function M.configure()
+
+  require 'indent_blankline'.setup {
     buftype_exclude = { 'terminal' },
     filetype_exclude = { 'help', 'terminal' },
 
@@ -11,4 +16,8 @@ require'indent_blankline'.setup {
     use_treesitter = true,
     show_current_context = true,
     context_highlight_list = { 'Warning' }
-}
+  }
+
+end
+
+return M
