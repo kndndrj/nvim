@@ -210,8 +210,7 @@ return require 'packer'.startup(
     use {
       'mfussenegger/nvim-dap',
       opt = true,
-      keys = { 'čr' },
-      module = { 'dap' },
+      keys = { 'č' },
       wants = {
         'nvim-dap-virtual-text',
         'nvim-dap-ui',

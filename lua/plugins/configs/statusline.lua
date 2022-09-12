@@ -8,7 +8,7 @@ local M = {}
 local function debug()
   local debug_status = require 'dap'.status()
   if debug_status ~= '' then
-    return 'Debug: ' .. debug_status
+    return 'DEBUG: ' .. debug_status
   end
   return ''
 end
@@ -23,7 +23,7 @@ local function lsp()
   for _, client in ipairs(clients) do
     local filetypes = client.config.filetypes
     if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-      return 'Lsp: ' .. client.name
+      return 'LSP: ' .. client.name
     end
   end
   return ''
@@ -32,7 +32,7 @@ end
 local function projector()
   local projector_status = require 'projector'.status()
   if projector_status ~= '' then
-    return 'Tasks: ' .. projector_status
+    return 'TASKS: ' .. projector_status
   end
   return ''
 end
@@ -42,43 +42,26 @@ function M.configure()
   require('lualine').setup {
     options = {
       theme = 'onedark',
-      component_separators = '|',
+      component_separators = '',
       section_separators = { left = '', right = '' },
       disabled_filetypes = {
         'NvimTree',
         'vista',
         'dbui',
         'packer',
-        'dap-repl',
-        'dapui_scopes',
-        'dapui_breakpoints',
-        'dapui_stacks',
-        'dapui_watches',
       },
+      globalstatus = true,
     },
     sections = {
       lualine_a = {
         {
           'mode',
-          separator = { left = '' },
-          right_padding = 2
+          separator = { left = '', right = '' },
         },
       },
       lualine_b = {
-        'filename'
-      },
-      lualine_c = {
-        debug,
-        lsp,
-        projector,
         {
           'diagnostics',
-          diagnostics_color = {
-            error = { fg = '#e67e80' },
-            warn = { fg = '#dbbc7f' },
-            info = { fg = '#7fbbb3' },
-            hint = { fg = '#a7c080' },
-          },
           symbols = {
             error = ' ',
             warn = ' ',
@@ -87,34 +70,33 @@ function M.configure()
           },
         },
       },
+      lualine_c = {
+        debug,
+        lsp,
+        projector,
+      },
 
       lualine_x = {
-        'filetype',
-        'filesize',
-        'encoding',
-        'fileformat',
+        {
+          'buffers',
+          mode = 2,
+        }
       },
       lualine_y = {
         'branch',
         {
           'diff',
-          diff_color = {
-            added = { fg = '#a7c080' },
-            modified = { fg = '#7fbbb3' },
-            removed = { fg = '#e67e80' },
-          },
           symbols = {
-            added = ' ',
-            modified = 'ﰣ ',
-            removed = ' ',
+            added = '+',
+            modified = '~',
+            removed = '-',
           },
         },
       },
       lualine_z = {
         {
           'location',
-          separator = { right = '' },
-          left_padding = 2
+          separator = { left = '', right = '' },
         },
       },
     },
@@ -129,6 +111,10 @@ function M.configure()
     tabline = {},
     extensions = {},
   }
+
+  local map_options = { noremap = true, silent = true }
+
+  vim.api.nvim_set_keymap('n', '<leader>b', ':LualineBuffersJump! ', map_options)
 
 end
 
