@@ -61,7 +61,6 @@ cmd ':command! Q q'
 cmd 'autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}'
 cmd 'autocmd BufNewFile,BufRead *.groff set filetype=groff'
 cmd 'autocmd BufNewFile,BufRead Jenkinsfile set filetype=groovy'
-cmd 'autocmd BufWinEnter,WinEnter term://* startinsert'
 
 
 -----------------------
@@ -91,37 +90,11 @@ map('n', 'đ', ']', map_options)
 map('n', 'Š', '{', map_options)
 map('n', 'Đ', '}', map_options)
 
--- Clever remaps
-map('n', 'n', 'nzzzv', map_options)
-map('n', 'N', 'Nzzzv', map_options)
+-- Search highlighted text
 map('v', '//', 'y/\\V<C-R>=escape(@","/\")<CR><CR>', map_options)
 
-
--- Use alt+zuio to resize windows in any mode
-map('n', '<A-z>', ':vertical resize -2<CR>', map_options)
-map('n', '<A-u>', ':resize +2<CR>', map_options)
-map('n', '<A-i>', ':resize -2<CR>', map_options)
-map('n', '<A-o>', ':vertical resize +2<CR>', map_options)
-map('i', '<A-z>', '<C-\\><C-N>:vertical resize -2<CR>i', map_options)
-map('i', '<A-u>', '<C-\\><C-N>:resize -2<CR>i', map_options)
-map('i', '<A-i>', '<C-\\><C-N>:resize +2<CR>i', map_options)
-map('i', '<A-o>', '<C-\\><C-N>:vertical resize +2<CR>i', map_options)
-map('t', '<A-z>', '<C-\\><C-N>:vertical resize -2<CR>i', map_options)
-map('t', '<A-u>', '<C-\\><C-N>:resize -2<CR>i', map_options)
-map('t', '<A-i>', '<C-\\><C-N>:resize +2<CR>i', map_options)
-map('t', '<A-o>', '<C-\\><C-N>:vertical resize +2<CR>i', map_options)
-
--- Use alt+shift+jk to move lines up and down
-map('n', '<A-J>', ':m .+1<CR>==', map_options)
-map('n', '<A-K>', ':m .-2<CR>==', map_options)
-map('i', '<A-J>', '<Esc>:m .+1<CR>==gi', map_options)
-map('i', '<A-K>', '<Esc>:m .-2<CR>==gi', map_options)
-map('v', '<A-J>', ':m \'>+1<CR>gv=gv', map_options)
-map('v', '<A-K>', ':m \'<-2<CR>gv=gv', map_options)
-
--- Terminal
+-- Esc to quit terminal
 map('t', '<Esc>', '<C-\\><C-n>', map_options)
-map('n', '<A-s>', '<Cmd> split term://zsh | resize 10 | setlocal nobuflisted <CR>', map_options)
 
 -- Clipboard
 -- y

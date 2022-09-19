@@ -9,7 +9,7 @@ vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSig
 vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint', linehl = '', numhl = '' })
 
 -- Sign priority
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
   severity_sort = true
 }
@@ -114,27 +114,31 @@ function M.configure()
   }
 
 
+  -- Trouble
+  require 'trouble'.setup()
+
+
   local map_options = { noremap = true, silent = true }
 
   -- references
-  vim.api.nvim_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', map_options)
-  vim.api.nvim_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', map_options)
-  vim.api.nvim_set_keymap('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', map_options)
-  vim.api.nvim_set_keymap('n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', map_options)
-  vim.api.nvim_set_keymap('n', 'gt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', map_options)
+  vim.keymap.set('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', map_options)
+  vim.keymap.set('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', map_options)
+  vim.keymap.set('n', 'gd', '<Cmd>Trouble lsp_definitions<CR>', map_options)
+  vim.keymap.set('n', 'gr', '<Cmd>Trouble lsp_references<CR>', map_options)
+  vim.keymap.set('n', 'gt', '<Cmd>Trouble lsp_type_definitions<CR>', map_options)
+  vim.keymap.set('n', '<leader>g', '<Cmd>TroubleToggle<CR>', map_options)
   -- formatting
-  vim.api.nvim_set_keymap('n', '<leader>tt', '<Cmd>lua vim.lsp.buf.formatting()<CR>', map_options)
+  vim.keymap.set('n', '<leader>tt', '<Cmd>lua vim.lsp.buf.formatting()<CR>', map_options)
   -- rename
-  vim.api.nvim_set_keymap('n', 'gn', '<Cmd>lua vim.lsp.buf.rename()<CR>', map_options)
+  vim.keymap.set('n', 'gn', '<Cmd>lua vim.lsp.buf.rename()<CR>', map_options)
   -- code action
-  vim.api.nvim_set_keymap('n', 'ga', '<Cmd>lua vim.lsp.buf.code_action()<CR>', map_options)
+  vim.keymap.set('n', 'ga', '<Cmd>lua vim.lsp.buf.code_action()<CR>', map_options)
   -- hover
-  vim.api.nvim_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', map_options)
-  vim.api.nvim_set_keymap('n', '<C-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', map_options)
+  vim.keymap.set('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', map_options)
+  vim.keymap.set('n', '<C-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', map_options)
   -- diagnostic
-  vim.api.nvim_set_keymap('n', 'de', '<Cmd>lua vim.diagnostic.open_float()<CR>', map_options)
-  vim.api.nvim_set_keymap('n', 'dN', '<Cmd>lua vim.diagnostic.goto_prev()<CR>', map_options)
-  vim.api.nvim_set_keymap('n', 'dn', '<Cmd>lua vim.diagnostic.goto_next()<CR>', map_options)
+  vim.keymap.set('n', 'gE', '<Cmd>lua vim.diagnostic.open_float()<CR>', map_options)
+  vim.keymap.set('n', 'ge', '<Cmd>Trouble workspace_diagnostics<CR>', map_options)
 
 end
 

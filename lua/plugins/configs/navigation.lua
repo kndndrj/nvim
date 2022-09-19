@@ -1,9 +1,10 @@
 -------------------------
--- Telescope Settings: --
+-- Navigation: ----------
 -------------------------
 
 local M = {}
 
+-- Telescope
 local no_binary_preview = function(filepath, bufnr, opts)
   filepath = vim.fn.expand(filepath)
   require 'plenary.job':new({
@@ -23,7 +24,7 @@ local no_binary_preview = function(filepath, bufnr, opts)
   }):sync()
 end
 
-function M.configure()
+function M.configure_telescope()
 
   require 'telescope'.setup {
     defaults = {
@@ -55,6 +56,20 @@ function M.configure()
   vim.api.nvim_set_keymap('n', '<leader>fh', '<Cmd>lua require"telescope.builtin".help_tags()<CR>', map_options)
   vim.api.nvim_set_keymap('n', '<leader>fo', '<Cmd>lua require"telescope.builtin".oldfiles()<CR>', map_options)
   vim.api.nvim_set_keymap('n', '<leader>fk', '<Cmd>lua require"telescope.builtin".file_browser()<CR>', map_options)
+
+end
+
+-- Harpoon
+function M.configure_harpoon()
+
+  local map_options = { noremap = true, silent = true }
+  vim.api.nvim_set_keymap('n', '<leader>sa', '<Cmd>lua require"harpoon.mark".add_file()<CR>', map_options)
+  vim.api.nvim_set_keymap('n', '<leader>ss', '<Cmd>lua require"harpoon.ui".toggle_quick_menu()<CR>', map_options)
+  vim.api.nvim_set_keymap('n', '<leader>sq', '<Cmd>lua require"harpoon.ui".nav_file(1)<CR>', map_options)
+  vim.api.nvim_set_keymap('n', '<leader>sw', '<Cmd>lua require"harpoon.ui".nav_file(2)<CR>', map_options)
+  vim.api.nvim_set_keymap('n', '<leader>se', '<Cmd>lua require"harpoon.ui".nav_file(3)<CR>', map_options)
+  vim.api.nvim_set_keymap('n', '<leader>sr', '<Cmd>lua require"harpoon.ui".nav_file(3)<CR>', map_options)
+  require('telescope').load_extension 'harpoon'
 
 end
 
