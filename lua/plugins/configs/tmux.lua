@@ -86,9 +86,6 @@ end
 function M.configure()
 
 	require("tmux").setup {
-		copy_sync = {
-			enable = true,
-		},
 		resize = {
 			resize_step_x = 4,
 			resize_step_y = 4,

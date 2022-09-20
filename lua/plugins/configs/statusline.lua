@@ -37,13 +37,34 @@ local function projector()
   return ''
 end
 
+-- Theme
+local function configure_theme()
+  local theme = require 'lualine.themes.onedark'
+
+  -- buffers theme
+  theme.buffers = {
+    active = { fg = theme.normal.a.bg, bg = theme.normal.b.bg, gui = 'bold' },
+    inactive = { fg = theme.inactive.b.fg, bg = theme.normal.b.bg },
+  }
+
+  -- transparent background
+  for _, mode in pairs(theme) do
+    if mode.c then
+      mode.c.bg = nil
+    end
+  end
+
+  return theme
+end
+
 function M.configure()
+
 
   require('lualine').setup {
     options = {
-      theme = 'onedark',
+      theme = configure_theme(),
       component_separators = '',
-      section_separators = { left = '', right = '' },
+      section_separators = { left = '', right = '' },
       disabled_filetypes = {
         'NvimTree',
         'vista',
@@ -56,10 +77,21 @@ function M.configure()
       lualine_a = {
         {
           'mode',
-          separator = { left = '', right = '' },
+          separator = { left = '', right = '' },
         },
       },
       lualine_b = {
+        {
+          'buffers',
+          mode = 2,
+          separator = { left = '', right = '' },
+          buffers_color = {
+            active = 'lualine_active_buffers',
+            inactive = 'lualine_inactive_buffers'
+          },
+        },
+      },
+      lualine_c = {
         {
           'diagnostics',
           symbols = {
@@ -70,33 +102,23 @@ function M.configure()
           },
         },
       },
-      lualine_c = {
+
+      lualine_x = {
         debug,
         lsp,
         projector,
       },
-
-      lualine_x = {
-        {
-          'buffers',
-          mode = 2,
-        }
-      },
       lualine_y = {
-        'branch',
         {
-          'diff',
-          symbols = {
-            added = '+',
-            modified = '~',
-            removed = '-',
-          },
+          'branch',
+          separator = { left = '', right = '' },
         },
+        'diff',
       },
       lualine_z = {
         {
           'location',
-          separator = { left = '', right = '' },
+          separator = { left = '', right = '' },
         },
       },
     },

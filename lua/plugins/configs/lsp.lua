@@ -1,28 +1,23 @@
 -------------------------
--- LSP settings: --------
--------------------------
-
--- Icon customization
-vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticSignError', linehl = '', numhl = '' })
-vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn', linehl = '', numhl = '' })
-vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo', linehl = '', numhl = '' })
-vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint', linehl = '', numhl = '' })
-
--- Sign priority
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-  severity_sort = true
-}
-)
-
-
--------------------------
 -- Language servers: ----
 -------------------------
 
 local M = {}
 
 function M.configure()
+
+  -- Icon customization
+  vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticSignError', linehl = '', numhl = '' })
+  vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn', linehl = '', numhl = '' })
+  vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo', linehl = '', numhl = '' })
+  vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint', linehl = '', numhl = '' })
+
+  -- Sign priority
+  vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+    severity_sort = true
+  }
+  )
 
   -- List of language servers with default config
   local servers = {
@@ -115,8 +110,9 @@ function M.configure()
 
 
   -- Trouble
-  require 'trouble'.setup()
-
+  require 'trouble'.setup {
+    use_diagnostic_signs = true,
+  }
 
   local map_options = { noremap = true, silent = true }
 
