@@ -4,72 +4,22 @@
 
 local M = {}
 
-function M.configure()
 
-  -- Icon customization
-  vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticSignError', linehl = '', numhl = '' })
-  vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn', linehl = '', numhl = '' })
-  vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo', linehl = '', numhl = '' })
-  vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint', linehl = '', numhl = '' })
+--
+-- List of language servers
+--
+M.servers = {
+  gopls = {},
 
-  -- Sign priority
-  vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-    severity_sort = true
-  }
-  )
+  rust_analyzer = {},
 
-  -- List of language servers with default config
-  local servers = {
-    --'clangd',
-    'gopls',
-    'rust_analyzer',
-    --'denols',
-    'bashls',
-    'texlab',
-    --'pylsp',
-    'yamlls',
-  }
+  bashls = {},
 
-  --Enable (broadcasting) snippet capability for completion
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities = require 'cmp_nvim_lsp'.update_capabilities(capabilities)
-  capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = {
-      'documentation',
-      'detail',
-      'additionalTextEdits',
-    }
-  }
+  texlab = {},
 
-  -- Setup all language servers
-  for _, server in pairs(servers) do
-    require 'lspconfig'[server].setup {
-      capabilities = capabilities
-    }
-  end
+  yamlls = {},
 
-  -- Special cases
-  require 'lspconfig'.sumneko_lua.setup {
-    capabilities = capabilities,
-    cmd = { 'lua-language-server' },
-    settings = {
-      Lua = {
-        telemetry = {
-          enable = false,
-        },
-      },
-    },
-  }
-  require 'lspconfig'.ccls.setup {
-    capabilities = capabilities,
-    init_options = {
-      compilationDatabaseDirectory = 'build',
-    },
-  }
-  require 'lspconfig'.pylsp.setup {
-    capabilities = capabilities,
+  pylsp = {
     settings = {
       pylsp = {
         configurationSources = { 'pycodestyle', 'flake8' },
@@ -80,25 +30,41 @@ function M.configure()
         },
       },
     },
-  }
-  require 'lspconfig'.jsonls.setup {
-    capabilities = capabilities,
+  },
+
+  ccls = {
+    init_options = {
+      compilationDatabaseDirectory = 'build',
+    },
+  },
+  sumneko_lua = {
+    cmd = { 'lua-language-server' },
+    settings = {
+      Lua = {
+        telemetry = {
+          enable = false,
+        },
+      },
+    },
+  },
+
+  jsonls = {
     cmd = { 'vscode-json-languageserver', '--stdio' },
-  }
-  require 'lspconfig'.html.setup {
-    capabilities = capabilities,
+  },
+
+  html = {
     cmd = { 'vscode-html-languageserver', '--stdio' },
-  }
-  require 'lspconfig'.cssls.setup {
-    capabilities = capabilities,
+  },
+
+  cssls = {
     cmd = { 'vscode-css-languageserver', '--stdio' },
-  }
-  require 'lspconfig'.sqlls.setup {
-    capabilities = capabilities,
+  },
+
+  sqlls = {
     cmd = { 'sql-language-server', 'up', '--method', 'stdio' };
-  }
-  require 'lspconfig'.tsserver.setup {
-    capabilities = capabilities,
+  },
+
+  tsserver = {
     settings = {
       codeActionsOnSave = {
         source = {
@@ -111,16 +77,16 @@ function M.configure()
         },
       }
     },
-  }
+  },
+}
 
 
-  -- Trouble
-  require 'trouble'.setup {
-    use_diagnostic_signs = true,
-  }
-
-  local map_options = { noremap = true, silent = true }
-
+--
+-- Global options
+--
+local on_attach = function(_, bufnr)
+  -- Mappings.
+  local map_options = { noremap = true, silent = true, buffer = bufnr }
   -- references
   vim.keymap.set('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', map_options)
   vim.keymap.set('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', map_options)
@@ -140,6 +106,40 @@ function M.configure()
   -- diagnostic
   vim.keymap.set('n', 'gE', '<Cmd>lua vim.diagnostic.open_float()<CR>', map_options)
   vim.keymap.set('n', 'ge', '<Cmd>Trouble workspace_diagnostics<CR>', map_options)
+end
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require 'cmp_nvim_lsp'.update_capabilities(capabilities)
+
+
+--
+-- Configuration function
+--
+function M.configure()
+
+  -- Icon customization
+  vim.fn.sign_define('DiagnosticSignError', { text = '', texthl = 'DiagnosticSignError', linehl = '', numhl = '' })
+  vim.fn.sign_define('DiagnosticSignWarn', { text = '', texthl = 'DiagnosticSignWarn', linehl = '', numhl = '' })
+  vim.fn.sign_define('DiagnosticSignInfo', { text = '', texthl = 'DiagnosticSignInfo', linehl = '', numhl = '' })
+  vim.fn.sign_define('DiagnosticSignHint', { text = '', texthl = 'DiagnosticSignHint', linehl = '', numhl = '' })
+
+  -- Sign priority
+  vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+    severity_sort = true
+  })
+
+  -- Initialize all language servers
+  for server, config in pairs(M.servers) do
+    config.capabilities = capabilities
+    config.on_attach = on_attach
+    require 'lspconfig'[server].setup(config)
+  end
+
+  -- Trouble
+  require 'trouble'.setup {
+    use_diagnostic_signs = true,
+  }
 
 end
 
