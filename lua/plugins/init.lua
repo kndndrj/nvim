@@ -153,11 +153,35 @@ return require 'packer'.startup(
     }
 
 
+    -- Mason
+    use {
+      'williamboman/mason.nvim',
+      run = ':MasonUpdateAll',
+      wants = {
+        'mason-lspconfig.nvim',
+        'mason-nvim-dap.nvim',
+        'mason-update-all',
+      },
+      requires = {
+        'williamboman/mason-lspconfig.nvim',
+        'jayp0521/mason-nvim-dap.nvim',
+        'RubixDev/mason-update-all',
+      },
+      config = function()
+        require('plugins.configs.mason').configure(
+          vim.tbl_keys(require 'plugins.configs.lsp.servers'),
+          vim.tbl_keys(require 'plugins.configs.debug.adapters')
+        )
+      end,
+    }
+
+
     -- LSP
     use {
       'neovim/nvim-lspconfig',
       opt = true,
       event = { 'BufReadPre' },
+      after = 'mason.nvim',
       wants = {
         'cmp-nvim-lsp',
         'trouble.nvim',
@@ -178,6 +202,7 @@ return require 'packer'.startup(
       'mfussenegger/nvim-dap',
       opt = true,
       keys = { 'č' },
+      after = 'mason.nvim',
       wants = {
         'nvim-dap-virtual-text',
         'nvim-dap-ui',

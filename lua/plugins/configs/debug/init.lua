@@ -6,30 +6,6 @@ local M = {}
 
 
 --
--- List of debug adapters
---
-M.adapters = {
-  python = function()
-    require 'dap-python'.setup('/usr/bin/python')
-  end,
-
-  cppdbg = {
-    type = 'executable',
-    command = os.getenv('HOME') .. '/Repos/dev/vscode-cpptools/extension/debugAdapters/bin/OpenDebugAD7',
-  },
-
-  delve = {
-    type = 'server',
-    port = '${port}',
-    executable = {
-      command = 'dlv',
-      args = { 'dap', '-l', '127.0.0.1:${port}' },
-    },
-  },
-}
-
-
---
 -- Configuration function
 --
 function M.configure()
@@ -73,7 +49,7 @@ function M.configure()
   --
   -- Initialize all debug adapters
   --
-  for adapter, config in pairs(M.adapters) do
+  for adapter, config in pairs(require'plugins.configs.debug.adapters') do
     if type(config) == 'function' then
       config()
     else

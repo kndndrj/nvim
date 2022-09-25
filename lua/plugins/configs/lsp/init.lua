@@ -6,82 +6,6 @@ local M = {}
 
 
 --
--- List of language servers
---
-M.servers = {
-  gopls = {},
-
-  rust_analyzer = {},
-
-  bashls = {},
-
-  texlab = {},
-
-  yamlls = {},
-
-  pylsp = {
-    settings = {
-      pylsp = {
-        configurationSources = { 'pycodestyle', 'flake8' },
-        plugins = {
-          pycodestyle = {
-            maxLineLength = 100,
-          },
-        },
-      },
-    },
-  },
-
-  ccls = {
-    init_options = {
-      compilationDatabaseDirectory = 'build',
-    },
-  },
-  sumneko_lua = {
-    cmd = { 'lua-language-server' },
-    settings = {
-      Lua = {
-        telemetry = {
-          enable = false,
-        },
-      },
-    },
-  },
-
-  jsonls = {
-    cmd = { 'vscode-json-languageserver', '--stdio' },
-  },
-
-  html = {
-    cmd = { 'vscode-html-languageserver', '--stdio' },
-  },
-
-  cssls = {
-    cmd = { 'vscode-css-languageserver', '--stdio' },
-  },
-
-  sqlls = {
-    cmd = { 'sql-language-server', 'up', '--method', 'stdio' };
-  },
-
-  tsserver = {
-    settings = {
-      codeActionsOnSave = {
-        source = {
-          organizeImports = true,
-        },
-      },
-      javascript = {
-        format = {
-          semicolons = 'insert',
-        },
-      }
-    },
-  },
-}
-
-
---
 -- Global options
 --
 local on_attach = function(_, bufnr)
@@ -130,7 +54,7 @@ function M.configure()
   })
 
   -- Initialize all language servers
-  for server, config in pairs(M.servers) do
+  for server, config in pairs(require 'plugins.configs.lsp.servers') do
     config.capabilities = capabilities
     config.on_attach = on_attach
     require 'lspconfig'[server].setup(config)
