@@ -12,6 +12,8 @@ return {
 
   cssls = {},
 
+  dockerls = {},
+
   gopls = {},
 
   html = {},
