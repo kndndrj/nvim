@@ -73,6 +73,11 @@ function M.configure()
     settings = {
       pylsp = {
         configurationSources = { 'pycodestyle', 'flake8' },
+        plugins = {
+          pycodestyle = {
+            maxLineLength = 100,
+          },
+        },
       },
     },
   }

@@ -21,32 +21,24 @@ return require 'packer'.startup(
   function()
     use { 'wbthomason/packer.nvim' }
 
+
     -- Pretty
     use {
       'navarasu/onedark.nvim',
       config = function()
-
-        require('onedark').setup {
-          code_style = {
-            strings = "NONE",
-            comments = "italic",
-            keywords = "bold,italic",
-            functions = "NONE",
-            variables = "NONE",
-          },
-          diagnostics = {
-            darker = true,
-            undercurl = true,
-            background = true,
-          },
-        }
-
-        vim.cmd 'colorscheme onedark'
-
-        -- use tmux background (if not available from the theme)
-        vim.cmd 'highlight Normal ctermbg=none guibg=none'
-        vim.cmd 'highlight EndOfBuffer ctermbg=none guibg=none'
-        vim.cmd 'highlight SignColumn ctermbg=none guibg=none'
+        require 'plugins.configs.candy'.configure_colorscheme()
+      end
+    }
+    use {
+      'stevearc/dressing.nvim',
+      config = function()
+        require 'plugins.configs.candy'.configure_dressing()
+      end
+    }
+    use {
+      'rcarriga/nvim-notify',
+      config = function()
+        require 'plugins.configs.candy'.configure_notify()
       end
     }
     use {
