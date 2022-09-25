@@ -2,16 +2,21 @@
 -- List of Servers: -----
 -------------------------
 return {
+  bashls = {},
+
+  bufls = {},
+
+  clangd = {
+    filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' }
+  },
+
+  cssls = {},
 
   gopls = {},
 
-  rust_analyzer = {},
+  html = {},
 
-  bashls = {},
-
-  texlab = {},
-
-  yamlls = {},
+  jsonls = {},
 
   pylsp = {
     settings = {
@@ -26,7 +31,11 @@ return {
     },
   },
 
-  clangd = {},
+  rust_analyzer = {},
+
+  sqlls = {
+    cmd = { 'sql-language-server', 'up', '--method', 'stdio' };
+  },
 
   sumneko_lua = {
     cmd = { 'lua-language-server' },
@@ -39,19 +48,7 @@ return {
     },
   },
 
-  jsonls = {},
-
-  html = {
-    cmd = { 'vscode-html-languageserver', '--stdio' },
-  },
-
-  cssls = {
-    cmd = { 'vscode-css-languageserver', '--stdio' },
-  },
-
-  sqlls = {
-    cmd = { 'sql-language-server', 'up', '--method', 'stdio' };
-  },
+  texlab = {},
 
   tsserver = {
     settings = {
@@ -67,4 +64,6 @@ return {
       }
     },
   },
+
+  yamlls = {},
 }

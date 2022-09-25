@@ -20,10 +20,6 @@ end)()
 
 
 return {
-  python = function()
-    require 'dap-python'.setup(table.concat({ vim.fn.stdpath('data'), 'mason', 'packages', 'debugpy', 'venv', 'bin', 'python' }, sep))
-  end,
-
   cppdbg = {
     type = 'executable',
     command = 'OpenDebugAD7',
@@ -37,4 +33,8 @@ return {
       args = { 'dap', '-l', '127.0.0.1:${port}' },
     },
   },
+
+  python = function()
+    require 'dap-python'.setup(table.concat({ vim.fn.stdpath('data'), 'mason', 'packages', 'debugpy', 'venv', 'bin', 'python' }, sep))
+  end,
 }
