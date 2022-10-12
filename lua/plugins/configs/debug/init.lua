@@ -26,8 +26,8 @@ function M.configure()
   -- Set up the UI
   require 'dapui'.setup {
     mappings = {
-      expand = { 'l', 'h', '<2-LeftMouse>' },
-      open = 'o',
+      expand = { 'o', '<2-LeftMouse>' },
+      open = '<CR>',
       remove = 'd',
       edit = 'c',
       repl = 'r',
@@ -49,7 +49,7 @@ function M.configure()
   --
   -- Initialize all debug adapters
   --
-  for adapter, config in pairs(require'plugins.configs.debug.adapters') do
+  for adapter, config in pairs(require 'plugins.configs.debug.adapters') do
     if type(config) == 'function' then
       config()
     else
@@ -61,47 +61,79 @@ function M.configure()
   --
   -- Configurations
   --
-  require 'dap'.configurations.go = {
+  local configs = {
     {
-      type = "delve",
+      name = 'Generate',
+      group = "go",
+      command = 'go generate',
+      args = {
+        '${workspaceFolder}/tools.go',
+      },
+    },
+    {
       name = "Debug",
+      group = "go",
+      type = "delve",
       request = "launch",
       program = "${file}"
     },
+    -- configuration for debugging test files
     {
+      name = "Debug test",
+      group = "go",
       type = "delve",
-      name = "Debug test", -- configuration for debugging test files
       request = "launch",
       mode = "test",
       program = "${file}"
     },
     -- works with go.mod packages and sub packages
     {
-      type = "delve",
       name = "Debug test (go.mod)",
+      group = "go",
+      type = "delve",
       request = "launch",
       mode = "test",
       program = "./${relativeFileDirname}"
     }
   }
 
-  require 'projector'.configurations.global.tasks.go = {
-    {
-      name = 'Generate',
-      command = 'go generate',
-      args = {
-        '${workspaceFolder}/tools.go',
-      },
-    },
-  }
-
 
   --
-  -- Other settings
+  -- Projector setup
   --
   -- Load project-specific configurations aka. from .vscode/launch.json
-  require 'projector.config_utils'.load_dap_configurations()
-  require 'projector.config_utils'.load_project_configurations(vim.fn.getcwd() .. '/.vscode/projector.json')
+  require 'projector'.setup {
+    loaders = {
+      {
+        module = 'tasksjson',
+        opt = vim.fn.getcwd() .. '/.vscode/tasks.json',
+      },
+      {
+        module = 'launchjson',
+        opt = vim.fn.getcwd() .. '/.vscode/launch.json',
+      },
+      {
+        module = 'dap',
+        opt = '',
+      },
+      {
+        module = 'builtin',
+        opt = configs,
+      },
+      {
+        module = 'builtin',
+        opt = vim.fn.getcwd() .. '/.vscode/projector.json',
+      },
+      {
+        module = 'legacy.json',
+        opt = vim.fn.getcwd() .. '/.vscode/projector.json',
+      },
+    },
+    display_format = function(_, scope, group, modes, name)
+      return scope .. "  " .. group .. "  " .. modes .. "  " .. name
+    end,
+    automatic_reload = true,
+  }
 
 
   --
@@ -109,20 +141,20 @@ function M.configure()
   --
   local map_options = { noremap = true, silent = true }
   -- core
-  vim.api.nvim_set_keymap('n', 'čr', '<Cmd>lua require"projector".continue("all")<CR>', map_options)
-  vim.api.nvim_set_keymap('n', 'čt', '<Cmd>lua require"projector".toggle_output()<CR>', map_options)
+  vim.api.nvim_set_keymap('n', 'čs', '<Cmd>lua require"projector".continue()<CR>', map_options)
+  vim.api.nvim_set_keymap('n', 'čt', '<Cmd>lua require"projector".toggle()<CR>', map_options)
+  vim.api.nvim_set_keymap('n', 'čw', '<Cmd>lua require"projector".next()<CR>', map_options)
+  vim.api.nvim_set_keymap('n', 'čq', '<Cmd>lua require"projector".previous()<CR>', map_options)
+  vim.api.nvim_set_keymap('n', 'čr', '<Cmd>lua require"projector".restart()<CR>', map_options)
+  vim.api.nvim_set_keymap('n', 'čk', '<Cmd>lua require"projector".kill()<CR>', map_options)
   vim.api.nvim_set_keymap('n', 'čn', '<Cmd>lua require"dap".step_over()<CR>', map_options)
   vim.api.nvim_set_keymap('n', 'či', '<Cmd>lua require"dap".step_into()<CR>', map_options)
   vim.api.nvim_set_keymap('n', 'čo', '<Cmd>lua require"dap".step_out()<CR>', map_options)
   vim.api.nvim_set_keymap('n', 'čb', '<Cmd>lua require"dap".toggle_breakpoint()<CR>', map_options)
-  vim.api.nvim_set_keymap('n', 'čB', '<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>'
-    , map_options)
-  vim.api.nvim_set_keymap('n', 'čl',
-    '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', map_options)
-  vim.api.nvim_set_keymap('n', 'čd', '<Cmd>lua require"dap".run_last()<CR>', map_options)
+  vim.api.nvim_set_keymap('n', 'čB', '<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>' , map_options)
+  vim.api.nvim_set_keymap('n', 'čl', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', map_options)
   vim.api.nvim_set_keymap('n', 'čg', '<Cmd>lua Add_test_to_configurations()<CR>', map_options)
   -- dap-ui
-  vim.api.nvim_set_keymap('n', 'ču', '<Cmd>lua require"dapui".toggle()<CR>', map_options)
   vim.api.nvim_set_keymap('v', 'če', '<Cmd>lua require("dapui").eval()<CR>', map_options)
   -- dap-python
   vim.api.nvim_set_keymap('n', 'čdn', '<Cmd>lua require("dap-python").test_method()<CR>', map_options)

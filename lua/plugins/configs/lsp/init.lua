@@ -19,7 +19,7 @@ local on_attach = function(_, bufnr)
   vim.keymap.set('n', 'gt', '<Cmd>Trouble lsp_type_definitions<CR>', map_options)
   vim.keymap.set('n', '<leader>g', '<Cmd>TroubleToggle<CR>', map_options)
   -- formatting
-  vim.keymap.set('n', '<leader>tt', '<Cmd>lua vim.lsp.buf.formatting()<CR>', map_options)
+  vim.keymap.set('n', '<leader>tt', '<Cmd>lua vim.lsp.buf.format { async = true }<CR>', map_options)
   -- rename
   vim.keymap.set('n', 'gn', '<Cmd>lua vim.lsp.buf.rename()<CR>', map_options)
   -- code action

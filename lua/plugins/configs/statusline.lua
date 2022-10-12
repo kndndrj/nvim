@@ -80,17 +80,7 @@ function M.configure()
           separator = { left = '', right = '' },
         },
       },
-      lualine_b = {
-        {
-          'buffers',
-          mode = 2,
-          separator = { left = '', right = '' },
-          buffers_color = {
-            active = 'lualine_active_buffers',
-            inactive = 'lualine_inactive_buffers'
-          },
-        },
-      },
+      lualine_b = {},
       lualine_c = {
         {
           'diagnostics',
@@ -122,15 +112,25 @@ function M.configure()
         },
       },
     },
-    inactive_sections = {
-      lualine_a = { 'filename' },
+    tabline = {
+      lualine_a = {
+        {
+          'buffers',
+          mode = 2,
+          separator = { left = '', right = '' },
+          buffers_color = {
+            active = 'lualine_active_buffers',
+            inactive = 'lualine_inactive_buffers'
+          },
+        },
+      },
       lualine_b = {},
       lualine_c = {},
       lualine_x = {},
       lualine_y = {},
-      lualine_z = { 'location' },
+      lualine_z = { 'tabs' }
     },
-    tabline = {},
+    winbar = {},
     extensions = {},
   }
 

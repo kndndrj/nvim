@@ -7,79 +7,106 @@
 -- Exit the mode after a timeout for repeat keymaps
 --
 -- examples:
---     swithc panes with: <tmuxprefix>h
+--     switch panes with: <tmuxprefix>h
 --     resize panes with: <tmuxprefix>HHHHHHHHHHHHHH
 
 local M = {}
 
--- Helper functions
 
-local timer = nil
+-- globals
+local timer
+local layer
+
+--
+-- Helper functions
+--
+local function layer_exit()
+	if layer:is_active() then
+		layer:exit()
+	end
+end
 
 -- return to normal mode if no key presssed for a while
-local function layer_timeout()
-	if timer == nil then
+local function layer_timeout(timeout)
+	if not timer then
 		timer = vim.loop.new_timer()
 	end
-	timer:start(400, 0, vim.schedule_wrap(function()
-		vim.api.nvim_input("<esc>")
-		timer:close()
-		timer = nil
+	timer:start(timeout, 0, vim.schedule_wrap(function()
+		layer_exit()
+		if timer then
+			timer:stop()
+			timer:close()
+			timer = nil
+		end
 	end))
 end
 
--- return to normal mode
-local function layer_exit()
-	vim.api.nvim_input("<esc>")
+local function layer_enter()
+	if not layer:is_active() then
+		-- exit layer automatically after timeout
+		layer_timeout(800)
+		layer:enter()
+	end
 end
 
-local function enter_tmux_layer()
-	-- return to normal mode
+-- return to normal mode
+local function nm()
 	vim.api.nvim_input("<C-\\><C-N>")
+end
 
-	require 'libmodal'.layer.enter(
-		{
-			n = {
-				-- moving
-				h = {
-					rhs = function() layer_exit(); require("tmux").move_left() end,
-					noremap = true,
-				},
-				j = {
-					rhs = function() layer_exit(); require("tmux").move_bottom() end,
-					noremap = true,
-				},
-				k = {
-					rhs = function() layer_exit(); require("tmux").move_top() end,
-					noremap = true,
-				},
-				l = {
-					rhs = function() layer_exit(); require("tmux").move_right() end,
-					noremap = true,
-				},
-
-				-- resizing
-				H = {
-					rhs = function() layer_timeout(); require("tmux").resize_left() end,
-					noremap = true,
-				},
-				J = {
-					rhs = function() layer_timeout(); require("tmux").resize_bottom() end,
-					noremap = true,
-				},
-				K = {
-					rhs = function() layer_timeout(); require("tmux").resize_top() end,
-					noremap = true,
-				},
-				L = {
-					rhs = function() layer_timeout(); require("tmux").resize_right() end,
-					noremap = true,
-				},
-			}
+local function layer_create()
+	local tmux = require("tmux")
+	local mappings = {
+		-- moving
+		h = {
+			rhs = function() nm(); layer_exit(); tmux.move_left() end,
+			noremap = true,
 		},
-		-- exit layer with:
-		'<Esc>'
+		j = {
+			rhs = function() nm(); layer_exit(); tmux.move_bottom() end,
+			noremap = true,
+		},
+		k = {
+			rhs = function() nm(); layer_exit(); tmux.move_top() end,
+			noremap = true,
+		},
+		l = {
+			rhs = function() nm(); layer_exit(); tmux.move_right() end,
+			noremap = true,
+		},
+
+		-- resizing
+		H = {
+			rhs = function() layer_timeout(350); tmux.resize_left() end,
+			noremap = true,
+		},
+		J = {
+			rhs = function() layer_timeout(350); tmux.resize_bottom() end,
+			noremap = true,
+		},
+		K = {
+			rhs = function() layer_timeout(350); tmux.resize_top() end,
+			noremap = true,
+		},
+		L = {
+			rhs = function() layer_timeout(350); tmux.resize_right() end,
+			noremap = true,
+		},
+	}
+
+	local libmodal = require 'libmodal'
+	layer = libmodal.layer.new(
+		{
+			n = mappings,
+			i = mappings,
+			t = mappings,
+			x = mappings,
+			o = mappings,
+		}
 	)
+
+	-- exit layer manually with:
+	vim.keymap.set('n', '<esc>', function() layer_exit() end, { noremap = true, silent = true })
 end
 
 -- Configuration
@@ -101,11 +128,15 @@ function M.configure()
 
 	local map_options = { noremap = true, silent = true }
 
-	-- enter the layer with tmux prefix
-	vim.keymap.set('n', '<C-a>', enter_tmux_layer, map_options)
-	vim.keymap.set('i', '<C-a>', enter_tmux_layer, map_options)
-	vim.keymap.set('t', '<C-a>', enter_tmux_layer, map_options)
+	-- create a layer once
+	layer_create()
 
+	-- enter the layer with tmux prefix
+	vim.keymap.set('n', '<C-a>', layer_enter, map_options)
+	vim.keymap.set('i', '<C-a>', layer_enter, map_options)
+	vim.keymap.set('t', '<C-a>', layer_enter, map_options)
+	vim.keymap.set('x', '<C-a>', layer_enter, map_options)
+	vim.keymap.set('o', '<C-a>', layer_enter, map_options)
 end
 
 return M

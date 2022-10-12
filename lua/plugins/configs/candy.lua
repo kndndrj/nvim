@@ -5,8 +5,6 @@
 local M = {}
 
 function M.configure_colorscheme()
-  vim.g.termguicolors = true
-
   require('onedark').setup {
     code_style = {
       strings = "NONE",
@@ -46,10 +44,10 @@ function M.configure_dressing()
       },
     }
   }
-
 end
 
 function M.configure_notify()
+  vim.opt.termguicolors = true
   require 'notify'.setup({
     background_colour = '#000000',
   })

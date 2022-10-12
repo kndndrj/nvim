@@ -202,6 +202,7 @@ return require 'packer'.startup(
       'mfussenegger/nvim-dap',
       opt = true,
       keys = { 'č' },
+      module = "dap",
       after = 'mason.nvim',
       wants = {
         'nvim-dap-virtual-text',
@@ -213,7 +214,8 @@ return require 'packer'.startup(
         'theHamsta/nvim-dap-virtual-text',
         'rcarriga/nvim-dap-ui',
         'mfussenegger/nvim-dap-python',
-        { 'kndndrj/nvim-projector', branch = 'development' },
+        {'kndndrj/nvim-projector', branch = "refactor"},
+        'kndndrj/projector-loader-vscode',
       },
       config = function()
         require('plugins.configs.debug').configure()
@@ -308,14 +310,12 @@ return require 'packer'.startup(
         'DBUIRenameBuffer',
         'DBUILastQueryInfo'
       },
-      keys = { 'čq' },
       requires = {
         'kristijanhusak/vim-dadbod-ui',
         'kristijanhusak/vim-dadbod-completion',
       },
       config = function()
         vim.g.db_ui_use_nerd_fonts = 1
-        vim.api.nvim_set_keymap('n', 'čq', ':DBUIToggle<CR>', { noremap = true, silent = true })
       end,
     }
 
