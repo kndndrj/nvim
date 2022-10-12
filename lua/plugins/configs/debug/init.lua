@@ -62,6 +62,7 @@ function M.configure()
   -- Configurations
   --
   local configs = {
+    -- Go
     {
       name = 'Generate',
       group = "go",
@@ -75,7 +76,8 @@ function M.configure()
       group = "go",
       type = "delve",
       request = "launch",
-      program = "${file}"
+      program = "${file}",
+      presentation = "menuhidden",
     },
     -- configuration for debugging test files
     {
@@ -84,7 +86,8 @@ function M.configure()
       type = "delve",
       request = "launch",
       mode = "test",
-      program = "${file}"
+      program = "${file}",
+      presentation = "menuhidden",
     },
     -- works with go.mod packages and sub packages
     {
@@ -93,8 +96,51 @@ function M.configure()
       type = "delve",
       request = "launch",
       mode = "test",
-      program = "./${relativeFileDirname}"
-    }
+      program = "./${relativeFileDirname}",
+      presentation = "menuhidden",
+    },
+
+    -- Python
+    {
+      name = 'Launch file';
+      group = "python",
+      type = 'python';
+      request = 'launch';
+      program = '${file}';
+      presentation = "menuhidden",
+    },
+    {
+      name = 'Launch file with arguments';
+      group = "python",
+      type = 'python';
+      request = 'launch';
+      program = '${file}';
+      args = function()
+        local args_string = vim.fn.input('Arguments: ')
+        return vim.split(args_string, " +")
+      end;
+      presentation = "menuhidden",
+    },
+    {
+      name = 'Attach remote';
+      group = "python",
+      type = 'python';
+      request = 'attach';
+      connect = function()
+        local host = vim.fn.input('Host [127.0.0.1]: ')
+        host = host ~= '' and host or '127.0.0.1'
+        local port = tonumber(vim.fn.input('Port [5678]: ')) or 5678
+        return { host = host, port = port }
+      end;
+      presentation = "menuhidden",
+    },
+    {
+      name = 'Run tests in file',
+      group = "python",
+      command = 'pytest',
+      args = { "${file}" },
+      presentation = "menuhidden",
+    },
   }
 
 
@@ -111,10 +157,6 @@ function M.configure()
       {
         module = 'launchjson',
         opt = vim.fn.getcwd() .. '/.vscode/launch.json',
-      },
-      {
-        module = 'dap',
-        opt = '',
       },
       {
         module = 'builtin',
@@ -151,8 +193,10 @@ function M.configure()
   vim.api.nvim_set_keymap('n', 'či', '<Cmd>lua require"dap".step_into()<CR>', map_options)
   vim.api.nvim_set_keymap('n', 'čo', '<Cmd>lua require"dap".step_out()<CR>', map_options)
   vim.api.nvim_set_keymap('n', 'čb', '<Cmd>lua require"dap".toggle_breakpoint()<CR>', map_options)
-  vim.api.nvim_set_keymap('n', 'čB', '<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>' , map_options)
-  vim.api.nvim_set_keymap('n', 'čl', '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', map_options)
+  vim.api.nvim_set_keymap('n', 'čB', '<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>'
+    , map_options)
+  vim.api.nvim_set_keymap('n', 'čl',
+    '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>', map_options)
   vim.api.nvim_set_keymap('n', 'čg', '<Cmd>lua Add_test_to_configurations()<CR>', map_options)
   -- dap-ui
   vim.api.nvim_set_keymap('v', 'če', '<Cmd>lua require("dapui").eval()<CR>', map_options)
