@@ -26,6 +26,8 @@ function M.configure_colorscheme()
   vim.cmd 'highlight Normal ctermbg=none guibg=none'
   vim.cmd 'highlight EndOfBuffer ctermbg=none guibg=none'
   vim.cmd 'highlight SignColumn ctermbg=none guibg=none'
+  vim.cmd 'highlight FloatBorder ctermbg=none guibg=none'
+  vim.cmd 'highlight NormalFloat ctermbg=none guibg=none'
 end
 
 function M.configure_dressing()
@@ -33,14 +35,13 @@ function M.configure_dressing()
     input = {
       insert_only = false,
       start_in_insert = true,
-      border = 'solid',
       winblend = 0,
     },
     select = {
       backend = { 'builtin' },
       builtin = {
-        border = 'solid',
         winblend = 0,
+        winhighlight = 'FloatBorder:TelescopePreviewBorder,FloatTitle:TelescopeBorder',
       },
     }
   }
