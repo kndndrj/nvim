@@ -5,15 +5,14 @@
 local M = {}
 
 function M.configure()
-
   local g = vim.g
 
   -- Vimtex Flavor
-  g.tex_flavor = 'latex'
+  g.tex_flavor = "latex"
 
   -- PDF viewer
-  g.vimtex_view_method = 'zathura'
-  g.vimtex_view_general_viewer = 'zathura'
+  g.vimtex_view_method = "zathura"
+  g.vimtex_view_general_viewer = "zathura"
 
   -- Ignore annoying warnings
   g.vimtex_quickfix_ignore_filters = '[ \
@@ -22,7 +21,6 @@ function M.configure()
     "Package hyperref Warning: Token not allowed in a PDF string", \
     "Package typearea Warning: Bad type area settings!" \
     ]'
-
 end
 
 return M

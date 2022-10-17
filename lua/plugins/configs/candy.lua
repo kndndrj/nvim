@@ -5,7 +5,7 @@
 local M = {}
 
 function M.configure_colorscheme()
-  require('onedark').setup {
+  require("onedark").setup {
     code_style = {
       strings = "NONE",
       comments = "italic",
@@ -20,39 +20,39 @@ function M.configure_colorscheme()
     },
   }
 
-  vim.cmd 'colorscheme onedark'
+  vim.cmd("colorscheme onedark")
 
   -- use terminal's background
-  vim.cmd 'highlight Normal ctermbg=none guibg=none'
-  vim.cmd 'highlight EndOfBuffer ctermbg=none guibg=none'
-  vim.cmd 'highlight SignColumn ctermbg=none guibg=none'
-  vim.cmd 'highlight FloatBorder ctermbg=none guibg=none'
-  vim.cmd 'highlight NormalFloat ctermbg=none guibg=none'
+  vim.cmd("highlight Normal ctermbg=none guibg=none")
+  vim.cmd("highlight EndOfBuffer ctermbg=none guibg=none")
+  vim.cmd("highlight SignColumn ctermbg=none guibg=none")
+  vim.cmd("highlight FloatBorder ctermbg=none guibg=none")
+  vim.cmd("highlight NormalFloat ctermbg=none guibg=none")
 end
 
 function M.configure_dressing()
-  require 'dressing'.setup {
+  require("dressing").setup {
     input = {
       insert_only = false,
       start_in_insert = true,
       winblend = 0,
     },
     select = {
-      backend = { 'builtin' },
+      backend = { "builtin" },
       builtin = {
         winblend = 0,
-        winhighlight = 'FloatBorder:TelescopePreviewBorder,FloatTitle:TelescopeBorder',
+        winhighlight = "FloatBorder:TelescopePreviewBorder,FloatTitle:TelescopeBorder",
       },
-    }
+    },
   }
 end
 
 function M.configure_notify()
   vim.opt.termguicolors = true
-  require 'notify'.setup({
-    background_colour = '#000000',
-  })
-  vim.notify = require 'notify'
+  require("notify").setup {
+    background_colour = "#000000",
+  }
+  vim.notify = require("notify")
 end
 
 return M

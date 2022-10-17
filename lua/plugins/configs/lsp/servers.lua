@@ -7,7 +7,7 @@ return {
   bufls = {},
 
   clangd = {
-    filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' }
+    filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
   },
 
   cssls = {},
@@ -23,7 +23,7 @@ return {
   pylsp = {
     settings = {
       pylsp = {
-        configurationSources = { 'pycodestyle', 'flake8' },
+        configurationSources = { "pycodestyle", "flake8" },
         plugins = {
           pycodestyle = {
             maxLineLength = 100,
@@ -36,11 +36,11 @@ return {
   rust_analyzer = {},
 
   sqlls = {
-    cmd = { 'sql-language-server', 'up', '--method', 'stdio' };
+    cmd = { "sql-language-server", "up", "--method", "stdio" },
   },
 
   sumneko_lua = {
-    cmd = { 'lua-language-server' },
+    cmd = { "lua-language-server" },
     settings = {
       Lua = {
         telemetry = {
@@ -61,9 +61,9 @@ return {
       },
       javascript = {
         format = {
-          semicolons = 'insert',
+          semicolons = "insert",
         },
-      }
+      },
     },
   },
 
