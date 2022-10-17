@@ -4,7 +4,7 @@
 
 local M = {}
 
-function M.configure(lsps, daps)
+function M.configure()
 
   -- Initialize meson
   require("mason").setup()
@@ -21,16 +21,24 @@ function M.configure(lsps, daps)
     vim.notify("Mason: Error installing " .. pkg.name, vim.log.levels.ERROR)
   end))
 
+end
+
+function M.install(lsps, daps, nullls)
+
   -- Install language servers
   require("mason-lspconfig").setup {
     ensure_installed = lsps,
+  }
+
+  -- Install language servers
+  require("mason-null-ls").setup {
+    ensure_installed = nullls,
   }
 
   -- Install debug adapters
   require("mason-nvim-dap").setup {
     ensure_installed = daps,
   }
-
 end
 
 return M

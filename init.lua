@@ -10,6 +10,7 @@ local wo = vim.wo
 
 -- Source other configs
 require 'plugins'
+-- performance
 
 -----------------------
 -- Basic Config: ------

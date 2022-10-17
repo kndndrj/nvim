@@ -32,8 +32,7 @@ local on_attach = function(_, bufnr)
   vim.keymap.set('n', 'ge', '<Cmd>Trouble workspace_diagnostics<CR>', map_options)
 end
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require 'cmp_nvim_lsp'.update_capabilities(capabilities)
+local capabilities = require 'cmp_nvim_lsp'.default_capabilities()
 
 
 --
@@ -71,6 +70,25 @@ function M.configure()
   -- Trouble
   require 'trouble'.setup {
     use_diagnostic_signs = true,
+    action_keys = {
+      close = { "q", "<esc>" }, -- close the list
+      cancel = {}, -- cancel the preview and get back to your last window / buffer / cursor
+      refresh = "r", -- manually refresh
+      jump = {}, -- jump to the diagnostic or open / close folds
+      open_split = { "<c-x>" }, -- open buffer in new split
+      open_vsplit = { "<c-v>" }, -- open buffer in new vsplit
+      open_tab = { "<c-t>" }, -- open buffer in new tab
+      jump_close = { "o", "<cr>", "<tab>" }, -- jump to the diagnostic and close the list
+      toggle_mode = "m", -- toggle between "workspace" and "document" diagnostics mode
+      toggle_preview = "P", -- toggle auto_preview
+      hover = "K", -- opens a small popup with the full multiline message
+      preview = "p", -- preview the diagnostic location
+      close_folds = { "zM", "zm" }, -- close all folds
+      open_folds = { "zR", "zr" }, -- open all folds
+      toggle_fold = { "zA", "za" }, -- toggle fold of current file
+      previous = "k", -- previous item
+      next = "j" -- next item
+    },
   }
 
 end

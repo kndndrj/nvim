@@ -10,7 +10,6 @@ function M.configure()
     ensure_installed = 'all',
     highlight = {
       enable = true,
-      use_languagetree = true
     },
     incremental_selection = {
       enable = true,

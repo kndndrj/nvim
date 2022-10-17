@@ -70,6 +70,7 @@ function M.configure()
       args = {
         '${workspaceFolder}/tools.go',
       },
+      presentation = "menuhidden",
     },
     {
       name = "Debug",
@@ -141,6 +142,14 @@ function M.configure()
       args = { "${file}" },
       presentation = "menuhidden",
     },
+
+    -- Shell
+    {
+      name = 'Run current script',
+      group = "sh",
+      command = '${fileDirname}/${file}',
+      presentation = "menuhidden",
+    },
   }
 
 
@@ -152,23 +161,24 @@ function M.configure()
     loaders = {
       {
         module = 'tasksjson',
-        opt = vim.fn.getcwd() .. '/.vscode/tasks.json',
+        options = vim.fn.getcwd() .. '/.vscode/tasks.json',
       },
       {
         module = 'launchjson',
-        opt = vim.fn.getcwd() .. '/.vscode/launch.json',
+        options = vim.fn.getcwd() .. '/.vscode/launch.json',
       },
       {
         module = 'builtin',
-        opt = configs,
-      },
-      {
-        module = 'builtin',
-        opt = vim.fn.getcwd() .. '/.vscode/projector.json',
+        options = {
+          path = vim.fn.getcwd() .. '/.vscode/projector.json',
+          configs = configs,
+        },
       },
       {
         module = 'legacy.json',
-        opt = vim.fn.getcwd() .. '/.vscode/projector.json',
+        options = {
+          path = vim.fn.getcwd() .. '/.vscode/projector.json',
+        },
       },
     },
     display_format = function(_, scope, group, modes, name)

@@ -156,21 +156,34 @@ return require 'packer'.startup(
     -- Mason
     use {
       'williamboman/mason.nvim',
-      run = ':MasonUpdateAll',
       wants = {
         'mason-lspconfig.nvim',
         'mason-nvim-dap.nvim',
         'mason-update-all',
+        'mason-null-ls.nvim',
       },
       requires = {
         'williamboman/mason-lspconfig.nvim',
         'jayp0521/mason-nvim-dap.nvim',
+        "jayp0521/mason-null-ls.nvim",
         'RubixDev/mason-update-all',
       },
+      run = ':MasonUpdateAll',
       config = function()
-        require('plugins.configs.mason').configure(
+        require('plugins.configs.mason').configure()
+
+        -- get nullls sources
+        local nullls = {}
+        for _, srcs in pairs(require 'plugins.configs.nullls.sources') do
+          for src, _ in pairs(srcs) do
+            table.insert(nullls, src)
+          end
+        end
+
+        require('plugins.configs.mason').install(
           vim.tbl_keys(require 'plugins.configs.lsp.servers'),
-          vim.tbl_keys(require 'plugins.configs.debug.adapters')
+          vim.tbl_keys(require 'plugins.configs.debug.adapters'),
+          nullls
         )
       end,
     }
@@ -193,6 +206,19 @@ return require 'packer'.startup(
       },
       config = function()
         require('plugins.configs.lsp').configure()
+      end,
+    }
+
+    -- NULL-LS
+    use {
+      'jose-elias-alvarez/null-ls.nvim',
+      opt = true,
+      event = { 'BufReadPre' },
+      requires = {
+        'nvim-lua/plenary.nvim',
+      },
+      config = function()
+        require('plugins.configs.nullls').configure()
       end,
     }
 
