@@ -4,25 +4,27 @@
 return {
   code_actions = {},
   completion = {
-    spell = {},
+    -- spell = {},
   },
   diagnostics = {
     eslint = {},
     buf = {
-      extra_args = { "--config", '{"version":"v1","lint":{"use":["BASIC"]}}' },
+      -- extra_args = { "--config", '{"version":"v1","lint":{"use":["BASIC"]}}' },
     },
     golangci_lint = {},
     actionlint = {},
     ansiblelint = {},
-    luacheck = {},
-    markdownlint = {},
   },
   formatting = {
     buf = {},
     black = {},
     stylua = {},
-    sqlformat = {},
-    goimports = {},
+    sqlfluff = {
+      extra_args = { "--dialect", "postgres" },
+    },
+    beautysh = {},
+    mdformat = {},
+    yamlfmt = {},
   },
   hover = {
     printenv = {},

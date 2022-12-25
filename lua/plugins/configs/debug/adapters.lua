@@ -3,6 +3,7 @@
 -------------------------
 return {
   cppdbg = {
+    id = "cppdbg",
     type = "executable",
     command = "OpenDebugAD7",
   },

@@ -104,6 +104,7 @@ return require("packer").startup(function()
       "telescope-fzy-native.nvim",
       "popup.nvim",
       "plenary.nvim",
+      "nvim-notify",
     },
     requires = {
       "nvim-lua/popup.nvim",
@@ -126,10 +127,25 @@ return require("packer").startup(function()
     },
     wants = { "telescope.nvim" },
     requires = {
-      "plenary.nvim",
+      "nvim-lua/plenary.nvim",
     },
     config = function()
       require("plugins.configs.navigation").configure_harpoon()
+    end,
+  }
+  use {
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v2.x",
+    opt = true,
+    cmd = { "Neotree" },
+    keys = { "<leader>fj" },
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "kyazdani42/nvim-web-devicons",
+      "MunifTanjim/nui.nvim",
+    },
+    config = function()
+      require("plugins.configs.navigation").configure_neotree()
     end,
   }
 
@@ -207,6 +223,9 @@ return require("packer").startup(function()
     "jose-elias-alvarez/null-ls.nvim",
     opt = true,
     event = { "BufReadPre" },
+    wants = {
+      "cmp-nvim-lsp",
+    },
     requires = {
       "nvim-lua/plenary.nvim",
     },
@@ -226,14 +245,14 @@ return require("packer").startup(function()
       "nvim-dap-virtual-text",
       "nvim-dap-ui",
       "nvim-dap-python",
-      -- 'nvim-projector',
+      'nvim-projector',
     },
     requires = {
       "theHamsta/nvim-dap-virtual-text",
       "rcarriga/nvim-dap-ui",
       "mfussenegger/nvim-dap-python",
-      -- {'kndndrj/nvim-projector', branch = "refactor"},
-      -- 'kndndrj/projector-loader-vscode',
+      'kndndrj/nvim-projector',
+      'kndndrj/projector-loader-vscode',
     },
     config = function()
       require("plugins.configs.debug").configure()

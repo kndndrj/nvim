@@ -19,8 +19,12 @@ function M.configure()
     end
   end
 
+  -- lsp options
+  local options = require"plugins.configs.lsp.options"
+
   -- call the setup function
   null_ls.setup {
+    on_attach = options.on_attach,
     sources = sources,
   }
 end

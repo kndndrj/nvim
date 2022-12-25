@@ -35,13 +35,17 @@ function M.configure_dressing()
     input = {
       insert_only = false,
       start_in_insert = true,
-      winblend = 0,
+      win_options = {
+        winblend = 0,
+      },
     },
     select = {
       backend = { "builtin" },
       builtin = {
-        winblend = 0,
-        winhighlight = "FloatBorder:TelescopePreviewBorder,FloatTitle:TelescopeBorder",
+        win_options = {
+          winblend = 0,
+          winhighlight = "FloatBorder:TelescopePreviewBorder,FloatTitle:TelescopeBorder",
+        },
       },
     },
   }

@@ -20,7 +20,6 @@ function M.configure()
 
   -- enable virtual text
   require("nvim-dap-virtual-text").setup()
-
   -- Set up the UI
   require("dapui").setup {
     mappings = {
@@ -74,6 +73,15 @@ function M.configure()
       type = "delve",
       request = "launch",
       program = "${file}",
+      presentation = "menuhidden",
+    },
+    {
+      name = "Current Directory Project",
+      command = "go run ${workspaceFolder}/",
+      group = "go",
+      type = "delve",
+      request = "launch",
+      program = "${workspaceFolder}/",
       presentation = "menuhidden",
     },
     -- configuration for debugging test files
@@ -167,12 +175,6 @@ function M.configure()
         options = {
           path = vim.fn.getcwd() .. "/.vscode/projector.json",
           configs = configs,
-        },
-      },
-      {
-        module = "legacy.json",
-        options = {
-          path = vim.fn.getcwd() .. "/.vscode/projector.json",
         },
       },
     },

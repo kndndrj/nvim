@@ -16,4 +16,6 @@ files["lua/projector/contract/*"] = { ignore = { "212" } } -- Ignore unused argu
 read_globals = {
   "vim",
   "use",
+  "use_rocks",
+  "require",
 }
