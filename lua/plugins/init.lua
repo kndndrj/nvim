@@ -245,14 +245,14 @@ return require("packer").startup(function()
       "nvim-dap-virtual-text",
       "nvim-dap-ui",
       "nvim-dap-python",
-      'nvim-projector',
+      "nvim-projector",
     },
     requires = {
       "theHamsta/nvim-dap-virtual-text",
       "rcarriga/nvim-dap-ui",
       "mfussenegger/nvim-dap-python",
-      'kndndrj/nvim-projector',
-      'kndndrj/projector-loader-vscode',
+      { "kndndrj/nvim-projector", branch = "development" },
+      "kndndrj/projector-loader-vscode",
     },
     config = function()
       require("plugins.configs.debug").configure()

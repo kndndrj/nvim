@@ -154,6 +154,14 @@ function M.configure()
       command = "${fileDirname}/${file}",
       presentation = "menuhidden",
     },
+
+    -- Rust
+    {
+      name = "Run current project",
+      group = "rust",
+      command = "cargo run",
+      presentation = "menuhidden",
+    },
   }
 
   --
