@@ -39,8 +39,7 @@ return {
     cmd = { "sql-language-server", "up", "--method", "stdio" },
   },
 
-  sumneko_lua = {
-    cmd = { "lua-language-server" },
+  lua_ls = {
     settings = {
       Lua = {
         telemetry = {
