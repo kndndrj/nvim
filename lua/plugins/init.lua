@@ -171,12 +171,14 @@ return require("packer").startup(function()
       "mason-nvim-dap.nvim",
       "mason-update-all",
       "mason-null-ls.nvim",
+      "mason-tool-installer.nvim",
     },
     requires = {
       "williamboman/mason-lspconfig.nvim",
       "jayp0521/mason-nvim-dap.nvim",
       "jayp0521/mason-null-ls.nvim",
       "RubixDev/mason-update-all",
+      "WhoIsSethDaniel/mason-tool-installer.nvim",
     },
     run = ":MasonUpdateAll",
     config = function()
@@ -190,10 +192,13 @@ return require("packer").startup(function()
         end
       end
 
+      local extras = { "shellcheck" }
+
       require("plugins.configs.mason").install(
         vim.tbl_keys(require("plugins.configs.lsp.servers")),
         vim.tbl_keys(require("plugins.configs.debug.adapters")),
-        nullls
+        nullls,
+        extras
       )
     end,
   }

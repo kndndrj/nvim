@@ -44,20 +44,16 @@ local function layer_timeout(timeout)
   )
 end
 
-local function layer_enter()
-  if not layer:is_active() then
-    -- exit layer automatically after timeout
-    layer_timeout(800)
-    layer:enter()
-  end
-end
-
 -- return to normal mode
 local function nm()
   vim.api.nvim_input("<C-\\><C-N>")
 end
 
-local function layer_create()
+local function layer_enter()
+  if layer and layer:is_active() then
+    return
+  end
+
   local tmux = require("tmux")
   local mappings = {
     -- moving
@@ -127,17 +123,21 @@ local function layer_create()
 
   local libmodal = require("libmodal")
   layer = libmodal.layer.new {
-    n = mappings,
-    i = mappings,
-    t = mappings,
-    x = mappings,
-    o = mappings,
+    n = vim.deepcopy(mappings),
+    i = vim.deepcopy(mappings),
+    t = vim.deepcopy(mappings),
+    x = vim.deepcopy(mappings),
+    o = vim.deepcopy(mappings),
   }
 
   -- exit layer manually with:
   vim.keymap.set("n", "<esc>", function()
     layer_exit()
   end, { noremap = true, silent = true })
+
+  -- exit layer automatically after timeout
+  layer_timeout(800)
+  layer:enter()
 end
 
 -- Configuration
@@ -157,9 +157,6 @@ function M.configure()
   }
 
   local map_options = { noremap = true, silent = true }
-
-  -- create a layer once
-  layer_create()
 
   -- enter the layer with tmux prefix
   vim.keymap.set("n", "<C-a>", layer_enter, map_options)

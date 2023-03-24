@@ -12,13 +12,13 @@ function M.configure()
   require("mason-update-all").setup()
 end
 
-function M.install(lsps, daps, nullls)
+function M.install(lsps, daps, nullls, extras)
   -- Install language servers
   require("mason-lspconfig").setup {
     ensure_installed = lsps,
   }
 
-  -- Install language servers
+  -- Install nullls tools
   require("mason-null-ls").setup {
     ensure_installed = nullls,
   }
@@ -26,6 +26,11 @@ function M.install(lsps, daps, nullls)
   -- Install debug adapters
   require("mason-nvim-dap").setup {
     ensure_installed = daps,
+  }
+
+  -- Install extra packages
+  require('mason-tool-installer').setup {
+    ensure_installed = extras,
   }
 end
 
