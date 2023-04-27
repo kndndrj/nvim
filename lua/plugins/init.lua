@@ -184,7 +184,7 @@ return require("packer").startup(function()
 
       -- Install extra packages
       require("mason-tool-installer").setup {
-        ensure_installed = { "shellcheck" },
+        ensure_installed = { "shellcheck", "golangci-lint" },
       }
     end,
   }
@@ -372,6 +372,28 @@ return require("packer").startup(function()
     "lervag/vimtex",
     config = function()
       require("plugins.configs.vimtex").configure()
+    end,
+  }
+
+  -- Refactoring
+  use {
+    "ThePrimeagen/refactoring.nvim",
+    opt = true,
+    keys = { "<leader>rr" },
+    module = "refactoring",
+    wants = {
+      "plenary.nvim",
+      "nvim-treesitter",
+    },
+    requires = {
+      "nvim-lua/plenary.nvim",
+    },
+    config = function()
+      require("refactoring").setup {}
+
+      vim.keymap.set("v", "<leader>rr", function()
+        require("refactoring").select_refactor()
+      end, { noremap = true, silent = true, expr = false })
     end,
   }
 

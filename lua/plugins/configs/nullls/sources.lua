@@ -2,7 +2,10 @@
 -- List of Sources: -----
 -------------------------
 return {
-  code_actions = {},
+  code_actions = {
+    gomodifytags = {},
+    impl = {},
+  },
   completion = {
     -- spell = {},
   },
