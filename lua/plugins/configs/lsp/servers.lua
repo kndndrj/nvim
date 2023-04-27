@@ -16,6 +16,8 @@ return {
 
   gopls = {},
 
+  golangci_lint_ls = {},
+
   html = {},
 
   jsonls = {},
@@ -45,6 +47,9 @@ return {
         telemetry = {
           enable = false,
         },
+        format = {
+          enable = false,
+        },
       },
     },
   },
@@ -66,5 +71,11 @@ return {
     },
   },
 
-  yamlls = {},
+  yamlls = {
+    settings = {
+      yaml = {
+        keyOrdering = false,
+      },
+    },
+  },
 }

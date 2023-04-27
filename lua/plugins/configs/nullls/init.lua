@@ -19,13 +19,21 @@ function M.configure()
     end
   end
 
-  -- lsp options
-  local options = require"plugins.configs.lsp.options"
-
   -- call the setup function
   null_ls.setup {
-    on_attach = options.on_attach,
+    on_attach = require("plugins.configs.lsp.options").on_attach,
     sources = sources,
+  }
+
+  -- Mason
+  local to_install = {}
+  for _, srcs in pairs(require("plugins.configs.nullls.sources")) do
+    for src, _ in pairs(srcs) do
+      table.insert(to_install, src)
+    end
+  end
+  require("mason-null-ls").setup {
+    ensure_installed = to_install,
   }
 end
 

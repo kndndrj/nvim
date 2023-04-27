@@ -4,7 +4,6 @@
 
 local M = {}
 
-
 --
 -- Configuration function
 --
@@ -28,7 +27,7 @@ function M.configure()
     severity_sort = true,
   })
 
-  local options = require"plugins.configs.lsp.options"
+  local options = require("plugins.configs.lsp.options")
 
   -- Initialize all language servers
   for server, config in pairs(require("plugins.configs.lsp.servers")) do
@@ -59,6 +58,11 @@ function M.configure()
       previous = "k", -- previous item
       next = "j", -- next item
     },
+  }
+
+  -- Mason
+  require("mason-lspconfig").setup {
+    ensure_installed = vim.tbl_keys(require("plugins.configs.lsp.servers")),
   }
 end
 

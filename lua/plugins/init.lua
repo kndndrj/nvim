@@ -167,39 +167,25 @@ return require("packer").startup(function()
   use {
     "williamboman/mason.nvim",
     wants = {
-      "mason-lspconfig.nvim",
-      "mason-nvim-dap.nvim",
       "mason-update-all",
-      "mason-null-ls.nvim",
       "mason-tool-installer.nvim",
     },
     requires = {
-      "williamboman/mason-lspconfig.nvim",
-      "jayp0521/mason-nvim-dap.nvim",
-      "jayp0521/mason-null-ls.nvim",
       "RubixDev/mason-update-all",
       "WhoIsSethDaniel/mason-tool-installer.nvim",
     },
     run = ":MasonUpdateAll",
     config = function()
-      require("plugins.configs.mason").configure()
+      -- Initialize meson
+      require("mason").setup()
 
-      -- get nullls sources
-      local nullls = {}
-      for _, srcs in pairs(require("plugins.configs.nullls.sources")) do
-        for src, _ in pairs(srcs) do
-          table.insert(nullls, src)
-        end
-      end
+      -- register update cmd
+      require("mason-update-all").setup()
 
-      local extras = { "shellcheck" }
-
-      require("plugins.configs.mason").install(
-        vim.tbl_keys(require("plugins.configs.lsp.servers")),
-        vim.tbl_keys(require("plugins.configs.debug.adapters")),
-        nullls,
-        extras
-      )
+      -- Install extra packages
+      require("mason-tool-installer").setup {
+        ensure_installed = { "shellcheck" },
+      }
     end,
   }
 
@@ -212,11 +198,13 @@ return require("packer").startup(function()
     wants = {
       "cmp-nvim-lsp",
       "trouble.nvim",
+      "mason-lspconfig.nvim",
     },
     requires = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/nvim-cmp",
       { "folke/trouble.nvim", opt = true },
+      "williamboman/mason-lspconfig.nvim",
     },
     config = function()
       require("plugins.configs.lsp").configure()
@@ -230,9 +218,11 @@ return require("packer").startup(function()
     event = { "BufReadPre" },
     wants = {
       "cmp-nvim-lsp",
+      "mason-null-ls.nvim",
     },
     requires = {
       "nvim-lua/plenary.nvim",
+      "jay-babu/mason-null-ls.nvim",
     },
     config = function()
       require("plugins.configs.nullls").configure()
@@ -243,21 +233,19 @@ return require("packer").startup(function()
   use {
     "mfussenegger/nvim-dap",
     opt = true,
-    keys = { "č" },
     module = "dap",
     after = "mason.nvim",
     wants = {
       "nvim-dap-virtual-text",
       "nvim-dap-ui",
       "nvim-dap-python",
-      "nvim-projector",
+      "mason-nvim-dap.nvim",
     },
     requires = {
       "theHamsta/nvim-dap-virtual-text",
       "rcarriga/nvim-dap-ui",
       "mfussenegger/nvim-dap-python",
-      { "kndndrj/nvim-projector", branch = "development" },
-      "kndndrj/projector-loader-vscode",
+      "jay-babu/mason-nvim-dap.nvim",
     },
     config = function()
       require("plugins.configs.debug").configure()
@@ -298,7 +286,11 @@ return require("packer").startup(function()
     config = function()
       require("plugins.configs.completion").configure()
     end,
-    wants = { "LuaSnip", "lspkind-nvim", "nvim-autopairs" },
+    wants = {
+      "LuaSnip",
+      "lspkind-nvim",
+      "nvim-autopairs",
+    },
     requires = {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
@@ -357,12 +349,35 @@ return require("packer").startup(function()
     end,
   }
 
+  -- Task Runner
+  use {
+    "kndndrj/nvim-projector",
+    branch = "development",
+    opt = true,
+    keys = { "č" },
+    module = "projector",
+    wants = {
+      "nvim-dap",
+    },
+    requires = {
+      "kndndrj/projector-loader-vscode",
+    },
+    config = function()
+      require("plugins.configs.runner").configure()
+    end,
+  }
+
   -- LaTeX
   use {
     "lervag/vimtex",
     config = function()
       require("plugins.configs.vimtex").configure()
     end,
+  }
+
+  -- TODO remove
+  use {
+    "MunifTanjim/nui.nvim",
   }
 
   -- Automatically set up your configuration after cloning packer.nvim

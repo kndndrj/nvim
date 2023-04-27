@@ -11,7 +11,7 @@ return {
     buf = {
       -- extra_args = { "--config", '{"version":"v1","lint":{"use":["BASIC"]}}' },
     },
-    golangci_lint = {},
+    luacheck = {},
     actionlint = {},
     ansiblelint = {},
   },
