@@ -39,6 +39,16 @@ return require("packer").startup(function()
     end,
   }
   use {
+    "startup-nvim/startup.nvim",
+    requires = {
+      "nvim-telescope/telescope.nvim",
+      "nvim-lua/plenary.nvim",
+    },
+    config = function()
+      require("plugins.configs.candy").configure_greeting()
+    end,
+  }
+  use {
     "kyazdani42/nvim-web-devicons",
     module = "nvim-web-devicons",
     config = function()
@@ -136,9 +146,6 @@ return require("packer").startup(function()
   use {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v2.x",
-    opt = true,
-    cmd = { "Neotree" },
-    keys = { "<leader>fj" },
     requires = {
       "nvim-lua/plenary.nvim",
       "kyazdani42/nvim-web-devicons",
@@ -197,13 +204,13 @@ return require("packer").startup(function()
     after = "mason.nvim",
     wants = {
       "cmp-nvim-lsp",
-      "trouble.nvim",
+      "glance.nvim",
       "mason-lspconfig.nvim",
     },
     requires = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/nvim-cmp",
-      { "folke/trouble.nvim", opt = true },
+      "dnlhc/glance.nvim",
       "williamboman/mason-lspconfig.nvim",
     },
     config = function()

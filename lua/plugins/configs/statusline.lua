@@ -68,6 +68,7 @@ function M.configure()
         "vista",
         "dbui",
         "packer",
+        "startup",
       },
       globalstatus = true,
     },

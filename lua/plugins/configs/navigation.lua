@@ -56,7 +56,6 @@ function M.configure_telescope()
   vim.api.nvim_set_keymap("n", "<leader>fb", '<Cmd>lua require"telescope.builtin".buffers()<CR>', map_options)
   vim.api.nvim_set_keymap("n", "<leader>fh", '<Cmd>lua require"telescope.builtin".help_tags()<CR>', map_options)
   vim.api.nvim_set_keymap("n", "<leader>fo", '<Cmd>lua require"telescope.builtin".oldfiles()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "<leader>fk", '<Cmd>lua require"telescope.builtin".file_browser()<CR>', map_options)
 end
 
 -- Harpoon
@@ -73,59 +72,86 @@ end
 
 -- Neotree
 function M.configure_neotree()
-  -- require("neo-tree").setup {
-  --   close_if_last_window = true,
-  --   window = {
-  --     mapping_options = {
-  --       noremap = true,
-  --       nowait = true,
-  --     },
-  --     mappings = {
-  --       ["<space>"] = {
-  --         "toggle_node",
-  --         nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
-  --       },
-  --       ["<2-LeftMouse>"] = "open",
-  --       ["<cr>"] = "open",
-  --       ["o"] = "open",
-  --       ["<esc>"] = "revert_preview",
-  --       ["P"] = { "toggle_preview", config = { use_float = true } },
-  --       ["S"] = "open_split",
-  --       ["s"] = "open_vsplit",
-  --       ["t"] = "open_tabnew",
-  --       ["w"] = "open_with_window_picker",
-  --       ["C"] = "close_node",
-  --       ["z"] = "close_all_nodes",
-  --       --["Z"] = "expand_all_nodes",
-  --       ["a"] = {
-  --         "add",
-  --         -- some commands may take optional config options, see `:h neo-tree-mappings` for details
-  --         config = {
-  --           show_path = "none", -- "none", "relative", "absolute"
-  --         },
-  --       },
-  --       ["A"] = "add_directory", -- also accepts the optional config.show_path option like "add".
-  --       ["d"] = "delete",
-  --       ["r"] = "rename",
-  --       ["y"] = "copy_to_clipboard",
-  --       ["x"] = "cut_to_clipboard",
-  --       ["p"] = "paste_from_clipboard",
-  --       ["c"] = "copy", -- takes text input for destination, also accepts the optional config.show_path option like "add":
-  --       -- ["c"] = {
-  --       --  "copy",
-  --       --  config = {
-  --       --    show_path = "none" -- "none", "relative", "absolute"
-  --       --  }
-  --       --}
-  --       ["m"] = "move", -- takes text input for destination, also accepts the optional config.show_path option like "add".
-  --       ["q"] = "close_window",
-  --       ["R"] = "refresh",
-  --       ["?"] = "show_help",
-  --       ["<"] = "prev_source",
-  --       [">"] = "next_source",
-  --     },
-  --   },
-  -- }
+  require("neo-tree").setup {
+    close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+
+    -- TODO REMOVE FROM HERE
+    default_component_configs = {
+      icon = {
+        folder_empty = "󰜌",
+        folder_empty_open = "󰜌",
+      },
+      git_status = {
+        symbols = {
+          renamed = "󰁕",
+          unstaged = "󰄱",
+        },
+      },
+    },
+    document_symbols = {
+      kinds = {
+        File = { icon = "󰈙", hl = "Tag" },
+        Namespace = { icon = "󰌗", hl = "Include" },
+        Package = { icon = "󰏖", hl = "Label" },
+        Class = { icon = "󰌗", hl = "Include" },
+        Property = { icon = "󰆧", hl = "@property" },
+        Enum = { icon = "󰒻", hl = "@number" },
+        Function = { icon = "󰊕", hl = "Function" },
+        String = { icon = "󰀬", hl = "String" },
+        Number = { icon = "󰎠", hl = "Number" },
+        Array = { icon = "󰅪", hl = "Type" },
+        Object = { icon = "󰅩", hl = "Type" },
+        Key = { icon = "󰌋", hl = "" },
+        Struct = { icon = "󰌗", hl = "Type" },
+        Operator = { icon = "󰆕", hl = "Operator" },
+        TypeParameter = { icon = "󰊄", hl = "Type" },
+        StaticMethod = { icon = "󰠄 ", hl = "Function" },
+      },
+    },
+    -- TO HERE ONCE NERDFONT V3 is merged
+
+    window = {
+      position = "left",
+      width = 40,
+      mappings = {
+        ["o"] = "open",
+        ["<2-LeftMouse>"] = "open",
+        ["<cr>"] = "open",
+        ["<esc>"] = "revert_preview",
+        ["P"] = { "toggle_preview", config = { use_float = true } },
+
+        ["z"] = "close_all_nodes",
+
+        -- filesystem options
+        ["a"] = { "add", config = { show_path = "none" } },
+        ["d"] = "delete",
+        ["cw"] = "rename",
+        ["y"] = "copy_to_clipboard",
+        ["x"] = "cut_to_clipboard",
+        ["p"] = "paste_from_clipboard",
+        ["c"] = "copy",
+        ["m"] = "move",
+        ["q"] = "close_window",
+        ["r"] = "refresh",
+        ["?"] = "show_help",
+
+        -- disable sources switching
+        ["<"] = "noop",
+        [">"] = "noop",
+
+        -- disable fuzzy finder
+        ["/"] = "noop",
+      },
+    },
+    filesystem = {
+      filtered_items = {
+        visible = true, -- when true, they will just be displayed differently than normal items
+        hide_dotfiles = false,
+        hide_gitignored = false,
+        hide_hidden = false, -- only works on Windows for hidden files/directories
+      },
+    },
+  }
 
   local map_options = { noremap = true, silent = true }
   vim.keymap.set("n", "<leader>fj", ":Neotree<CR>", map_options)

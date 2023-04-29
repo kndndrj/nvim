@@ -143,6 +143,13 @@ function M.configure()
       return scope .. "  " .. group .. "  " .. modes .. "  " .. name
     end,
     automatic_reload = true,
+    icons = {
+      enable = true,
+      modes = {
+        -- TODO remove once it's merged
+        debug = "󰃤",
+      },
+    },
   }
 
   --
