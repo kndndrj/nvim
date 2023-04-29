@@ -4,7 +4,7 @@
 -- Macros
 local cmd = vim.cmd
 local g = vim.g
-local map = vim.api.nvim_set_keymap
+local map = vim.keymap.set
 local o = vim.o
 local wo = vim.wo
 
@@ -15,8 +15,7 @@ g.db_ui_tmp_query_location = "~/.cache/nvim/dadbod-ui/"
 g.db_ui_auto_execute_table_helpers = 1
 
 -- Source other configs
-require("plugins")
--- performance
+require("plugins").configure()
 
 -----------------------
 -- Basic Config: ------

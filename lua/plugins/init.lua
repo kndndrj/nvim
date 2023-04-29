@@ -2,416 +2,350 @@
 -- Plugins: -------------
 -------------------------
 
--- Bootstrap
-local ensure_packer = function()
-  local fn = vim.fn
-  local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-  if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system { "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path }
-    vim.cmd("packadd packer.nvim")
-    return true
-  end
-  return false
-end
+local M = {}
 
-local packer_bootstrap = ensure_packer()
+function M.configure()
+  local plugins = {
+    { "folke/lazy.nvim" },
 
-return require("packer").startup(function()
-  use { "wbthomason/packer.nvim" }
-
-  -- Pretty
-  use {
-    "navarasu/onedark.nvim",
-    config = function()
-      require("plugins.configs.candy").configure_colorscheme()
-    end,
-  }
-  use {
-    "stevearc/dressing.nvim",
-    config = function()
-      require("plugins.configs.candy").configure_dressing()
-    end,
-  }
-  use {
-    "rcarriga/nvim-notify",
-    config = function()
-      require("plugins.configs.candy").configure_notify()
-    end,
-  }
-  use {
-    "startup-nvim/startup.nvim",
-    requires = {
-      "nvim-telescope/telescope.nvim",
-      "nvim-lua/plenary.nvim",
+    -- Pretty
+    {
+      "navarasu/onedark.nvim",
+      config = function()
+        require("plugins.configs.candy").configure_colorscheme()
+      end,
     },
-    config = function()
-      require("plugins.configs.candy").configure_greeting()
-    end,
-  }
-  use {
-    "kyazdani42/nvim-web-devicons",
-    module = "nvim-web-devicons",
-    config = function()
-      require("nvim-web-devicons").setup { default = true }
-    end,
-  }
-  use {
-    "nvim-lualine/lualine.nvim",
-    wants = "nvim-web-devicons",
-    config = function()
-      require("plugins.configs.statusline").configure()
-    end,
-  }
-
-  -- TreeSitter
-  use {
-    "nvim-treesitter/nvim-treesitter",
-    opt = true,
-    event = "BufReadPre",
-    run = ":TSUpdate",
-    config = function()
-      require("plugins.configs.treesitter").configure()
-    end,
-  }
-
-  -- Utils
-  use {
-    "lukas-reineke/indent-blankline.nvim",
-    event = "BufReadPre",
-    config = function()
-      require("plugins.configs.indentline").configure()
-    end,
-  }
-  use {
-    "ciaranm/detectindent",
-    event = "BufReadPre",
-    config = function()
-      vim.api.nvim_create_autocmd("BufWinEnter", { command = ":DetectIndent" })
-    end,
-  }
-  use {
-    "b3nj5m1n/kommentary",
-    config = function()
-      require("plugins.configs.comments").configure()
-    end,
-  }
-  use {
-    "NvChad/nvim-colorizer.lua",
-    cmd = "ColorizerToggle",
-    config = function()
-      require("colorizer").setup()
-    end,
-  }
-
-  -- Navigation
-  use {
-    "nvim-telescope/telescope.nvim",
-    opt = true,
-    cmd = { "Telescope" },
-    module = { "telescope", "telescope.builtin" },
-    keys = { "<leader>f" },
-    wants = {
-      "telescope-fzy-native.nvim",
-      "popup.nvim",
-      "plenary.nvim",
-      "nvim-notify",
+    {
+      "stevearc/dressing.nvim",
+      config = function()
+        require("plugins.configs.candy").configure_dressing()
+      end,
     },
-    requires = {
-      "nvim-lua/popup.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope-fzy-native.nvim",
+    {
+      "rcarriga/nvim-notify",
+      config = function()
+        require("plugins.configs.candy").configure_notify()
+      end,
     },
-    config = function()
-      require("plugins.configs.navigation").configure_telescope()
-    end,
-  }
-  use {
-    "ThePrimeagen/harpoon",
-    keys = { "<leader>s" },
-    module = {
-      "harpoon",
-      "harpoon.cmd-ui",
-      "harpoon.mark",
-      "harpoon.ui",
-      "harpoon.term",
+    {
+      "startup-nvim/startup.nvim",
+      dependencies = {
+        "nvim-telescope/telescope.nvim",
+        "nvim-lua/plenary.nvim",
+      },
+      config = function()
+        require("plugins.configs.candy").configure_greeting()
+      end,
     },
-    wants = { "telescope.nvim" },
-    requires = {
-      "nvim-lua/plenary.nvim",
-    },
-    config = function()
-      require("plugins.configs.navigation").configure_harpoon()
-    end,
-  }
-  use {
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v2.x",
-    requires = {
-      "nvim-lua/plenary.nvim",
+    {
       "kyazdani42/nvim-web-devicons",
+      config = function()
+        require("nvim-web-devicons").setup { default = true }
+      end,
+    },
+    {
+      "nvim-lualine/lualine.nvim",
+      dependencies = {
+        -- "kyazdani42/nvim-web-devicons",
+      },
+      config = function()
+        require("plugins.configs.statusline").configure()
+      end,
+    },
+
+    -- TreeSitter
+    {
+      "nvim-treesitter/nvim-treesitter",
+      event = "BufReadPre",
+      build = ":TSUpdate",
+      config = function()
+        require("plugins.configs.treesitter").configure()
+      end,
+    },
+
+    -- Utils
+    {
+      "lukas-reineke/indent-blankline.nvim",
+      event = "BufReadPre",
+      config = function()
+        require("plugins.configs.indentline").configure()
+      end,
+    },
+    {
+      "ciaranm/detectindent",
+      event = "BufReadPre",
+      config = function()
+        vim.api.nvim_create_autocmd("BufWinEnter", { command = ":DetectIndent" })
+      end,
+    },
+    {
+      "b3nj5m1n/kommentary",
+      config = function()
+        require("plugins.configs.comments").configure()
+      end,
+    },
+    {
+      "NvChad/nvim-colorizer.lua",
+      cmd = "ColorizerToggle",
+      config = function()
+        require("colorizer").setup()
+      end,
+    },
+
+    -- Navigation
+    {
+      "nvim-telescope/telescope.nvim",
+      cmd = "Telescope",
+      keys = { "<leader>f" },
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-telescope/telescope-fzy-native.nvim",
+        -- "rcarriga/nvim-notify"
+      },
+      config = function()
+        require("plugins.configs.navigation").configure_telescope()
+      end,
+    },
+    {
+      "ThePrimeagen/harpoon",
+      keys = { "<leader>s" },
+      dependencies = {
+        -- "nvim-telescope/telescope.nvim",
+        "nvim-lua/plenary.nvim",
+      },
+      config = function()
+        require("plugins.configs.navigation").configure_harpoon()
+      end,
+    },
+    {
+      "nvim-neo-tree/neo-tree.nvim",
+      branch = "v2.x",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        -- "kyazdani42/nvim-web-devicons",
+        "MunifTanjim/nui.nvim",
+      },
+      config = function()
+        require("plugins.configs.navigation").configure_neotree()
+      end,
+    },
+
+    -- Tmux
+    {
+      "aserowy/tmux.nvim",
+      dependencies = {
+        "Iron-E/nvim-libmodal",
+      },
+      config = function()
+        require("plugins.configs.tmux").configure()
+      end,
+    },
+
+    -- Mason
+    {
+      "williamboman/mason.nvim",
+      dependencies = {
+        "RubixDev/mason-update-all",
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
+      },
+      build = ":MasonUpdateAll",
+      config = function()
+        -- Initialize meson
+        require("mason").setup()
+        -- register update cmd
+        require("mason-update-all").setup()
+        -- Install extra packages
+        require("mason-tool-installer").setup {
+          ensure_installed = { "shellcheck", "golangci-lint" },
+        }
+      end,
+    },
+
+    -- LSP
+    {
+      "neovim/nvim-lspconfig",
+      event = "BufReadPre",
+      dependencies = {
+        -- "hrsh7th/cmp-nvim-lsp",
+        -- "hrsh7th/nvim-cmp",
+        "dnlhc/glance.nvim",
+        "williamboman/mason-lspconfig.nvim",
+      },
+      config = function()
+        require("plugins.configs.lsp").configure()
+      end,
+    },
+
+    -- NULL-LS
+    {
+      "jose-elias-alvarez/null-ls.nvim",
+      event = "BufReadPre",
+      dependencies = {
+        -- "hrsh7th/cmp-nvim-lsp",
+        "nvim-lua/plenary.nvim",
+        "jay-babu/mason-null-ls.nvim",
+      },
+      config = function()
+        require("plugins.configs.nullls").configure()
+      end,
+    },
+
+    -- Completion
+    {
+      "hrsh7th/nvim-cmp",
+      event = "InsertEnter",
+      config = function()
+        require("plugins.configs.completion").configure()
+      end,
+      dependencies = {
+        "hrsh7th/cmp-buffer",
+        "hrsh7th/cmp-path",
+        "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-nvim-lua",
+        "saadparwaiz1/cmp_luasnip",
+        "onsails/lspkind-nvim",
+        {
+          "L3MON4D3/LuaSnip",
+          dependencies = {
+            "rafamadriz/friendly-snippets",
+            "honza/vim-snippets",
+          },
+          config = function()
+            require("plugins.configs.snippets").configure()
+          end,
+        },
+        {
+          "windwp/nvim-autopairs",
+          dependencies = {
+            -- "nvim-treesitter/nvim-treesitter",
+          },
+          config = function()
+            require("nvim-autopairs").setup {
+              check_ts = true,
+            }
+          end,
+        },
+      },
+    },
+
+    -- Task Runner
+    {
+      "kndndrj/nvim-projector",
+      branch = "development",
+      keys = { "č" },
+      dependencies = {
+        "kndndrj/projector-loader-vscode",
+        {
+          "mfussenegger/nvim-dap",
+          dependencies = {
+            "theHamsta/nvim-dap-virtual-text",
+            "rcarriga/nvim-dap-ui",
+            "mfussenegger/nvim-dap-python",
+            "jay-babu/mason-nvim-dap.nvim",
+          },
+          config = function()
+            require("plugins.configs.debug").configure()
+          end,
+        },
+      },
+      config = function()
+        require("plugins.configs.runner").configure()
+      end,
+    },
+
+    -- Git
+    {
+      "tpope/vim-fugitive",
+      cmd = { "G", "Git", "GBrowse", "Gdiffsplit", "Gvdiffsplit" },
+      dependencies = {
+        "tpope/vim-rhubarb",
+        "idanarye/vim-merginal",
+      },
+      config = function()
+        require("plugins.configs.git").configure_fugitive()
+      end,
+    },
+    {
+      "lewis6991/gitsigns.nvim",
+      event = "BufReadPre",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+      },
+      config = function()
+        require("plugins.configs.git").configure_gitsigns()
+      end,
+    },
+
+    -- Database
+    {
+      "tpope/vim-dadbod",
+      cmd = {
+        "DBUIToggle",
+        "DBUI",
+        "DBUIAddConnection",
+        "DBUIFindBuffer",
+        "DBUIRenameBuffer",
+        "DBUILastQueryInfo",
+      },
+      dependencies = {
+        "kristijanhusak/vim-dadbod-ui",
+        "kristijanhusak/vim-dadbod-completion",
+      },
+      config = function()
+        vim.g.db_ui_use_nerd_fonts = 1
+      end,
+    },
+
+    -- LaTeX
+    {
+      "lervag/vimtex",
+      ft = "tex",
+      config = function()
+        require("plugins.configs.vimtex").configure()
+      end,
+    },
+
+    -- Refactoring
+    {
+      "ThePrimeagen/refactoring.nvim",
+      keys = { "<leader>rr" },
+      dependencies = {
+        -- "nvim-treesitter/nvim-treesitter",
+        "nvim-lua/plenary.nvim",
+      },
+      config = function()
+        require("refactoring").setup {}
+
+        vim.keymap.set("v", "<leader>rr", function()
+          require("refactoring").select_refactor()
+        end, { noremap = true, silent = true, expr = false })
+      end,
+    },
+
+    -- TODO remove
+    {
       "MunifTanjim/nui.nvim",
     },
-    config = function()
-      require("plugins.configs.navigation").configure_neotree()
-    end,
   }
 
-  -- Tmux
-  use {
-    "aserowy/tmux.nvim",
-    wants = {
-      "nvim-libmodal",
-    },
-    requires = {
-      "Iron-E/nvim-libmodal",
-    },
-    config = function()
-      require("plugins.configs.tmux").configure()
-    end,
-  }
+  local opts = {}
 
-  -- Mason
-  use {
-    "williamboman/mason.nvim",
-    wants = {
-      "mason-update-all",
-      "mason-tool-installer.nvim",
-    },
-    requires = {
-      "RubixDev/mason-update-all",
-      "WhoIsSethDaniel/mason-tool-installer.nvim",
-    },
-    run = ":MasonUpdateAll",
-    config = function()
-      -- Initialize meson
-      require("mason").setup()
-
-      -- register update cmd
-      require("mason-update-all").setup()
-
-      -- Install extra packages
-      require("mason-tool-installer").setup {
-        ensure_installed = { "shellcheck", "golangci-lint" },
-      }
-    end,
-  }
-
-  -- LSP
-  use {
-    "neovim/nvim-lspconfig",
-    opt = true,
-    event = { "BufReadPre" },
-    after = "mason.nvim",
-    wants = {
-      "cmp-nvim-lsp",
-      "glance.nvim",
-      "mason-lspconfig.nvim",
-    },
-    requires = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/nvim-cmp",
-      "dnlhc/glance.nvim",
-      "williamboman/mason-lspconfig.nvim",
-    },
-    config = function()
-      require("plugins.configs.lsp").configure()
-    end,
-  }
-
-  -- NULL-LS
-  use {
-    "jose-elias-alvarez/null-ls.nvim",
-    opt = true,
-    event = { "BufReadPre" },
-    wants = {
-      "cmp-nvim-lsp",
-      "mason-null-ls.nvim",
-    },
-    requires = {
-      "nvim-lua/plenary.nvim",
-      "jay-babu/mason-null-ls.nvim",
-    },
-    config = function()
-      require("plugins.configs.nullls").configure()
-    end,
-  }
-
-  -- DAP
-  use {
-    "mfussenegger/nvim-dap",
-    opt = true,
-    module = "dap",
-    after = "mason.nvim",
-    wants = {
-      "nvim-dap-virtual-text",
-      "nvim-dap-ui",
-      "nvim-dap-python",
-      "mason-nvim-dap.nvim",
-    },
-    requires = {
-      "theHamsta/nvim-dap-virtual-text",
-      "rcarriga/nvim-dap-ui",
-      "mfussenegger/nvim-dap-python",
-      "jay-babu/mason-nvim-dap.nvim",
-    },
-    config = function()
-      require("plugins.configs.debug").configure()
-    end,
-  }
-
-  -- Snippets
-  use {
-    "L3MON4D3/LuaSnip",
-    opt = true,
-    wants = { "friendly-snippets", "vim-snippets" },
-    requires = {
-      "rafamadriz/friendly-snippets",
-      "honza/vim-snippets",
-    },
-    config = function()
-      require("plugins.configs.snippets").configure()
-    end,
-  }
-
-  -- Completion
-  use {
-    "windwp/nvim-autopairs",
-    opt = true,
-    event = "InsertEnter",
-    wants = "nvim-treesitter",
-    module = { "nvim-autopairs.completion.cmp", "nvim-autopairs" },
-    config = function()
-      require("nvim-autopairs").setup {
-        check_ts = true,
-      }
-    end,
-  }
-  use {
-    "hrsh7th/nvim-cmp",
-    event = "InsertEnter",
-    opt = true,
-    config = function()
-      require("plugins.configs.completion").configure()
-    end,
-    wants = {
-      "LuaSnip",
-      "lspkind-nvim",
-      "nvim-autopairs",
-    },
-    requires = {
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-nvim-lua",
-      "saadparwaiz1/cmp_luasnip",
-      "onsails/lspkind-nvim",
-    },
-  }
-
-  -- Git
-  use {
-    "tpope/vim-fugitive",
-    opt = true,
-    cmd = { "G", "Git", "GBrowse", "Gdiffsplit", "Gvdiffsplit" },
-    requires = {
-      "tpope/vim-rhubarb",
-      "idanarye/vim-merginal",
-    },
-    config = function()
-      require("plugins.configs.git").configure_fugitive()
-    end,
-  }
-  use {
-    "lewis6991/gitsigns.nvim",
-    event = "BufReadPre",
-    wants = {
-      "plenary.nvim",
-    },
-    requires = {
-      "nvim-lua/plenary.nvim",
-    },
-    config = function()
-      require("plugins.configs.git").configure_gitsigns()
-    end,
-  }
-
-  -- Database
-  use {
-    "tpope/vim-dadbod",
-    opt = true,
-    cmd = {
-      "DBUIToggle",
-      "DBUI",
-      "DBUIAddConnection",
-      "DBUIFindBuffer",
-      "DBUIRenameBuffer",
-      "DBUILastQueryInfo",
-    },
-    requires = {
-      "kristijanhusak/vim-dadbod-ui",
-      "kristijanhusak/vim-dadbod-completion",
-    },
-    config = function()
-      vim.g.db_ui_use_nerd_fonts = 1
-    end,
-  }
-
-  -- Task Runner
-  use {
-    "kndndrj/nvim-projector",
-    branch = "development",
-    opt = true,
-    keys = { "č" },
-    module = "projector",
-    wants = {
-      "nvim-dap",
-    },
-    requires = {
-      "kndndrj/projector-loader-vscode",
-    },
-    config = function()
-      require("plugins.configs.runner").configure()
-    end,
-  }
-
-  -- LaTeX
-  use {
-    "lervag/vimtex",
-    config = function()
-      require("plugins.configs.vimtex").configure()
-    end,
-  }
-
-  -- Refactoring
-  use {
-    "ThePrimeagen/refactoring.nvim",
-    opt = true,
-    keys = { "<leader>rr" },
-    module = "refactoring",
-    wants = {
-      "plenary.nvim",
-      "nvim-treesitter",
-    },
-    requires = {
-      "nvim-lua/plenary.nvim",
-    },
-    config = function()
-      require("refactoring").setup {}
-
-      vim.keymap.set("v", "<leader>rr", function()
-        require("refactoring").select_refactor()
-      end, { noremap = true, silent = true, expr = false })
-    end,
-  }
-
-  -- TODO remove
-  use {
-    "MunifTanjim/nui.nvim",
-  }
-
-  -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
-  if packer_bootstrap then
-    require("packer").sync()
+  -- Bootstrap the plugin manager
+  local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+  if not vim.loop.fs_stat(lazypath) then
+    vim.fn.system {
+      "git",
+      "clone",
+      "--filter=blob:none",
+      "https://github.com/folke/lazy.nvim.git",
+      "--branch=stable", -- latest stable release
+      lazypath,
+    }
   end
-end)
+
+  vim.opt.rtp:prepend(lazypath)
+
+  require("lazy").setup(plugins, opts)
+end
+
+return M
