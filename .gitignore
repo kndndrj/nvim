@@ -1,2 +1,4 @@
 plugin/
 lazy-lock.json
+lua/secrets/*
+!lua/secrets/.gitkeep
