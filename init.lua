@@ -14,9 +14,6 @@ g.db_ui_use_nerd_fonts = 1
 g.db_ui_tmp_query_location = "~/.cache/nvim/dadbod-ui/"
 g.db_ui_auto_execute_table_helpers = 1
 
--- Source other configs
-require("plugins").configure()
-
 -----------------------
 -- Basic Config: ------
 -----------------------
@@ -116,3 +113,6 @@ map("n", "<leader>di", '"+di', map_options)
 map("n", "<leader>da", '"+da', map_options)
 -- p
 map("", "<leader>p", '"+p', map_options)
+
+-- Source plugins
+require("plugins").configure()

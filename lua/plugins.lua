@@ -1,7 +1,6 @@
 -------------------------
 -- Plugins: -------------
 -------------------------
-
 local M = {}
 
 function M.configure()
@@ -232,6 +231,7 @@ function M.configure()
     {
       "kndndrj/nvim-projector",
       branch = "development",
+      dir = require("secrets").get("projector_path"),
       keys = { "č" },
       dependencies = {
         "kndndrj/projector-loader-vscode",
@@ -245,6 +245,32 @@ function M.configure()
           },
           config = function()
             require("plugins.configs.debug").configure()
+          end,
+        },
+        {
+          "kndndrj/nvim-dbee",
+          dir = require("secrets").get("dbee_path"),
+          dependencies = {
+            "MunifTanjim/nui.nvim",
+          },
+          config = function()
+            local dbee = require("dbee")
+
+            dbee.setup {
+              connections = require("secrets").get("dbee_connections"),
+              lazy = true,
+              result = {
+                page_size = 500,
+              },
+            }
+
+            local map_options = { noremap = true, silent = true }
+            vim.keymap.set("", "BL", function()
+              dbee.next()
+            end, map_options)
+            vim.keymap.set("", "BH", function()
+              dbee.prev()
+            end, map_options)
           end,
         },
       },
