@@ -45,7 +45,7 @@ function M.configure()
   --
   -- Initialize all debug adapters
   --
-  for adapter, config in pairs(require("plugins.configs.debug.adapters")) do
+  for adapter, config in pairs(require("plugins.debug.adapters")) do
     if type(config) == "function" then
       config()
     else
@@ -55,7 +55,7 @@ function M.configure()
 
   -- Mason
   require("mason-nvim-dap").setup {
-    ensure_installed = vim.tbl_keys(require("plugins.configs.debug.adapters")),
+    ensure_installed = vim.tbl_keys(require("plugins.debug.adapters")),
   }
 end
 

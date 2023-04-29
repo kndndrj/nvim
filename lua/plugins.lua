@@ -11,19 +11,19 @@ function M.configure()
     {
       "navarasu/onedark.nvim",
       config = function()
-        require("plugins.configs.candy").configure_colorscheme()
+        require("plugins.candy").configure_colorscheme()
       end,
     },
     {
       "stevearc/dressing.nvim",
       config = function()
-        require("plugins.configs.candy").configure_dressing()
+        require("plugins.candy").configure_dressing()
       end,
     },
     {
       "rcarriga/nvim-notify",
       config = function()
-        require("plugins.configs.candy").configure_notify()
+        require("plugins.candy").configure_notify()
       end,
     },
     {
@@ -33,7 +33,7 @@ function M.configure()
         "nvim-lua/plenary.nvim",
       },
       config = function()
-        require("plugins.configs.candy").configure_greeting()
+        require("plugins.candy").configure_greeting()
       end,
     },
     {
@@ -48,7 +48,7 @@ function M.configure()
         -- "kyazdani42/nvim-web-devicons",
       },
       config = function()
-        require("plugins.configs.statusline").configure()
+        require("plugins.statusline").configure()
       end,
     },
 
@@ -58,7 +58,7 @@ function M.configure()
       event = "BufReadPre",
       build = ":TSUpdate",
       config = function()
-        require("plugins.configs.treesitter").configure()
+        require("plugins.treesitter").configure()
       end,
     },
 
@@ -67,7 +67,7 @@ function M.configure()
       "lukas-reineke/indent-blankline.nvim",
       event = "BufReadPre",
       config = function()
-        require("plugins.configs.indentline").configure()
+        require("plugins.indentline").configure()
       end,
     },
     {
@@ -80,7 +80,7 @@ function M.configure()
     {
       "b3nj5m1n/kommentary",
       config = function()
-        require("plugins.configs.comments").configure()
+        require("plugins.comments").configure()
       end,
     },
     {
@@ -102,7 +102,7 @@ function M.configure()
         -- "rcarriga/nvim-notify"
       },
       config = function()
-        require("plugins.configs.navigation").configure_telescope()
+        require("plugins.navigation").configure_telescope()
       end,
     },
     {
@@ -113,7 +113,7 @@ function M.configure()
         "nvim-lua/plenary.nvim",
       },
       config = function()
-        require("plugins.configs.navigation").configure_harpoon()
+        require("plugins.navigation").configure_harpoon()
       end,
     },
     {
@@ -125,7 +125,7 @@ function M.configure()
         "MunifTanjim/nui.nvim",
       },
       config = function()
-        require("plugins.configs.navigation").configure_neotree()
+        require("plugins.navigation").configure_neotree()
       end,
     },
 
@@ -136,7 +136,7 @@ function M.configure()
         "Iron-E/nvim-libmodal",
       },
       config = function()
-        require("plugins.configs.tmux").configure()
+        require("plugins.tmux").configure()
       end,
     },
 
@@ -171,7 +171,7 @@ function M.configure()
         "williamboman/mason-lspconfig.nvim",
       },
       config = function()
-        require("plugins.configs.lsp").configure()
+        require("plugins.lsp").configure()
       end,
     },
 
@@ -185,7 +185,7 @@ function M.configure()
         "jay-babu/mason-null-ls.nvim",
       },
       config = function()
-        require("plugins.configs.nullls").configure()
+        require("plugins.nullls").configure()
       end,
     },
 
@@ -194,7 +194,7 @@ function M.configure()
       "hrsh7th/nvim-cmp",
       event = "InsertEnter",
       config = function()
-        require("plugins.configs.completion").configure()
+        require("plugins.completion").configure()
       end,
       dependencies = {
         "hrsh7th/cmp-buffer",
@@ -210,7 +210,7 @@ function M.configure()
             "honza/vim-snippets",
           },
           config = function()
-            require("plugins.configs.snippets").configure()
+            require("plugins.snippets").configure()
           end,
         },
         {
@@ -244,7 +244,7 @@ function M.configure()
             "jay-babu/mason-nvim-dap.nvim",
           },
           config = function()
-            require("plugins.configs.debug").configure()
+            require("plugins.debug").configure()
           end,
         },
         {
@@ -275,7 +275,7 @@ function M.configure()
         },
       },
       config = function()
-        require("plugins.configs.runner").configure()
+        require("plugins.runner").configure()
       end,
     },
 
@@ -288,7 +288,7 @@ function M.configure()
         "idanarye/vim-merginal",
       },
       config = function()
-        require("plugins.configs.git").configure_fugitive()
+        require("plugins.git").configure_fugitive()
       end,
     },
     {
@@ -298,7 +298,7 @@ function M.configure()
         "nvim-lua/plenary.nvim",
       },
       config = function()
-        require("plugins.configs.git").configure_gitsigns()
+        require("plugins.git").configure_gitsigns()
       end,
     },
 
@@ -327,7 +327,7 @@ function M.configure()
       "lervag/vimtex",
       ft = "tex",
       config = function()
-        require("plugins.configs.vimtex").configure()
+        require("plugins.vimtex").configure()
       end,
     },
 

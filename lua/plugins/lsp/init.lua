@@ -27,10 +27,10 @@ function M.configure()
     severity_sort = true,
   })
 
-  local options = require("plugins.configs.lsp.options")
+  local options = require("plugins.lsp.options")
 
   -- Initialize all language servers
-  for server, config in pairs(require("plugins.configs.lsp.servers")) do
+  for server, config in pairs(require("plugins.lsp.servers")) do
     config.capabilities = options.capabilities
     config.on_attach = options.on_attach
     require("lspconfig")[server].setup(config)
@@ -73,7 +73,7 @@ function M.configure()
 
   -- Mason
   require("mason-lspconfig").setup {
-    ensure_installed = vim.tbl_keys(require("plugins.configs.lsp.servers")),
+    ensure_installed = vim.tbl_keys(require("plugins.lsp.servers")),
   }
 end
 
