@@ -84,11 +84,7 @@ function M.configure()
       ["<C-d>"] = cmp.mapping.scroll_docs(-4),
       ["<C-u>"] = cmp.mapping.scroll_docs(4),
       ["<C-n>"] = cmp.mapping.complete(),
-      ["<esc>"] = cmp.mapping(function()
-        -- abort and return to normal mode
-        cmp.abort()
-        vim.api.nvim_input("<C-\\><C-N>")
-      end),
+      ["<C-e>"] = cmp.mapping.abort(),
       ["<CR>"] = cmp.mapping.confirm {
         behavior = cmp.ConfirmBehavior.Replace,
         select = false,

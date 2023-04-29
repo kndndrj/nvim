@@ -26,7 +26,9 @@ return {
       extra_args = { "--dialect", "postgres" },
     },
     beautysh = {},
-    mdformat = {},
+    mdformat = {
+      extra_args = { "--number", "--wrap", "80" },
+    },
     yamlfmt = {},
   },
   hover = {
