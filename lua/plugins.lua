@@ -253,12 +253,16 @@ function M.configure()
           dependencies = {
             "MunifTanjim/nui.nvim",
           },
+          build = function()
+            if not require("secrets").get("dbee_path") then
+              require("dbee").install()
+            end
+          end,
           config = function()
             local dbee = require("dbee")
 
             dbee.setup {
               connections = require("secrets").get("dbee_connections"),
-              lazy = true,
               result = {
                 page_size = 500,
               },
