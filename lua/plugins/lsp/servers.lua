@@ -21,7 +21,13 @@ return {
 
   dockerls = {},
 
-  gopls = {},
+  gopls = {
+    settings = {
+      gopls = {
+        gofumpt = true,
+      },
+    },
+  },
 
   golangci_lint_ls = {
     init_options = {

@@ -262,10 +262,13 @@ function M.configure()
             local dbee = require("dbee")
 
             dbee.setup {
-              connections = require("secrets").get("dbee_connections"),
-              result = {
-                page_size = 500,
-              },
+              -- connections = require("secrets").get("dbee_connections"),
+              sources = vim.list_extend(
+                require("dbee.config").default.sources,
+                { require("dbee.sources").MemorySource:new(require("secrets").get("dbee_connections")) }
+              ),
+              page_size = 500,
+              lazy = true,
             }
 
             local map_options = { noremap = true, silent = true }
@@ -350,11 +353,6 @@ function M.configure()
           require("refactoring").select_refactor()
         end, { noremap = true, silent = true, expr = false })
       end,
-    },
-
-    -- TODO remove
-    {
-      "MunifTanjim/nui.nvim",
     },
   }
 
