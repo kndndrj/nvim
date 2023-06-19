@@ -2,12 +2,6 @@
 -- List of Servers: -----
 -------------------------
 
----@param f fun():any
----@return any
-local function exc(f)
-  return f()
-end
-
 return {
   bashls = {},
 
@@ -31,11 +25,17 @@ return {
 
   golangci_lint_ls = {
     init_options = {
-      command = exc(function()
+      command = (function()
+        local cwd = vim.fn.getcwd()
+
         ---@type string[]
         local cfgs_prio_list = {
-          vim.fn.getcwd() .. "/.ci/golangci.yml",
-          vim.fn.getcwd() .. "/golangci.yml",
+          cwd .. ".golangci.yml",
+          cwd .. ".golangci.yaml",
+          cwd .. ".golangci.toml",
+          cwd .. ".golangci.json",
+          cwd .. "/.ci/golangci.yml",
+          cwd .. "/golangci.yml",
           vim.fn.stdpath("config") .. "/assets/golangci.yml",
         }
 
@@ -47,7 +47,7 @@ return {
 
         -- fallback
         return { "golangci-lint", "run", "--out-format", "json" }
-      end),
+      end)(),
     },
   },
 
