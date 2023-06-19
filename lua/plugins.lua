@@ -155,7 +155,7 @@ function M.configure()
         require("mason-update-all").setup()
         -- Install extra packages
         require("mason-tool-installer").setup {
-          ensure_installed = { "shellcheck", "golangci-lint" },
+          ensure_installed = { "shellcheck", "golangci-lint", "latexindent" },
         }
       end,
     },
@@ -204,6 +204,12 @@ function M.configure()
         "saadparwaiz1/cmp_luasnip",
         "onsails/lspkind-nvim",
         {
+          "hrsh7th/nvim-insx",
+          config = function()
+            require("insx.preset.standard").setup()
+          end,
+        },
+        {
           "L3MON4D3/LuaSnip",
           dependencies = {
             "rafamadriz/friendly-snippets",
@@ -211,17 +217,6 @@ function M.configure()
           },
           config = function()
             require("plugins.snippets").configure()
-          end,
-        },
-        {
-          "windwp/nvim-autopairs",
-          dependencies = {
-            -- "nvim-treesitter/nvim-treesitter",
-          },
-          config = function()
-            require("nvim-autopairs").setup {
-              check_ts = true,
-            }
           end,
         },
       },

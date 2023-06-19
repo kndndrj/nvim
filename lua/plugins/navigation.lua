@@ -150,6 +150,7 @@ function M.configure_neotree()
         hide_gitignored = false,
         hide_hidden = false, -- only works on Windows for hidden files/directories
       },
+      hijack_netrw_behavior = "disabled",
     },
   }
 

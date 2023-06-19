@@ -87,7 +87,24 @@ return {
     },
   },
 
-  texlab = {},
+  texlab = {
+    settings = {
+      texlab = {
+        bibtexFormatter = "texlab",
+        build = {
+          args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+          executable = "latexmk",
+          forwardSearchAfter = false,
+          onSave = false,
+        },
+        formatterLineLength = 100,
+        latexFormatter = "latexindent",
+        latexindent = {
+          modifyLineBreaks = true,
+        },
+      },
+    },
+  },
 
   tsserver = {
     settings = {

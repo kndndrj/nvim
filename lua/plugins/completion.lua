@@ -118,10 +118,6 @@ function M.configure()
       { name = "buffer", keyword_length = 5 },
     },
   }
-
-  -- Autopairs
-  local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-  cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 end
 
 return M
