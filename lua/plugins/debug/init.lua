@@ -31,17 +31,6 @@ function M.configure()
     },
   }
 
-  -- open UI on start
-  require("dap").listeners.after.event_initialized["dapui_config"] = function()
-    require("dapui").open()
-  end
-  require("dap").listeners.before.event_terminated["dapui_config"] = function()
-    require("dapui").close()
-  end
-  require("dap").listeners.before.event_exited["dapui_config"] = function()
-    require("dapui").close()
-  end
-
   --
   -- Initialize all debug adapters
   --

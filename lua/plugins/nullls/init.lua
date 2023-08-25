@@ -26,10 +26,15 @@ function M.configure()
   }
 
   -- Mason
+  local mason_ignore = { -- list of sources to not install
+    "mypy",
+  }
   local to_install = {}
   for _, srcs in pairs(require("plugins.nullls.sources")) do
     for src, _ in pairs(srcs) do
-      table.insert(to_install, src)
+      if not vim.tbl_contains(mason_ignore, src) then
+        table.insert(to_install, src)
+      end
     end
   end
   require("mason-null-ls").setup {

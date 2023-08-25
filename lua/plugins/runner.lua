@@ -118,37 +118,21 @@ function M.configure()
 
   require("projector").setup {
     loaders = {
-      {
-        module = "tasksjson",
-        options = vim.fn.getcwd() .. "/.vscode/tasks.json",
+      require("projector.loaders").BuiltinLoader:new {
+        path = function()
+          return vim.fn.getcwd() .. "/.vscode/projector.json"
+        end,
+        configs = configs,
       },
-      {
-        module = "launchjson",
-        options = vim.fn.getcwd() .. "/.vscode/launch.json",
-      },
-      {
-        module = "builtin",
-        options = {
-          path = vim.fn.getcwd() .. "/.vscode/projector.json",
-          configs = configs,
-        },
-      },
+      require("projector.loaders").DapLoader:new(),
+    },
+    core = {
+      automatic_reload = true,
     },
     outputs = {
-      database = {
-        module = "dbee",
-      },
-    },
-    display_format = function(_, scope, group, modes, name)
-      return scope .. "  " .. group .. "  " .. modes .. "  " .. name
-    end,
-    automatic_reload = true,
-    icons = {
-      enable = true,
-      modes = {
-        -- TODO remove once it's merged
-        debug = "󰃤",
-      },
+      require("projector.outputs").TaskOutputBuilder:new(),
+      require("projector.outputs").DapOutputBuilder:new(),
+      require("projector_dbee"):new(),
     },
   }
 
@@ -157,35 +141,28 @@ function M.configure()
   --
   local map_options = { noremap = true, silent = true }
   -- core
-  vim.api.nvim_set_keymap("", "čs", '<Cmd>lua require"projector".continue()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "čt", '<Cmd>lua require"projector".toggle()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "čw", '<Cmd>lua require"projector".next()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "čq", '<Cmd>lua require"projector".previous()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "čr", '<Cmd>lua require"projector".restart()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "čk", '<Cmd>lua require"projector".kill()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "čn", '<Cmd>lua require"dap".step_over()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "či", '<Cmd>lua require"dap".step_into()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "čo", '<Cmd>lua require"dap".step_out()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "čb", '<Cmd>lua require"dap".toggle_breakpoint()<CR>', map_options)
-  vim.api.nvim_set_keymap(
-    "n",
-    "čB",
-    '<Cmd>lua require"dap".set_breakpoint(vim.fn.input("Breakpoint condition: "))<CR>',
-    map_options
-  )
-  vim.api.nvim_set_keymap(
-    "n",
-    "čl",
-    '<Cmd>lua require"dap".set_breakpoint(nil, nil, vim.fn.input("Log point message: "))<CR>',
-    map_options
-  )
-  vim.api.nvim_set_keymap("n", "čg", "<Cmd>lua Add_test_to_configurations()<CR>", map_options)
+  vim.keymap.set("", "čs", require("projector").continue, map_options)
+  vim.keymap.set("n", "čt", require("projector").toggle, map_options)
+  vim.keymap.set("n", "čw", require("projector").next, map_options)
+  vim.keymap.set("n", "čq", require("projector").previous, map_options)
+  vim.keymap.set("n", "čr", require("projector").restart, map_options)
+  vim.keymap.set("n", "čk", require("projector").kill, map_options)
+  vim.keymap.set("n", "čn", require("dap").step_over, map_options)
+  vim.keymap.set("n", "či", require("dap").step_into, map_options)
+  vim.keymap.set("n", "čo", require("dap").step_out, map_options)
+  vim.keymap.set("n", "čb", require("dap").toggle_breakpoint, map_options)
+  vim.keymap.set("n", "čB", function()
+    require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
+  end, map_options)
+  vim.keymap.set("n", "čl", function()
+    require("dap").set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+  end, map_options)
   -- dap-ui
-  vim.api.nvim_set_keymap("v", "če", '<Cmd>lua require("dapui").eval()<CR>', map_options)
+  vim.keymap.set("v", "če", require("dapui").eval, map_options)
   -- dap-python
-  vim.api.nvim_set_keymap("n", "čdn", '<Cmd>lua require("dap-python").test_method()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "čdf", '<Cmd>lua require("dap-python").test_class()<CR>', map_options)
-  vim.api.nvim_set_keymap("v", "čds", '<ESC><Cmd>lua require("dap-python").debug_selection()<CR>', map_options)
+  vim.keymap.set("n", "čdn", require("dap-python").test_method, map_options)
+  vim.keymap.set("n", "čdf", require("dap-python").test_class, map_options)
+  vim.keymap.set("v", "čds", require("dap-python").debug_selection, map_options)
 end
 
 return M

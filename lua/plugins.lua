@@ -27,16 +27,6 @@ function M.configure()
       end,
     },
     {
-      "startup-nvim/startup.nvim",
-      dependencies = {
-        -- "nvim-telescope/telescope.nvim",
-        "nvim-lua/plenary.nvim",
-      },
-      config = function()
-        require("plugins.candy").configure_greeting()
-      end,
-    },
-    {
       "kyazdani42/nvim-web-devicons",
       config = function()
         require("nvim-web-devicons").setup { default = true }
@@ -155,7 +145,7 @@ function M.configure()
         require("mason-update-all").setup()
         -- Install extra packages
         require("mason-tool-installer").setup {
-          ensure_installed = { "shellcheck", "golangci-lint", "latexindent" },
+          ensure_installed = { "shellcheck", "golangci-lint", "latexindent", "black", "flake8" },
         }
       end,
     },
@@ -257,13 +247,16 @@ function M.configure()
             local dbee = require("dbee")
 
             dbee.setup {
-              -- connections = require("secrets").get("dbee_connections"),
+              connections = require("secrets").get("dbee_connections"),
               sources = vim.list_extend(
                 require("dbee.config").default.sources,
                 { require("dbee.sources").MemorySource:new(require("secrets").get("dbee_connections")) }
               ),
               page_size = 500,
               lazy = true,
+              drawer = {
+                disable_help = true,
+              },
             }
 
             local map_options = { noremap = true, silent = true }

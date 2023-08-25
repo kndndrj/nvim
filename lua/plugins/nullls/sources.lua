@@ -10,25 +10,27 @@ return {
     -- spell = {},
   },
   diagnostics = {
-    eslint = {},
+    actionlint = {},
+    ansiblelint = {},
     buf = {
       -- extra_args = { "--config", '{"version":"v1","lint":{"use":["BASIC"]}}' },
     },
+    eslint = {},
     luacheck = {},
-    actionlint = {},
-    ansiblelint = {},
+    -- mypy = {},
   },
   formatting = {
-    buf = {},
     black = {},
-    stylua = {},
-    sqlfluff = {
-      extra_args = { "--dialect", "postgres" },
-    },
     beautysh = {},
+    buf = {},
     mdformat = {
       extra_args = { "--number", "--wrap", "80" },
     },
+    npm_groovy_lint = {},
+    sqlfluff = {
+      extra_args = { "--dialect", "postgres" },
+    },
+    stylua = {},
     yamlfmt = {},
   },
   hover = {

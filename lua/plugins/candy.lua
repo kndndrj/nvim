@@ -53,80 +53,17 @@ end
 
 function M.configure_notify()
   vim.opt.termguicolors = true
-  require("notify").setup {
+  local notify = require("notify")
+  notify.setup {
     background_colour = "#000000",
   }
-  vim.notify = require("notify")
-end
+  vim.notify = notify
 
-function M.configure_greeting()
-  require("startup").setup {
-    header = {
-      type = "text",
-      oldfiles_directory = false,
-      align = "center",
-      fold_section = false,
-      title = "Header",
-      margin = 5,
-      content = require("startup.headers").neovim_logo_header,
-      highlight = "Statement",
-      default_color = "",
-      oldfiles_amount = 0,
-    },
-    body = {
-      type = "mapping",
-      oldfiles_directory = false,
-      align = "center",
-      fold_section = false,
-      title = "Basic Commands",
-      margin = 5,
-      content = {
-        {
-          "  New Buffer",
-          [[ lua local b = vim.api.nvim_create_buf(true, false); vim.api.nvim_set_current_buf(b) ]],
-          "<leader>nf",
-        },
-        { "  Find File", "Telescope find_files", "<leader>ff" },
-        { "  Recent Files", "Telescope oldfiles", "<leader>fo" },
-        { "  Find Word", "Telescope live_grep", "<leader>fg" },
-      },
-      highlight = "String",
-      default_color = "",
-      oldfiles_amount = 0,
-    },
-    footer = {
-      type = "text",
-      oldfiles_directory = false,
-      align = "center",
-      fold_section = false,
-      title = "Footer",
-      margin = 5,
-      content = { os.date() },
-      highlight = "Number",
-      default_color = "",
-      oldfiles_amount = 0,
-    },
-
-    options = {
-      mapping_keys = true,
-      cursor_column = 0.5,
-      empty_lines_between_mappings = true,
-      disable_statuslines = true,
-      paddings = { 1, 3, 3, 0 },
-    },
-    mappings = {
-      execute_command = "<CR>",
-      open_file = "o",
-      open_file_split = "<c-o>",
-      open_section = "<TAB>",
-      open_help = "?",
-    },
-    colors = {
-      background = "#1f2227",
-      folded_section = "#56b6c2",
-    },
-    parts = { "header", "body", "footer" },
-  }
+  -- dismiss displayed messages
+  vim.keymap.set("n", "<C-l>", function()
+    notify.dismiss { silent = true, pending = true }
+    vim.cmd("nohlsearch|diffupdate")
+  end, { remap = false })
 end
 
 return M

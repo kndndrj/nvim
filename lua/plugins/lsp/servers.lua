@@ -61,7 +61,7 @@ return {
         configurationSources = { "pycodestyle", "flake8" },
         plugins = {
           pycodestyle = {
-            maxLineLength = 100,
+            maxLineLength = 120,
           },
         },
       },
@@ -86,6 +86,8 @@ return {
       },
     },
   },
+
+  taplo = {},
 
   texlab = {
     settings = {

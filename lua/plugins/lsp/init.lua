@@ -62,6 +62,7 @@ function M.configure()
       preview = {
         ["<c-a>l"] = actions.enter_win("list"),
         ["<c-a>h"] = actions.enter_win("list"),
+        ["q"] = actions.close,
       },
     },
     folds = {
@@ -72,8 +73,19 @@ function M.configure()
   }
 
   -- Mason
+  local mason_ignore = { -- list of sources to not install
+    "pylsp",
+  }
+  local to_install = {}
+
+  for _, ser in ipairs(vim.tbl_keys(require("plugins.lsp.servers"))) do
+    if not vim.tbl_contains(mason_ignore, ser) then
+      table.insert(to_install, ser)
+    end
+  end
+
   require("mason-lspconfig").setup {
-    ensure_installed = vim.tbl_keys(require("plugins.lsp.servers")),
+    ensure_installed = to_install,
   }
 end
 
