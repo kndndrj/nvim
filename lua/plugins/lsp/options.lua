@@ -28,11 +28,6 @@ function M.map_keys(_, bufnr)
   vim.keymap.set("n", "gi", "<CMD>Glance implementations<CR>")
   vim.keymap.set("n", "gr", "<CMD>Glance references<CR>")
   vim.keymap.set("n", "gt", "<CMD>Glance type_definitions<CR>")
-
-  -- formatting
-  vim.keymap.set("n", "<leader>tt", function()
-    vim.lsp.buf.format { async = true }
-  end, map_options)
   -- rename
   vim.keymap.set("n", "gR", vim.lsp.buf.rename, map_options)
   -- code action

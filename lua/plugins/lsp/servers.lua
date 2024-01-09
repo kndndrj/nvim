@@ -3,6 +3,8 @@
 -------------------------
 
 return {
+  ansiblels = {},
+
   bashls = {},
 
   bufls = {},
@@ -115,6 +117,8 @@ return {
       end
     end)(),
   },
+
+  ruff_lsp = {},
 
   rust_analyzer = {},
 

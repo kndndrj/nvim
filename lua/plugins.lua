@@ -181,10 +181,6 @@ function M.configure()
         require("mason").setup()
         -- register update cmd
         require("mason-update-all").setup()
-        -- Install extra packages
-        require("mason-tool-installer").setup {
-          ensure_installed = { "shellcheck", "golangci-lint", "latexindent", "black", "flake8" },
-        }
       end,
     },
 
@@ -205,17 +201,22 @@ function M.configure()
       end,
     },
 
-    -- NULL-LS
+    -- Linters
     {
-      "jose-elias-alvarez/null-ls.nvim",
-      event = "BufReadPre",
+      "mfussenegger/nvim-lint",
       dependencies = {
-        -- "hrsh7th/cmp-nvim-lsp",
-        "nvim-lua/plenary.nvim",
-        "jay-babu/mason-null-ls.nvim",
+        "rshkarin/mason-nvim-lint",
       },
       config = function()
-        require("plugins.nullls").configure()
+        require("plugins.lint").configure()
+      end,
+    },
+
+    -- Formatters
+    {
+      "stevearc/conform.nvim",
+      config = function()
+        require("plugins.format").configure()
       end,
     },
 
