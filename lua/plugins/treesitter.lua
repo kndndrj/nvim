@@ -14,11 +14,10 @@ function M.configure()
     incremental_selection = {
       enable = true,
       keymaps = {
-        init_selection = "<leader>vv",
-        node_incremental = "<leader>vn",
-        node_decremental = "<leader>vm",
-        scope_incremental = "<leader>vs",
-        scope_decremental = "<leader>vd",
+        init_selection = "gnn",
+        node_incremental = "grn",
+        scope_incremental = "grc",
+        node_decremental = "grm",
       },
     },
     indent = {

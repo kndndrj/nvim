@@ -140,6 +140,7 @@ return {
           },
         },
         workspace = {
+          checkThirdParty = false,
           -- add all nvim runtime paths to workspace
           -- snippet taken from neodev.nvim
           library = (function()

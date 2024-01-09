@@ -6,12 +6,12 @@ local M = {}
 
 function M.configure_colorscheme()
   -- colorscheme
-  require("catppuccin").setup {
-    flavour = "frappe",
-    transparent_background = true,
+  require("tokyonight").setup {
+    style = "storm",
+    transparent = true,
   }
 
-  vim.cmd.colorscheme("catppuccin")
+  vim.cmd.colorscheme("tokyonight")
 
   -- disable cursorline and colorcolumn when leaving the editor
   vim.api.nvim_create_autocmd({ "WinLeave", "FocusLost" }, {
@@ -35,15 +35,6 @@ function M.configure_dressing()
       start_in_insert = true,
       win_options = {
         winblend = 0,
-      },
-    },
-    select = {
-      backend = { "builtin" },
-      builtin = {
-        win_options = {
-          winblend = 0,
-          winhighlight = "FloatBorder:TelescopePreviewBorder,FloatTitle:TelescopeBorder",
-        },
       },
     },
   }

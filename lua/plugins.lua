@@ -10,7 +10,8 @@ function M.configure()
 
     -- Pretty
     {
-      "catppuccin/nvim",
+      "folke/tokyonight.nvim",
+      lazy = false,
       priority = 1000,
       config = function()
         require("plugins.candy").configure_colorscheme()
@@ -54,12 +55,13 @@ function M.configure()
     },
     {
       "j-hui/fidget.nvim",
-      tag = "legacy",
       event = "LspAttach",
       config = function()
         require("fidget").setup {
-          window = {
-            blend = 0,
+          notification = {
+            window = {
+              winblend = 0,
+            },
           },
         }
       end,
@@ -104,9 +106,9 @@ function M.configure()
       end,
     },
     {
-      "b3nj5m1n/kommentary",
+      "numToStr/Comment.nvim",
       config = function()
-        require("plugins.comments").configure()
+        require("Comment").setup()
       end,
     },
     {
@@ -231,12 +233,6 @@ function M.configure()
         "saadparwaiz1/cmp_luasnip",
         "onsails/lspkind-nvim",
         {
-          "hrsh7th/nvim-insx",
-          config = function()
-            require("insx.preset.standard").setup()
-          end,
-        },
-        {
           "L3MON4D3/LuaSnip",
           dependencies = {
             "rafamadriz/friendly-snippets",
@@ -359,23 +355,32 @@ function M.configure()
       end,
     },
 
-    -- Database
+    -- AI
     {
-      "tpope/vim-dadbod",
-      cmd = {
-        "DBUIToggle",
-        "DBUI",
-        "DBUIAddConnection",
-        "DBUIFindBuffer",
-        "DBUIRenameBuffer",
-        "DBUILastQueryInfo",
-      },
+      "jackMort/ChatGPT.nvim",
+      event = "VeryLazy",
+      config = function()
+        local token = secrets.get("chatgpt_token")
+        if token and not vim.env.OPENAI_API_KEY then
+          vim.env.OPENAI_API_KEY = token
+        end
+        require("chatgpt").setup {
+          show_quickfixes_cmd = "copen",
+        }
+      end,
       dependencies = {
-        "kristijanhusak/vim-dadbod-ui",
-        "kristijanhusak/vim-dadbod-completion",
+        "MunifTanjim/nui.nvim",
+        "nvim-lua/plenary.nvim",
+        "nvim-telescope/telescope.nvim",
+      },
+    },
+    {
+      "Exafunction/codeium.nvim",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
       },
       config = function()
-        vim.g.db_ui_use_nerd_fonts = 1
+        require("codeium").setup()
       end,
     },
 

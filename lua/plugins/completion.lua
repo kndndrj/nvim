@@ -61,6 +61,7 @@ function M.configure()
         local kind = lspkind.cmp_format {
           mode = "symbol_text",
           maxwidth = 50,
+          symbol_map = { Codeium = "" },
         }(entry, vim_item)
 
         local strings = vim.split(kind.kind, "%s", { trimempty = true })
@@ -83,7 +84,6 @@ function M.configure()
     mapping = cmp.mapping.preset.insert {
       ["<C-d>"] = cmp.mapping.scroll_docs(-4),
       ["<C-u>"] = cmp.mapping.scroll_docs(4),
-      ["<C-n>"] = cmp.mapping.complete(),
       ["<C-e>"] = cmp.mapping.abort(),
       ["<CR>"] = cmp.mapping.confirm {
         behavior = cmp.ConfirmBehavior.Replace,
@@ -112,6 +112,7 @@ function M.configure()
     },
     sources = cmp.config.sources {
       { name = "nvim_lsp" },
+      { name = "codeium" },
       { name = "path" },
       { name = "luasnip" },
       { name = "buffer", keyword_length = 5 },

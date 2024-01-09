@@ -34,7 +34,7 @@ function M.map_keys(_, bufnr)
     vim.lsp.buf.format { async = true }
   end, map_options)
   -- rename
-  vim.keymap.set("n", "gn", vim.lsp.buf.rename, map_options)
+  vim.keymap.set("n", "gR", vim.lsp.buf.rename, map_options)
   -- code action
   vim.keymap.set("n", "ga", vim.lsp.buf.code_action, map_options)
   -- hover

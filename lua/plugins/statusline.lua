@@ -23,7 +23,7 @@ end
 
 -- Theme
 local function configure_lualine_theme()
-  local theme = require("lualine.themes.catppuccin")
+  local theme = require("lualine.themes.tokyonight")
 
   -- buffers theme
   theme.buffers = {
