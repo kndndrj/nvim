@@ -32,7 +32,7 @@ function M.configure()
   -- Initialize all language servers
   for server, config in pairs(require("plugins.lsp.servers")) do
     config.capabilities = options.capabilities
-    config.on_attach = options.on_attach
+    config.on_attach = options.extend_on_attach(options.map_keys, config.on_attach)
     require("lspconfig")[server].setup(config)
   end
 

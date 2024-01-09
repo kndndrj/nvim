@@ -111,7 +111,6 @@ function M.configure()
       end, { "i", "s" }),
     },
     sources = cmp.config.sources {
-      { name = "nvim_lua", max_item_count = 10 },
       { name = "nvim_lsp" },
       { name = "path" },
       { name = "luasnip" },

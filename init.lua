@@ -32,8 +32,6 @@ o.mouse = "a"
 
 -- Rows below the statusline
 o.cmdheight = 1
--- Cursorline
-wo.cursorline = true
 -- Don't display mode
 o.showmode = false
 
@@ -49,9 +47,6 @@ o.expandtab = true
 o.shiftwidth = 4
 o.softtabstop = 4
 o.smarttab = true
-
--- Highlight a column to easily maintain line length
-wo.colorcolumn = "100"
 
 -- any combination of 'wq' works
 cmd(":command! WQ wq")
@@ -81,10 +76,6 @@ map("n", "<leader><esc>", ":cclose<CR>", map_options)
 map("n", "<leader>j", ":cnext<CR>", map_options)
 map("n", "<leader>k", ":cprev<CR>", map_options)
 map("n", "<leader>o", ":copen<CR>", map_options)
-
--- Cycle buffers
-map("n", "<leader>n", ":bnext<CR>", map_options)
-map("n", "<leader>N", ":bprev<CR>", map_options)
 
 -- Fixes for the US layout
 map("", "š", "[", map_options)

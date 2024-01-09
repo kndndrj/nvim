@@ -35,14 +35,4 @@ function M.configure_gitsigns()
   }
 end
 
--------------------------
--- Fugitive: ------------
--------------------------
-
-function M.configure_fugitive()
-  local map_options = { noremap = true, silent = true }
-  vim.keymap.set("n", "<leader>vd", ":diffget //2<CR>", map_options)
-  vim.keymap.set("n", "<leader>vj", ":diffget //3<CR>", map_options)
-end
-
 return M

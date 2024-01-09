@@ -4,15 +4,6 @@
 
 local M = {}
 
--- Custom functions
-local function debug()
-  local debug_status = require("dap").status()
-  if debug_status ~= "" then
-    return "DEBUG: " .. debug_status
-  end
-  return ""
-end
-
 local function lsp()
   local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
   local clients = vim.lsp.get_active_clients()
@@ -20,31 +11,24 @@ local function lsp()
     return ""
   end
 
+  local names = {}
   for _, client in ipairs(clients) do
     local filetypes = client.config.filetypes
     if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-      return "LSP: " .. client.name
+      table.insert(names, client.name)
     end
   end
-  return ""
-end
-
-local function projector()
-  local projector_status = require("projector").status()
-  if projector_status ~= "" then
-    return "TASKS: " .. projector_status
-  end
-  return ""
+  return table.concat(names, "|")
 end
 
 -- Theme
-local function configure_theme()
-  local theme = require("lualine.themes.onedark")
+local function configure_lualine_theme()
+  local theme = require("lualine.themes.catppuccin")
 
   -- buffers theme
   theme.buffers = {
     active = { fg = theme.normal.a.bg, bg = theme.normal.b.bg, gui = "bold" },
-    inactive = { fg = theme.inactive.b.fg, bg = theme.normal.b.bg },
+    inactive = { bg = theme.normal.b.bg },
   }
 
   -- transparent background
@@ -57,10 +41,10 @@ local function configure_theme()
   return theme
 end
 
-function M.configure()
+function M.configure_lualine()
   require("lualine").setup {
     options = {
-      theme = configure_theme(),
+      theme = configure_lualine_theme(),
       component_separators = "",
       section_separators = { left = "", right = "" },
       disabled_filetypes = {
@@ -93,9 +77,9 @@ function M.configure()
       },
 
       lualine_x = {
-        debug,
+        require("dap").status,
         lsp,
-        projector,
+        require("projector").status,
       },
       lualine_y = {
         {
@@ -111,31 +95,26 @@ function M.configure()
         },
       },
     },
-    tabline = {
-      lualine_a = {
-        {
-          "buffers",
-          mode = 2,
-          separator = { left = "", right = "" },
-          buffers_color = {
-            active = "lualine_active_buffers",
-            inactive = "lualine_inactive_buffers",
-          },
-        },
-      },
-      lualine_b = {},
-      lualine_c = {},
-      lualine_x = {},
-      lualine_y = {},
-      lualine_z = { "tabs" },
-    },
     winbar = {},
     extensions = {},
+  }
+end
+
+function M.configure_bufferline()
+  require("bufferline").setup {
+    options = {
+      diagnostics = "nvim_lsp",
+      diagnostics_update_in_insert = true,
+
+      show_buffer_close_icons = false,
+    },
   }
 
   local map_options = { noremap = true, silent = true }
 
-  vim.api.nvim_set_keymap("n", "<leader>b", ":LualineBuffersJump! ", map_options)
+  vim.keymap.set("n", "<leader>b", ":BufferLinePick<CR>", map_options)
+  vim.keymap.set("n", "<leader>n", ":BufferLineCycleNext<CR>", map_options)
+  vim.keymap.set("n", "<leader>N", ":BufferLineCyclePrev<CR>", map_options)
 end
 
 return M

@@ -1,3 +1,4 @@
+local secrets = require("secrets")
 -------------------------
 -- Plugins: -------------
 -------------------------
@@ -9,7 +10,8 @@ function M.configure()
 
     -- Pretty
     {
-      "navarasu/onedark.nvim",
+      "catppuccin/nvim",
+      priority = 1000,
       config = function()
         require("plugins.candy").configure_colorscheme()
       end,
@@ -38,7 +40,28 @@ function M.configure()
         -- "kyazdani42/nvim-web-devicons",
       },
       config = function()
-        require("plugins.statusline").configure()
+        require("plugins.statusline").configure_lualine()
+      end,
+    },
+    {
+      "akinsho/bufferline.nvim",
+      dependencies = {
+        -- "nvim-tree/nvim-web-devicons",
+      },
+      config = function()
+        require("plugins.statusline").configure_bufferline()
+      end,
+    },
+    {
+      "j-hui/fidget.nvim",
+      tag = "legacy",
+      event = "LspAttach",
+      config = function()
+        require("fidget").setup {
+          window = {
+            blend = 0,
+          },
+        }
       end,
     },
 
@@ -57,14 +80,27 @@ function M.configure()
       "lukas-reineke/indent-blankline.nvim",
       event = "BufReadPre",
       config = function()
-        require("plugins.indentline").configure()
+        require("ibl").setup {
+          exclude = {
+            buftypes = {
+              "terminal",
+            },
+            filetypes = {
+              "help",
+              "terminal",
+            },
+          },
+          indent = {
+            char = "│",
+          },
+        }
       end,
     },
     {
-      "ciaranm/detectindent",
+      "nmac427/guess-indent.nvim",
       event = "BufReadPre",
       config = function()
-        vim.api.nvim_create_autocmd("BufWinEnter", { command = ":DetectIndent" })
+        require("guess-indent").setup {}
       end,
     },
     {
@@ -77,7 +113,7 @@ function M.configure()
       "NvChad/nvim-colorizer.lua",
       cmd = "ColorizerToggle",
       config = function()
-        require("colorizer").setup()
+        require("colorizer").setup {}
       end,
     },
 
@@ -159,8 +195,10 @@ function M.configure()
         -- "hrsh7th/nvim-cmp",
         "dnlhc/glance.nvim",
         "williamboman/mason-lspconfig.nvim",
+        { "ii14/emmylua-nvim", ft = "lua" },
       },
       config = function()
+        -- default lsp config
         require("plugins.lsp").configure()
       end,
     },
@@ -190,7 +228,6 @@ function M.configure()
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-nvim-lsp",
-        "hrsh7th/cmp-nvim-lua",
         "saadparwaiz1/cmp_luasnip",
         "onsails/lspkind-nvim",
         {
@@ -216,10 +253,44 @@ function M.configure()
     {
       "kndndrj/nvim-projector",
       branch = "development",
-      dir = require("secrets").get("projector_path"),
+      dir = secrets.get("projector_path"),
       keys = { "č" },
       dependencies = {
-        "kndndrj/projector-loader-vscode",
+        {
+          "kndndrj/projector-neotest",
+          dir = secrets.get("projector_neotest_path"),
+        },
+        {
+          "nvim-neotest/neotest",
+          dependencies = {
+            -- "nvim-lua/plenary.nvim",
+            -- "nvim-treesitter/nvim-treesitter",
+            "antoinemadec/FixCursorHold.nvim",
+
+            "nvim-neotest/neotest-go",
+            "nvim-neotest/neotest-python",
+            "rouge8/neotest-rust",
+          },
+          config = function()
+            -- get neotest namespace (api call creates or returns namespace)
+            local neotest_ns = vim.api.nvim_create_namespace("neotest")
+            vim.diagnostic.config({
+              virtual_text = {
+                format = function(diagnostic)
+                  local message = diagnostic.message:gsub("\n", " "):gsub("\t", " "):gsub("%s+", " "):gsub("^%s+", "")
+                  return message
+                end,
+              },
+            }, neotest_ns)
+            require("neotest").setup {
+              adapters = {
+                require("neotest-go"),
+                require("neotest-python"),
+                require("neotest-rust"),
+              },
+            }
+          end,
+        },
         {
           "mfussenegger/nvim-dap",
           dependencies = {
@@ -233,39 +304,30 @@ function M.configure()
           end,
         },
         {
+          "kndndrj/projector-dbee",
+          dir = secrets.get("projector_dbee_path"),
+        },
+        {
           "kndndrj/nvim-dbee",
-          dir = require("secrets").get("dbee_path"),
+          dir = secrets.get("dbee_path"),
           dependencies = {
             "MunifTanjim/nui.nvim",
           },
           build = function()
-            if not require("secrets").get("dbee_path") then
+            if not secrets.get("dbee_path") then
               require("dbee").install()
             end
           end,
           config = function()
-            local dbee = require("dbee")
-
-            dbee.setup {
-              connections = require("secrets").get("dbee_connections"),
+            require("dbee").setup {
               sources = vim.list_extend(
                 require("dbee.config").default.sources,
-                { require("dbee.sources").MemorySource:new(require("secrets").get("dbee_connections")) }
+                { require("dbee.sources").MemorySource:new(secrets.get("dbee_connections")) }
               ),
-              page_size = 500,
-              lazy = true,
               drawer = {
                 disable_help = true,
               },
             }
-
-            local map_options = { noremap = true, silent = true }
-            vim.keymap.set("", "BL", function()
-              dbee.next()
-            end, map_options)
-            vim.keymap.set("", "BH", function()
-              dbee.prev()
-            end, map_options)
           end,
         },
       },
@@ -276,17 +338,6 @@ function M.configure()
 
     -- Git
     {
-      "tpope/vim-fugitive",
-      cmd = { "G", "Git", "GBrowse", "Gdiffsplit", "Gvdiffsplit" },
-      dependencies = {
-        "tpope/vim-rhubarb",
-        "idanarye/vim-merginal",
-      },
-      config = function()
-        require("plugins.git").configure_fugitive()
-      end,
-    },
-    {
       "lewis6991/gitsigns.nvim",
       event = "BufReadPre",
       dependencies = {
@@ -294,6 +345,17 @@ function M.configure()
       },
       config = function()
         require("plugins.git").configure_gitsigns()
+      end,
+    },
+    {
+      "NeogitOrg/neogit",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "sindrets/diffview.nvim",
+        -- "nvim-telescope/telescope.nvim",
+      },
+      config = function()
+        require("neogit").setup()
       end,
     },
 

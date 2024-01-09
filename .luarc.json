@@ -1,20 +1,3 @@
 {
-    "runtime.version": "LuaJIT",
-    "diagnostics": {
-        "enable": true,
-        "globals": [
-            "vim",
-            "use",
-            "use_rocks",
-            "require"
-        ]
-    },
-    "workspace": {
-        "library": {
-            "runtime/lua": true
-        },
-        "maxPreload": 2000,
-        "preloadFileSize": 1000
-    },
-    "telemetry.enable": false
+    "workspace.checkThirdParty": false
 }

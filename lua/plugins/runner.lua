@@ -9,110 +9,77 @@ local M = {}
 --
 function M.configure()
   local configs = {
-    -- Go
     {
-      name = "Generate",
-      group = "go",
-      command = "go generate",
-      args = {
-        "${workspaceFolder}/tools.go",
+      name = "Go",
+      children = {
+        {
+          name = "Generate",
+          command = "go generate",
+          args = {
+            "${workspaceFolder}/tools.go",
+          },
+        },
+        {
+          name = "Run Project",
+          command = "go run ${workspaceFolder}/",
+          type = "delve",
+          request = "launch",
+          program = "${workspaceFolder}/",
+        },
       },
-      presentation = "menuhidden",
-    },
-    {
-      name = "Debug",
-      group = "go",
-      type = "delve",
-      request = "launch",
-      program = "${file}",
-      presentation = "menuhidden",
-    },
-    {
-      name = "Current Directory Project",
-      command = "go run ${workspaceFolder}/",
-      group = "go",
-      type = "delve",
-      request = "launch",
-      program = "${workspaceFolder}/",
-      presentation = "menuhidden",
-    },
-    -- configuration for debugging test files
-    {
-      name = "Debug test",
-      group = "go",
-      type = "delve",
-      request = "launch",
-      mode = "test",
-      program = "${file}",
-      presentation = "menuhidden",
-    },
-    -- works with go.mod packages and sub packages
-    {
-      name = "Debug test (go.mod)",
-      group = "go",
-      type = "delve",
-      request = "launch",
-      mode = "test",
-      program = "./${relativeFileDirname}",
-      presentation = "menuhidden",
     },
 
-    -- Python
     {
-      name = "Launch file",
-      group = "python",
-      type = "python",
-      request = "launch",
-      program = "${file}",
-      presentation = "menuhidden",
-    },
-    {
-      name = "Launch file with arguments",
-      group = "python",
-      type = "python",
-      request = "launch",
-      program = "${file}",
-      args = function()
-        local args_string = vim.fn.input("Arguments: ")
-        return vim.split(args_string, " +")
-      end,
-      presentation = "menuhidden",
-    },
-    {
-      name = "Attach remote",
-      group = "python",
-      type = "python",
-      request = "attach",
-      connect = function()
-        local host = vim.fn.input("Host [127.0.0.1]: ")
-        host = host ~= "" and host or "127.0.0.1"
-        local port = tonumber(vim.fn.input("Port [5678]: ")) or 5678
-        return { host = host, port = port }
-      end,
-      presentation = "menuhidden",
-    },
-    {
-      name = "Run tests in file",
-      group = "python",
-      command = "pytest",
-      args = { "${file}" },
-      presentation = "menuhidden",
+      name = "Python",
+      children = {
+        {
+          name = "Launch file",
+          type = "python",
+          request = "launch",
+          program = "${file}",
+        },
+        {
+          name = "Launch file with arguments",
+          type = "python",
+          request = "launch",
+          program = "${file}",
+          args = function()
+            local args_string = vim.fn.input("Arguments: ")
+            return vim.split(args_string, " +")
+          end,
+        },
+        {
+          name = "Attach remote",
+          type = "python",
+          request = "attach",
+          connect = function()
+            local host = vim.fn.input("Host [127.0.0.1]: ")
+            host = host ~= "" and host or "127.0.0.1"
+            local port = tonumber(vim.fn.input("Port [5678]: ")) or 5678
+            return { host = host, port = port }
+          end,
+        },
+      },
     },
 
-    -- Shell
     {
-      name = "Run current script",
-      group = "sh",
-      command = "${fileDirname}/${file}",
-      presentation = "menuhidden",
+      name = "Shell",
+      children = {
+        {
+          name = "Run current script",
+          command = "${fileDirname}/${file}",
+        },
+      },
     },
 
-    -- Rust
     {
-      name = "Run current project",
-      group = "rust",
-      command = "cargo run",
-      presentation = "menuhidden",
+      name = "Rust",
+      children = {
+        {
+          name = "Run current project",
+          command = "cargo run",
+        },
+      },
     },
   }
 
@@ -132,7 +99,8 @@ function M.configure()
     outputs = {
       require("projector.outputs").TaskOutputBuilder:new(),
       require("projector.outputs").DapOutputBuilder:new(),
-      require("projector_dbee"):new(),
+      require("projector_dbee").OutputBuilder:new(),
+      require("projector_neotest").OutputBuilder:new { include_debug = true, group = true },
     },
   }
 

@@ -11,8 +11,8 @@ function M.configure()
   g.tex_flavor = "latex"
 
   -- PDF viewer
-  g.vimtex_view_method = "zathura"
-  g.vimtex_view_general_viewer = "zathura"
+  -- g.vimtex_view_method = "zathura"
+  -- g.vimtex_view_general_viewer = "zathura"
 end
 
 return M

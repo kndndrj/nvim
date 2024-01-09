@@ -155,7 +155,7 @@ function M.configure_neotree()
   }
 
   local map_options = { noremap = true, silent = true }
-  vim.keymap.set("n", "<leader>fj", ":Neotree<CR>", map_options)
+  vim.keymap.set("n", "<leader>fj", ":Neotree toggle<CR>", map_options)
 end
 
 return M

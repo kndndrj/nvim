@@ -4,9 +4,22 @@
 
 local M = {}
 
--- on attach to buffer
-function M.on_attach(_, bufnr)
-  -- Mappings.
+-- Extend on attach function with multiple functions
+---@param ... fun(client: table, buffer: integer)
+---@return fun(client: table, buffer: integer)
+function M.extend_on_attach(...)
+  local arg = { ... }
+  return function(a, b)
+    for _, fn in ipairs(arg) do
+      if type(fn) == "function" then
+        fn(a, b)
+      end
+    end
+  end
+end
+
+-- map keys on buffer
+function M.map_keys(_, bufnr)
   local map_options = { noremap = true, silent = true, buffer = bufnr }
 
   -- references
