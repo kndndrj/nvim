@@ -159,12 +159,22 @@ function M.configure()
 
     -- Tmux
     {
-      "aserowy/tmux.nvim",
+      "kndndrj/nvim-barn",
+      dir = secrets.get("nav_path"),
       dependencies = {
         "Iron-E/nvim-libmodal",
       },
       config = function()
-        require("plugins.tmux").configure()
+        require("barn").setup {
+          resize = {
+            resize_step_x = 4,
+            resize_step_y = 4,
+          },
+          mappings = {
+            -- layer_timeout_ms = 800,
+            prefix_key = "<C-a>",
+          },
+        }
       end,
     },
 
