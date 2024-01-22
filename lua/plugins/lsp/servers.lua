@@ -57,6 +57,8 @@ return {
 
   jsonls = {},
 
+  lemminx = {},
+
   pylsp = {
     settings = {
       pylsp = {
