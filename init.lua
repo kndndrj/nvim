@@ -1,109 +1,124 @@
 -----------------------
--- Init.lua -----------
------------------------
--- Macros
-local cmd = vim.cmd
-local g = vim.g
-local map = vim.keymap.set
-local o = vim.o
-local wo = vim.wo
-
--- dadbod config (doesn't work otherwise)
-g.db_ui_execute_on_save = 0
-g.db_ui_use_nerd_fonts = 1
-g.db_ui_tmp_query_location = "~/.cache/nvim/dadbod-ui/"
-g.db_ui_auto_execute_table_helpers = 1
-
------------------------
 -- Basic Config: ------
 -----------------------
-o.hidden = true
-
 -- Split defaults
-o.splitbelow = true
-o.splitright = true
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+
+-- Enable break indent
+vim.opt.breakindent = true
 
 -- Display line numbers
-wo.number = true
-o.numberwidth = 2
+vim.opt.number = true
+vim.opt.relativenumber = true
+vim.opt.numberwidth = 2
 
 -- Enable mouse
-o.mouse = "a"
+vim.opt.mouse = "a"
 
 -- Rows below the statusline
-o.cmdheight = 1
--- Don't display mode
-o.showmode = false
+vim.opt.cmdheight = 1
+-- Don't display mode (shown in statusline)
+vim.opt.showmode = false
 
 -- Shorter updatetime
-o.updatetime = 250
+vim.opt.updatetime = 250
+vim.opt.timeoutlen = 500
 
 -- Always show the signcolumn
-wo.signcolumn = "yes"
+vim.opt.signcolumn = "yes"
+
+-- Minimal number of screen lines to keep above and below the cursor.
+vim.opt.scrolloff = 10
+
+-- Save undo history
+vim.opt.undofile = true
+
+-- Preview substitutions live, as you type!
+vim.opt.inccommand = "split"
 
 -- Tab (key) settings
-o.tabstop = 4
-o.expandtab = true
-o.shiftwidth = 4
-o.softtabstop = 4
-o.smarttab = true
+vim.opt.tabstop = 4
+vim.opt.expandtab = true
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+vim.opt.smarttab = true
 
 -- any combination of 'wq' works
-cmd(":command! WQ wq")
-cmd(":command! Wq wq")
-cmd(":command! Wqa wqa")
-cmd(":command! W w")
-cmd(":command! Q q")
+vim.cmd(":command! WQ wq")
+vim.cmd(":command! Wq wq")
+vim.cmd(":command! Wqa wqa")
+vim.cmd(":command! W w")
+vim.cmd(":command! Q q")
 
--- Autocommands
-cmd('autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}')
-cmd("autocmd BufNewFile,BufRead *.groff set filetype=groff")
-cmd("autocmd BufNewFile,BufRead Jenkinsfile set filetype=groovy")
+-- highlight yanked text
+vim.api.nvim_create_autocmd("TextYankPost", {
+  callback = function()
+    vim.highlight.on_yank { timeout = 300 }
+  end,
+})
+
+-- filetype fixes
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+  pattern = { "*.groff" },
+  callback = function()
+    vim.opt.filetype = "groff"
+  end,
+})
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
+  pattern = { "Jenkinsfile" },
+  callback = function()
+    vim.opt.filetype = "groovy"
+  end,
+})
 
 -----------------------
 -- Key Bindings: ------
 -----------------------
+
+-- Map leader to space
+-- NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 -- Binding options
 local map_options = { noremap = true, silent = true }
 
--- Map leader to space
-g.mapleader = " "
-
 -- <leader>Escape key functions
-map("n", "<leader><esc>", ":cclose<CR>", map_options)
+vim.keymap.set("n", "<leader><esc>", ":cclose<CR>", map_options)
 
 -- Cycle quickfix lists
-map("n", "<leader>j", ":cnext<CR>", map_options)
-map("n", "<leader>k", ":cprev<CR>", map_options)
-map("n", "<leader>o", ":copen<CR>", map_options)
+vim.keymap.set("n", "<leader>j", ":cnext<CR>", map_options)
+vim.keymap.set("n", "<leader>k", ":cprev<CR>", map_options)
+vim.keymap.set("n", "<leader>o", ":copen<CR>", map_options)
 
 -- Fixes for the US layout
-map("", "š", "[", map_options)
-map("", "đ", "]", map_options)
-map("", "Š", "{", map_options)
-map("", "Đ", "}", map_options)
+vim.keymap.set("", "š", "[", map_options)
+vim.keymap.set("", "đ", "]", map_options)
+vim.keymap.set("", "Š", "{", map_options)
+vim.keymap.set("", "Đ", "}", map_options)
 
 -- Search highlighted text
-map("v", "//", 'y/\\V<C-R>=escape(@","/")<CR><CR>', map_options)
+vim.keymap.set("v", "//", 'y/\\V<C-R>=escape(@","/")<CR><CR>', map_options)
 
 -- Esc to quit terminal
-map("t", "<Esc>", "<C-\\><C-n>", map_options)
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", map_options)
 
 -- Clipboard
 -- y
-map("", "<leader>y", '"+y', map_options)
-map("n", "<leader>yy", '"+yy', map_options)
-map("n", "<leader>Y", '"+y$', map_options)
-map("n", "<leader>yi", '"+yi', map_options)
-map("n", "<leader>ya", '"+ya', map_options)
+vim.keymap.set("", "<leader>y", '"+y', map_options)
+vim.keymap.set("n", "<leader>yy", '"+yy', map_options)
+vim.keymap.set("n", "<leader>Y", '"+y$', map_options)
+vim.keymap.set("n", "<leader>yi", '"+yi', map_options)
+vim.keymap.set("n", "<leader>ya", '"+ya', map_options)
 -- d
-map("v", "<leader>d", '"+d', map_options)
-map("n", "<leader>dd", '"+dd', map_options)
-map("n", "<leader>D", '"+d$', map_options)
-map("n", "<leader>di", '"+di', map_options)
-map("n", "<leader>da", '"+da', map_options)
+vim.keymap.set("v", "<leader>d", '"+d', map_options)
+vim.keymap.set("n", "<leader>dd", '"+dd', map_options)
+vim.keymap.set("n", "<leader>D", '"+d$', map_options)
+vim.keymap.set("n", "<leader>di", '"+di', map_options)
+vim.keymap.set("n", "<leader>da", '"+da', map_options)
 -- p
-map("", "<leader>p", '"+p', map_options)
+vim.keymap.set("", "<leader>p", '"+p', map_options)
 
 -- Source plugins
 require("plugins").configure()

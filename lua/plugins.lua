@@ -326,15 +326,7 @@ function M.configure()
             end
           end,
           config = function()
-            require("dbee").setup {
-              sources = vim.list_extend(
-                require("dbee.config").default.sources,
-                { require("dbee.sources").MemorySource:new(secrets.get("dbee_connections")) }
-              ),
-              drawer = {
-                disable_help = true,
-              },
-            }
+            require("plugins.dbee").configure(secrets.get("dbee_connections"))
           end,
         },
       },

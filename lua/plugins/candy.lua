@@ -20,7 +20,7 @@ function M.configure_colorscheme()
       vim.wo.cursorline = false
     end,
   })
-  vim.api.nvim_create_autocmd({ "WinEnter", "FocusGained" }, {
+  vim.api.nvim_create_autocmd({ "VimEnter", "WinEnter", "FocusGained" }, {
     callback = function()
       vim.wo.colorcolumn = "100"
       vim.wo.cursorline = true

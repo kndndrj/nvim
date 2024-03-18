@@ -21,6 +21,9 @@ return {
     settings = {
       gopls = {
         gofumpt = true,
+        analyses = {
+          composites = false,
+        },
       },
     },
   },
