@@ -47,31 +47,36 @@ function M.configure()
     },
   }
 
-  -- run linters on save
+  -- autoformat on save
   vim.api.nvim_create_autocmd("BufWritePre", {
     pattern = "*",
     callback = function(args)
+      if vim.g.disable_autoformat or vim.b[args.buf].disable_autoformat then
+        return
+      end
       require("conform").format { bufnr = args.buf, lsp_fallback = true }
     end,
   })
 
-  -- keymap for manual formatting
-  local map_options = { noremap = true, silent = true }
-  vim.keymap.set("n", "<leader>tt", function()
-    require("conform").format { async = true, lsp_fallback = true }
-  end, map_options)
-
-  -- Install extra packages
-  local to_install = {}
-  for _, tbl in pairs(formatters) do
-    for _, f in ipairs(tbl) do
-      table.insert(to_install, f)
+  -- commands to toggle autoformat
+  vim.api.nvim_create_user_command("FormatDisable", function(args)
+    if args.bang then
+      -- FormatDisable! will disable formatting just for this buffer
+      vim.b.disable_autoformat = true
+    else
+      vim.g.disable_autoformat = true
     end
-  end
+  end, {
+    desc = "Disable autoformat-on-save",
+    bang = true,
+  })
 
-  require("mason-tool-installer").setup {
-    ensure_installed = to_install,
-  }
+  vim.api.nvim_create_user_command("FormatEnable", function()
+    vim.b.disable_autoformat = false
+    vim.g.disable_autoformat = false
+  end, {
+    desc = "Re-enable autoformat-on-save",
+  })
 end
 
 return M

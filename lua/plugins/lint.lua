@@ -58,9 +58,6 @@ function M.configure()
       end
     end,
   })
-
-  -- auto install the linters
-  require("mason-nvim-lint").setup()
 end
 
 return M

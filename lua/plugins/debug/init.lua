@@ -41,11 +41,6 @@ function M.configure()
       require("dap").adapters[adapter] = config
     end
   end
-
-  -- Mason
-  require("mason-nvim-dap").setup {
-    ensure_installed = vim.tbl_keys(require("plugins.debug.adapters")),
-  }
 end
 
 return M

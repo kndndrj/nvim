@@ -32,7 +32,7 @@ function M.configure()
   -- Initialize all language servers
   for server, config in pairs(require("plugins.lsp.servers")) do
     config.capabilities = options.capabilities
-    config.on_attach = options.extend_on_attach(options.map_keys, config.on_attach)
+    config.on_attach = options.map_keys
     require("lspconfig")[server].setup(config)
   end
 
@@ -70,22 +70,6 @@ function M.configure()
       fold_open = "",
       folded = true,
     },
-  }
-
-  -- Mason
-  local mason_ignore = { -- list of sources to not install
-    "pylsp",
-  }
-  local to_install = {}
-
-  for _, ser in ipairs(vim.tbl_keys(require("plugins.lsp.servers"))) do
-    if not vim.tbl_contains(mason_ignore, ser) then
-      table.insert(to_install, ser)
-    end
-  end
-
-  require("mason-lspconfig").setup {
-    ensure_installed = to_install,
   }
 end
 

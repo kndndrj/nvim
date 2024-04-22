@@ -178,22 +178,6 @@ function M.configure()
       end,
     },
 
-    -- Mason
-    {
-      "williamboman/mason.nvim",
-      dependencies = {
-        "RubixDev/mason-update-all",
-        "WhoIsSethDaniel/mason-tool-installer.nvim",
-      },
-      build = ":MasonUpdateAll",
-      config = function()
-        -- Initialize meson
-        require("mason").setup()
-        -- register update cmd
-        require("mason-update-all").setup()
-      end,
-    },
-
     -- LSP
     {
       "neovim/nvim-lspconfig",
@@ -202,7 +186,6 @@ function M.configure()
         -- "hrsh7th/cmp-nvim-lsp",
         -- "hrsh7th/nvim-cmp",
         "dnlhc/glance.nvim",
-        "williamboman/mason-lspconfig.nvim",
         { "ii14/emmylua-nvim", ft = "lua" },
       },
       config = function()
@@ -214,9 +197,6 @@ function M.configure()
     -- Linters
     {
       "mfussenegger/nvim-lint",
-      dependencies = {
-        "rshkarin/mason-nvim-lint",
-      },
       config = function()
         require("plugins.lint").configure()
       end,
@@ -259,7 +239,6 @@ function M.configure()
     -- Task Runner
     {
       "kndndrj/nvim-projector",
-      branch = "development",
       dir = secrets.get("projector_path"),
       keys = { "č" },
       dependencies = {
@@ -302,9 +281,11 @@ function M.configure()
           "mfussenegger/nvim-dap",
           dependencies = {
             "theHamsta/nvim-dap-virtual-text",
-            "rcarriga/nvim-dap-ui",
+            {
+              "rcarriga/nvim-dap-ui",
+              dependencies = { "nvim-neotest/nvim-nio" },
+            },
             "mfussenegger/nvim-dap-python",
-            "jay-babu/mason-nvim-dap.nvim",
           },
           config = function()
             require("plugins.debug").configure()
@@ -359,24 +340,6 @@ function M.configure()
     },
 
     -- AI
-    {
-      "jackMort/ChatGPT.nvim",
-      event = "VeryLazy",
-      config = function()
-        local token = secrets.get("chatgpt_token")
-        if token and not vim.env.OPENAI_API_KEY then
-          vim.env.OPENAI_API_KEY = token
-        end
-        require("chatgpt").setup {
-          show_quickfixes_cmd = "copen",
-        }
-      end,
-      dependencies = {
-        "MunifTanjim/nui.nvim",
-        "nvim-lua/plenary.nvim",
-        "nvim-telescope/telescope.nvim",
-      },
-    },
     {
       "Exafunction/codeium.nvim",
       dependencies = {
