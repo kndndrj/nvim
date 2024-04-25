@@ -26,50 +26,30 @@ function Slayout:new()
   }
   setmetatable(o, self)
   self.__index = self
-
-  vim.keymap.set("n", "<leader>cc", function()
-    ---@diagnostic disable-next-line
-    o:open_popup(api_ui.drawer_show)
-  end, { noremap = true, silent = true })
-
-  vim.keymap.set("n", "<leader>cl", function()
-    ---@diagnostic disable-next-line
-    o:open_popup(api_ui.call_log_show)
-  end, { noremap = true, silent = true })
-
   return o
 end
 
----Action taken when another (inapropriate) buffer is open in the window.
+---Close dbee when another (inapropriate) buffer is open in the window.
 ---@package
----@param on_switch "immutable"|"close"
 ---@param winid integer
----@param open_fn fun(winid: integer)
 ---@param is_editor? boolean special care needs to be taken with editor - it uses multiple buffers.
-function Slayout:configure_window_on_switch(on_switch, winid, open_fn, is_editor)
-  local action
-  if on_switch == "close" then
-    action = function(_, buf, file)
-      if is_editor then
-        local note, _ = api_ui.editor_search_note_with_file(file)
-        if note then
-          -- do nothing
-          return
-        end
-        note, _ = api_ui.editor_search_note_with_buf(buf)
-        if note then
-          -- do nothing
-          return
-        end
+function Slayout:configure_window_close_on_switch(winid, is_editor)
+  local action = function(_, buf, file)
+    if is_editor then
+      local note, _ = api_ui.editor_search_note_with_file(file)
+      if note then
+        -- do nothing
+        return
       end
-      -- close dbee and open buffer
-      self:close()
-      vim.api.nvim_win_set_buf(0, buf)
+      note, _ = api_ui.editor_search_note_with_buf(buf)
+      if note then
+        -- do nothing
+        return
+      end
     end
-  else
-    action = function(win, _, _)
-      open_fn(win)
-    end
+    -- close dbee and open buffer
+    self:close()
+    vim.api.nvim_win_set_buf(0, buf)
   end
 
   utils.create_singleton_autocmd({ "BufWinEnter", "BufReadPost", "BufNewFile" }, {
@@ -165,7 +145,7 @@ function Slayout:open()
   local editor_win = vim.api.nvim_get_current_win()
   table.insert(self.windows, editor_win)
   api_ui.editor_show(editor_win)
-  self:configure_window_on_switch("close", editor_win, api_ui.editor_show, true)
+  self:configure_window_close_on_switch(editor_win, true)
   self:configure_window_on_quit(editor_win)
 
   -- result
@@ -173,7 +153,7 @@ function Slayout:open()
   local win = vim.api.nvim_get_current_win()
   table.insert(self.windows, win)
   api_ui.result_show(win)
-  self:configure_window_on_switch("close", win, api_ui.result_show)
+  self:configure_window_close_on_switch(win)
   self:configure_window_on_quit(win)
 
   -- set cursor to editor
@@ -198,13 +178,14 @@ end
 -- Configuration function
 --
 function M.configure(conns)
+  local default = require("dbee.config").default
+
   -- configure in-memory sources if any
   local sources
   if conns and not vim.tbl_isempty(conns) then
-    sources =
-      vim.list_extend(require("dbee.config").default.sources, { require("dbee.sources").MemorySource:new(conns) })
+    sources = vim.list_extend({ require("dbee.sources").MemorySource:new(conns) }, default.sources)
   else
-    sources = require("dbee.config").default.sources
+    sources = default.sources
   end
 
   -- add extra mappings to all dbee views
@@ -229,8 +210,6 @@ function M.configure(conns)
     table.insert(defaults, call_log_keymap)
     return defaults
   end
-
-  local default = require("dbee.config").default
 
   -- setup function
   require("dbee").setup {
