@@ -8,41 +8,42 @@ local M = {}
 -- Configuration function
 --
 function M.configure()
-  local formatters = {
-    zsh = {
-      "beautysh",
-    },
-    bash = {
-      "beautysh",
-    },
-    sh = {
-      "beautysh",
-    },
-    proto = {
-      "buf",
-    },
-    markdown = {
-      "mdformat",
-    },
-    sql = {
-      "sqlfluff",
-    },
-    lua = {
-      "stylua",
-    },
-    yaml = {
-      "yamlfmt",
-    },
-    latex = {
-      "latexindent",
-    },
-  }
-
   require("conform").setup {
-    formatters_by_ft = formatters,
+    formatters_by_ft = {
+      zsh = {
+        "beautysh",
+      },
+      bash = {
+        "beautysh",
+      },
+      sh = {
+        "beautysh",
+      },
+      proto = {
+        "buf",
+      },
+      markdown = {
+        "mdformat",
+      },
+      sql = {
+        "sqlfluff",
+      },
+      lua = {
+        "stylua",
+      },
+      yaml = {
+        "yamlfmt",
+      },
+      latex = {
+        "latexindent",
+      },
+    },
     formatters = {
       yamlfmt = {
         prepend_args = { "-formatter", "retain_line_breaks=true" },
+      },
+      mdformat = {
+        args = { "--wrap", "100", "--number", "-" },
       },
     },
   }

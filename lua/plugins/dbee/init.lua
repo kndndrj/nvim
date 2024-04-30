@@ -18,7 +18,6 @@ function M.configure(conns)
     sources = default.sources
   end
 
-  -- add extra mappings to all dbee views
   local slayout = Slayout:new()
   local drawer_keymap = {
     key = "BC",
