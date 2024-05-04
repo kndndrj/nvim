@@ -55,7 +55,11 @@ function M.configure()
       if vim.g.disable_autoformat or vim.b[args.buf].disable_autoformat then
         return
       end
-      require("conform").format { bufnr = args.buf, lsp_fallback = true }
+      require("conform").format({ bufnr = args.buf, lsp_fallback = true }, function(err, _)
+        if err and err ~= "No formatters found for buffer" then
+          vim.notify("formatter error: " .. err, vim.log.levels.ERROR)
+        end
+      end)
     end,
   })
 
