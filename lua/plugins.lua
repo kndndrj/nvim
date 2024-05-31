@@ -106,12 +106,6 @@ function M.configure()
       end,
     },
     {
-      "numToStr/Comment.nvim",
-      config = function()
-        require("Comment").setup()
-      end,
-    },
-    {
       "NvChad/nvim-colorizer.lua",
       cmd = "ColorizerToggle",
       config = function()
@@ -127,6 +121,7 @@ function M.configure()
       dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-telescope/telescope-fzy-native.nvim",
+        "nvim-telescope/telescope-file-browser.nvim",
         -- "rcarriga/nvim-notify"
       },
       config = function()
@@ -172,7 +167,7 @@ function M.configure()
           },
           mappings = {
             -- layer_timeout_ms = 800,
-            prefix_key = "<C-a>",
+            prefix_key = "<C-s>",
           },
         }
       end,
@@ -251,7 +246,6 @@ function M.configure()
           dependencies = {
             -- "nvim-lua/plenary.nvim",
             -- "nvim-treesitter/nvim-treesitter",
-            "antoinemadec/FixCursorHold.nvim",
 
             "nvim-neotest/neotest-go",
             "nvim-neotest/neotest-python",
@@ -328,25 +322,38 @@ function M.configure()
       end,
     },
     {
-      "NeogitOrg/neogit",
-      dependencies = {
-        "nvim-lua/plenary.nvim",
-        "sindrets/diffview.nvim",
-        -- "nvim-telescope/telescope.nvim",
+      "SuperBo/fugit2.nvim",
+      opts = {
+        width = 70,
+        external_diffview = true, -- tell fugit2 to use diffview.nvim instead of builtin implementation.
       },
-      config = function()
-        require("neogit").setup()
-      end,
+      dependencies = {
+        "MunifTanjim/nui.nvim",
+        "nvim-tree/nvim-web-devicons",
+        "nvim-lua/plenary.nvim",
+      },
+      cmd = { "Fugit2", "Fugit2Diff", "Fugit2Graph" },
     },
-
-    -- AI
     {
-      "Exafunction/codeium.nvim",
-      dependencies = {
-        "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",
+      dependencies = { "nvim-tree/nvim-web-devicons" },
+      -- lazy, only load diffview by these commands
+      cmd = {
+        "DiffviewFileHistory",
+        "DiffviewOpen",
+        "DiffviewToggleFiles",
+        "DiffviewFocusFiles",
+        "DiffviewRefresh",
       },
+    },
+    {
+      "FabijanZulj/blame.nvim",
       config = function()
-        require("codeium").setup()
+        require("blame").setup {
+          mappings = {
+            commit_info = "K",
+          },
+        }
       end,
     },
 

@@ -16,6 +16,9 @@ function M.configure()
       bash = {
         "beautysh",
       },
+      go = {
+        "goimports-reviser",
+      },
       sh = {
         "beautysh",
       },

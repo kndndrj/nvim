@@ -4,8 +4,8 @@
 
 local M = {}
 
--- map keys on buffer
-function M.map_keys(_, bufnr)
+function M.on_attach(_, bufnr)
+  -- map keys on buffer
   local map_options = { noremap = true, silent = true, buffer = bufnr }
 
   -- references
@@ -23,8 +23,6 @@ function M.map_keys(_, bufnr)
   vim.keymap.set("n", "<C-k>", vim.lsp.buf.signature_help, map_options)
   -- diagnostic
   vim.keymap.set("n", "gE", vim.diagnostic.open_float, map_options)
-  vim.keymap.set("n", "geN", vim.diagnostic.goto_prev, map_options)
-  vim.keymap.set("n", "gen", vim.diagnostic.goto_next, map_options)
 end
 
 -- client capabilities

@@ -70,12 +70,23 @@ return {
           pycodestyle = {
             maxLineLength = 120,
           },
+          rope_autoimport = {
+            enabled = true,
+          },
         },
       },
     },
   },
 
-  ruff_lsp = {},
+  ruff_lsp = {
+    init_options = {
+      settings = {
+        format = {
+          args = { "--line-length", "120" },
+        },
+      },
+    },
+  },
 
   rust_analyzer = {},
 

@@ -37,6 +37,20 @@ function M.configure_telescope()
       grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
       qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
       buffer_previewer_maker = no_binary_preview,
+
+      -- search all files except the inside of ".git/" dir and gitignore-d files.
+      vimgrep_arguments = {
+        "rg",
+        "--color=never",
+        "--no-heading",
+        "--with-filename",
+        "--line-number",
+        "--column",
+        "--smart-case",
+        "--hidden",
+        "--glob",
+        "!**/.git/*",
+      },
     },
     extensions = {
       fzy_native = {
@@ -44,18 +58,27 @@ function M.configure_telescope()
         override_file_sorter = true,
       },
     },
+
+    pickers = {
+      find_files = {
+        -- search all files except the inside of ".git/" dir and gitignore-d files.
+        find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
+      },
+    },
   }
 
   require("telescope").load_extension("fzy_native")
   require("telescope").load_extension("notify")
+  require("telescope").load_extension("file_browser")
 
   local map_options = { noremap = true, silent = true }
 
-  vim.api.nvim_set_keymap("n", "<leader>ff", '<Cmd>lua require"telescope.builtin".find_files()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "<leader>fg", '<Cmd>lua require"telescope.builtin".live_grep()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "<leader>fb", '<Cmd>lua require"telescope.builtin".buffers()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "<leader>fh", '<Cmd>lua require"telescope.builtin".help_tags()<CR>', map_options)
-  vim.api.nvim_set_keymap("n", "<leader>fo", '<Cmd>lua require"telescope.builtin".oldfiles()<CR>', map_options)
+  vim.keymap.set("n", "<leader>ff", require("telescope.builtin").find_files, map_options)
+  vim.keymap.set("n", "<leader>fg", require("telescope.builtin").live_grep, map_options)
+  vim.keymap.set("n", "<leader>fb", require("telescope.builtin").buffers, map_options)
+  vim.keymap.set("n", "<leader>ft", require("telescope").extensions.file_browser.file_browser, map_options)
+  vim.keymap.set("n", "<leader>fh", require("telescope.builtin").help_tags, map_options)
+  vim.keymap.set("n", "<leader>fo", require("telescope.builtin").oldfiles, map_options)
 end
 
 -- Harpoon

@@ -87,7 +87,8 @@ function M.configure()
     loaders = {
       require("projector.loaders").BuiltinLoader:new {
         path = function()
-          return vim.fn.getcwd() .. "/.vscode/projector.json"
+          local project_root = vim.fs.root(0, { ".git", ".projector.json" }) or vim.fn.getcwd()
+          return project_root .. "/.projector.json"
         end,
         configs = configs,
       },

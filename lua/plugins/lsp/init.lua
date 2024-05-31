@@ -32,7 +32,7 @@ function M.configure()
   -- Initialize all language servers
   for server, config in pairs(require("plugins.lsp.servers")) do
     config.capabilities = options.capabilities
-    config.on_attach = options.map_keys
+    config.on_attach = options.on_attach
     require("lspconfig")[server].setup(config)
   end
 
@@ -56,12 +56,12 @@ function M.configure()
     },
     mappings = {
       list = {
-        ["<c-a>l"] = actions.enter_win("preview"),
-        ["<c-a>h"] = actions.enter_win("preview"),
+        ["<c-s>l"] = actions.enter_win("preview"),
+        ["<c-s>h"] = actions.enter_win("preview"),
       },
       preview = {
-        ["<c-a>l"] = actions.enter_win("list"),
-        ["<c-a>h"] = actions.enter_win("list"),
+        ["<c-s>l"] = actions.enter_win("list"),
+        ["<c-s>h"] = actions.enter_win("list"),
         ["q"] = actions.close,
       },
     },

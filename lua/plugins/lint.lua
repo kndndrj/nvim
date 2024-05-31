@@ -8,7 +8,7 @@ local M = {}
 -- Configuration function
 --
 function M.configure()
-  local linters = {
+  require("lint").linters_by_ft = {
     zsh = {
       "shellcheck",
     },
@@ -39,15 +39,32 @@ function M.configure()
     lua = {
       "luacheck",
     },
-    -- python = {
-    --   "mypy",
-    -- },
+    python = {
+      "mypy",
+      "pylint",
+    },
     markdown = {
       "vale",
     },
   }
 
-  require("lint").linters_by_ft = linters
+  -- customize
+  require("lint").linters.pylint.args = {
+    "-f",
+    "json",
+    "--disable=" .. table.concat({
+      "missing-function-docstring",
+      "missing-module-docstring",
+      "missing-class-docstring",
+      "too-few-public-methods",
+      "too-many-instance-attributes",
+      "too-many-arguments",
+      "too-many-branches",
+      "broad-exception-caught",
+      "fixme",
+    }, ","),
+    "--max-line-length=120",
+  }
 
   -- run linters on these events
   vim.api.nvim_create_autocmd({ "InsertLeave", "BufWritePost" }, {
