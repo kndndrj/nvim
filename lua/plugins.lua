@@ -106,6 +106,12 @@ function M.configure()
       end,
     },
     {
+      "numToStr/Comment.nvim",
+      config = function()
+        require("Comment").setup()
+      end,
+    },
+    {
       "NvChad/nvim-colorizer.lua",
       cmd = "ColorizerToggle",
       config = function()
@@ -332,7 +338,7 @@ function M.configure()
         "nvim-tree/nvim-web-devicons",
         "nvim-lua/plenary.nvim",
       },
-      cmd = { "Fugit2", "Fugit2Diff", "Fugit2Graph" },
+      cmd = { "Fugit2", "Fugit2Blame", "Fugit2Diff", "Fugit2Graph" },
     },
     {
       "sindrets/diffview.nvim",
@@ -345,16 +351,6 @@ function M.configure()
         "DiffviewFocusFiles",
         "DiffviewRefresh",
       },
-    },
-    {
-      "FabijanZulj/blame.nvim",
-      config = function()
-        require("blame").setup {
-          mappings = {
-            commit_info = "K",
-          },
-        }
-      end,
     },
 
     -- LaTeX

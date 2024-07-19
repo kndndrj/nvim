@@ -29,7 +29,7 @@ vim.opt.timeoutlen = 500
 vim.opt.signcolumn = "yes"
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.opt.scrolloff = 10
+vim.opt.scrolloff = 5
 
 -- Save undo history
 vim.opt.undofile = true
