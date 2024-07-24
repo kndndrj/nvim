@@ -104,11 +104,13 @@ function M.configure_bufferline()
   require("bufferline").setup {
     options = {
       diagnostics = "nvim_lsp",
-      diagnostics_update_in_insert = true,
 
       show_buffer_close_icons = false,
     },
   }
+
+  local ns = vim.api.nvim_create_namespace("config.bufferline")
+  vim.diagnostic.config({ update_in_insert = true }, ns)
 
   local map_options = { noremap = true, silent = true }
 

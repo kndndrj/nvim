@@ -112,6 +112,7 @@ function M.configure()
     },
     sources = cmp.config.sources {
       { name = "nvim_lsp" },
+      { name = "cmp-dbee" },
       { name = "codeium" },
       { name = "path" },
       { name = "luasnip" },

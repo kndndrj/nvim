@@ -70,6 +70,23 @@ function M.configure()
       fold_open = "",
       folded = true,
     },
+    hooks = {
+      -- Don't open glance when there is only one result and it is located in the current buffer, open otherwise
+      before_open = function(results, open, jump, _method)
+        local uri = vim.uri_from_bufnr(0)
+        if #results == 1 then
+          local target_uri = results[1].uri or results[1].targetUri
+
+          if target_uri == uri then
+            jump(results[1])
+          else
+            open(results)
+          end
+        else
+          open(results)
+        end
+      end,
+    },
   }
 end
 
