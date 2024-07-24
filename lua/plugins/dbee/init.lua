@@ -2,6 +2,7 @@
 -- Dbee settings: -------
 -------------------------
 local Slayout = require("plugins.dbee.layout")
+local dbee = require("dbee")
 local M = {}
 
 --
@@ -19,42 +20,19 @@ function M.configure(conns)
   end
 
   local slayout = Slayout:new()
-  local drawer_keymap = {
-    key = "BC",
-    mode = "n",
-    action = function()
-      slayout:open_drawer()
-    end,
-  }
-  local call_log_keymap = {
-    key = "BL",
-    mode = "n",
-    action = function()
-      slayout:open_call_log()
-    end,
-  }
 
-  local expand_mappings = function(defaults)
-    table.insert(defaults, drawer_keymap)
-    table.insert(defaults, call_log_keymap)
-    return defaults
-  end
+  vim.keymap.set("n", "<leader>l", function()
+    if not dbee.is_open() then
+      dbee.open()
+    end
+    slayout:open_popup()
+  end, { noremap = true })
 
   -- setup function
   require("dbee").setup {
     sources = sources,
     drawer = {
       disable_help = true,
-      mappings = expand_mappings(default.drawer.mappings),
-    },
-    editor = {
-      mappings = expand_mappings(default.editor.mappings),
-    },
-    call_log = {
-      mappings = expand_mappings(default.call_log.mappings),
-    },
-    result = {
-      mappings = expand_mappings(default.result.mappings),
     },
 
     window_layout = slayout,

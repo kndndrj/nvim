@@ -234,15 +234,16 @@ function M.configure()
             require("plugins.snippets").configure()
           end,
         },
-        {
-          "MattiasMTS/cmp-dbee",
-          dependencies = {
-            -- "kndndrj/nvim-dbee"
-          },
-          config = function()
-            require("cmp-dbee").setup()
-          end,
-        },
+        -- {
+        --   "MattiasMTS/cmp-dbee",
+        --   dependencies = {
+        --     -- "kndndrj/nvim-dbee"
+        --   },
+        --   ft = "sql",
+        --   config = function()
+        --     require("cmp-dbee").setup()
+        --   end,
+        -- },
       },
     },
 
