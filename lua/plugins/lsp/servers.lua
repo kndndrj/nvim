@@ -17,6 +17,8 @@ return {
 
   dockerls = {},
 
+  eslint = {},
+
   gopls = {
     settings = {
       gopls = {
@@ -61,6 +63,8 @@ return {
   jsonls = {},
 
   lemminx = {},
+
+  mojo = {},
 
   pylsp = {
     settings = {
@@ -192,4 +196,6 @@ return {
       },
     },
   },
+
+  zls = {},
 }

@@ -65,6 +65,9 @@ function M.configure()
       latex = {
         "latexindent",
       },
+      javascript = {
+        "prettier",
+      },
     },
     formatters = {
       yamlfmt = {

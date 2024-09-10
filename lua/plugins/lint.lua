@@ -18,18 +18,6 @@ function M.configure()
     sh = {
       "shellcheck",
     },
-    javascript = {
-      "eslint_d",
-    },
-    typescript = {
-      "eslint_d",
-    },
-    javascriptreact = {
-      "eslint_d",
-    },
-    typescriptreact = {
-      "eslint_d",
-    },
     yaml = {
       "actionlint",
     },
@@ -42,9 +30,6 @@ function M.configure()
     python = {
       "mypy",
       "pylint",
-    },
-    markdown = {
-      "vale",
     },
   }
 
@@ -59,11 +44,16 @@ function M.configure()
       "too-few-public-methods",
       "too-many-instance-attributes",
       "too-many-arguments",
+      "too-many-locals",
       "too-many-branches",
       "broad-exception-caught",
       "fixme",
     }, ","),
     "--max-line-length=120",
+    "--from-stdin",
+    function()
+      return vim.api.nvim_buf_get_name(0)
+    end,
   }
 
   -- run linters on these events
