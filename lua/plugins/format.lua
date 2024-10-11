@@ -50,8 +50,14 @@ function M.configure()
       proto = {
         "buf",
       },
+      java = {
+        "google-java-format",
+      },
       markdown = {
         "mdformat",
+      },
+      mojo = {
+        "mojo_format",
       },
       sql = {
         "sqlfluff",

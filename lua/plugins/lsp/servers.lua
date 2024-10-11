@@ -60,6 +60,8 @@ return {
 
   html = {},
 
+  jdtls = {},
+
   jsonls = {},
 
   lemminx = {},
@@ -174,7 +176,7 @@ return {
     },
   },
 
-  tsserver = {
+  ts_ls = {
     settings = {
       codeActionsOnSave = {
         source = {

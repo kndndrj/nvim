@@ -30,6 +30,30 @@ function M.configure()
     },
 
     {
+      name = "Mojo",
+      children = {
+        {
+          name = "Debug",
+          type = "mojo_lldb",
+          request = "launch",
+          program = function()
+            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+          end,
+          cwd = "${workspaceFolder}",
+          stopOnEntry = true,
+          args = {},
+        },
+        {
+          name = "Run file",
+          command = "mojo",
+          args = {
+            "${file}",
+          },
+        },
+      },
+    },
+
+    {
       name = "Python",
       children = {
         {

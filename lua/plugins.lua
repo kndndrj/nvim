@@ -161,7 +161,7 @@ function M.configure()
     -- Tmux
     {
       "kndndrj/nvim-barn",
-      dir = secrets.get("nav_path"),
+      dir = secrets.get("barn_path"),
       dependencies = {
         "Iron-E/nvim-libmodal",
       },
@@ -206,6 +206,7 @@ function M.configure()
     -- Formatters
     {
       "stevearc/conform.nvim",
+      dir = secrets.get("conform_path"),
       config = function()
         require("plugins.format").configure()
       end,

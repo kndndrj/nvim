@@ -20,4 +20,9 @@ return {
   python = function()
     require("dap-python").setup(nil, { include_configs = false })
   end,
+
+  mojo_lldb = {
+    type = "executable",
+    command = "mojo-lldb-dap",
+  },
 }
