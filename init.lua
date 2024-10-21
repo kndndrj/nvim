@@ -13,6 +13,9 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.numberwidth = 2
 
+-- break text with gq at 100 characters
+vim.opt.textwidth = 100
+
 -- Enable mouse
 vim.opt.mouse = "a"
 

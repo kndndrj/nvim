@@ -68,6 +68,8 @@ return {
 
   mojo = {},
 
+  ols = {},
+
   pylsp = {
     settings = {
       pylsp = {
@@ -84,15 +86,7 @@ return {
     },
   },
 
-  ruff_lsp = {
-    init_options = {
-      settings = {
-        format = {
-          args = { "--line-length", "120" },
-        },
-      },
-    },
-  },
+  ruff_lsp = {},
 
   rust_analyzer = {},
 

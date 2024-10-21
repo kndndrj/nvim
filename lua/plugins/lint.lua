@@ -47,6 +47,7 @@ function M.configure()
       "too-many-locals",
       "too-many-branches",
       "too-many-statements",
+      "too-many-return-statements",
       "broad-exception-caught",
       "fixme",
     }, ","),

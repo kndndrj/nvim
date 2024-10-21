@@ -74,6 +74,11 @@ function M.configure()
       javascript = {
         "prettier",
       },
+      python = {
+        "ruff_format",
+        "ruff_fix",
+        "ruff_organize_imports",
+      },
     },
     formatters = {
       yamlfmt = {
@@ -81,6 +86,17 @@ function M.configure()
       },
       mdformat = {
         args = { "--wrap", "100", "--number", "-" },
+      },
+      ruff_format = {
+        args = {
+          "format",
+          "--line-length",
+          "120",
+          "--force-exclude",
+          "--stdin-filename",
+          "$FILENAME",
+          "-",
+        },
       },
       goswag = {
         -- custom formatter for swagger docs in go
