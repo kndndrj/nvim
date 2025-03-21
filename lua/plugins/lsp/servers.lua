@@ -7,7 +7,7 @@ return {
 
   bashls = {},
 
-  bufls = {},
+  buf_ls = {},
 
   clangd = {
     filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
@@ -86,7 +86,7 @@ return {
     },
   },
 
-  ruff_lsp = {},
+  ruff = {},
 
   rust_analyzer = {},
 

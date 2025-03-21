@@ -40,7 +40,6 @@ function M.configure()
         "beautysh",
       },
       go = {
-        "goswag",
         "goimports-reviser",
         "gofumpt",
       },
@@ -97,12 +96,6 @@ function M.configure()
           "$FILENAME",
           "-",
         },
-      },
-      goswag = {
-        -- custom formatter for swagger docs in go
-        command = "swag",
-        args = { "fmt", "-d", "$FILENAME" },
-        stdin = false,
       },
       ["goimports-reviser"] = {
         prepend_args = function(_, _)

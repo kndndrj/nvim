@@ -18,9 +18,6 @@ function M.configure()
     sh = {
       "shellcheck",
     },
-    yaml = {
-      "actionlint",
-    },
     proto = {
       "buf_lint",
     },
