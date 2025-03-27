@@ -1,0 +1,66 @@
+version: "2"
+
+linters:
+  disable-all: true
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - contextcheck
+    - dupl
+    - exhaustive
+    - exptostd
+    - errchkjson
+    - gocheckcompilerdirectives
+    - gomoddirectives
+    - gosmopolitan
+    - dupl
+    - gocritic
+    - gosec
+    - nilnil
+    - noctx
+    - nolintlint
+    - spancheck
+    - sqlclosecheck
+    - tagalign
+    - thelper
+    - unparam
+
+  settings:
+    govet:
+      disable:
+        - composites
+        - shadow
+      enable-all: true
+
+    errcheck:
+      check-type-assertions: true
+      check-blank: false
+      disable-default-exclusions: false
+      exclude-functions:
+        # see errchkjson
+        - encoding/json.Marshal
+        - encoding/json.MarshalIndent
+        - io.Copy(*bytes.Buffer)
+        - io.Copy(os.Stdout)
+
+    spancheck:
+      checks:
+        - end
+        - record-error
+        - set-status
+
+formatters:
+  disable-all: true
+  enable:
+    - gci
+    - gofumpt
+
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+        - localmodule

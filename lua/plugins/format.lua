@@ -4,29 +4,6 @@
 
 local M = {}
 
----@param command string[]
----@return string?
-local function execute(command)
-  if #command < 1 or vim.fn.executable(command[1]) ~= 1 then
-    return
-  end
-
-  local cmd = table.concat(command, " ")
-
-  local handle = assert(io.popen(cmd))
-  local result = handle:read("*all")
-  handle:close()
-
-  return string.gsub(result, "\n", "") or ""
-end
-
----@param s string
----@param prefix string
----@return boolean
-local function has_prefix(s, prefix)
-  return s:find("^" .. prefix) ~= nil
-end
-
 --
 -- Configuration function
 --
@@ -40,8 +17,9 @@ function M.configure()
         "beautysh",
       },
       go = {
-        "goimports-reviser",
-        "gofumpt",
+        -- "goimports-reviser",
+        -- "gofumpt",
+        "golangci-lint-fmt",
       },
       sh = {
         "beautysh",
@@ -97,24 +75,28 @@ function M.configure()
           "-",
         },
       },
-      ["goimports-reviser"] = {
-        prepend_args = function(_, _)
-          local mod = execute { "go", "list", "-m" }
-          if not mod or mod == "command-line-arguments" then
-            return {}
-          end
+      ["golangci-lint-fmt"] = {
+        append_args = function(_, _)
+          local cwd = vim.fn.getcwd()
 
-          -- handle known public domains
-          if has_prefix(mod, "github.com") or has_prefix(mod, "gitlab.com") or has_prefix(mod, "bitbucket.org") then
-            local spl = vim.split(mod, "/")
-            if #spl < 2 then
-              return {}
+          ---@type string[]
+          local cfgs_prio_list = {
+            cwd .. "/.golangci.yml",
+            cwd .. "/.golangci.yaml",
+            cwd .. "/golangci.yml",
+            cwd .. "/.golangci.toml",
+            cwd .. "/.golangci.json",
+            cwd .. "/.ci/golangci.yml",
+            vim.fn.stdpath("config") .. "/assets/golangci.yml",
+          }
+
+          for _, path in ipairs(cfgs_prio_list) do
+            if vim.fn.filereadable(path) == 1 then
+              return { "--config=" .. path }
             end
-            return { "--company-prefixes", spl[1] .. "/" .. spl[2] }
           end
 
-          -- if not known domain, it's probably a local domain
-          return { "--company-prefixes", vim.split(mod, "/")[1] }
+          return {}
         end,
       },
     },
